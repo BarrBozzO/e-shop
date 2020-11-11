@@ -1,20 +1,19 @@
+import { jsx } from "@emotion/core";
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
+import Layout from "components/Layout";
 
 function Home() {
   return (
-    <div className={styles.container}>
+    <Layout>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>Title</h1>
+      <main>
+        <h1>Title</h1>
       </main>
-
-      <footer className={styles.footer}>Footer</footer>
-    </div>
+    </Layout>
   );
 }
 
