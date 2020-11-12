@@ -16,9 +16,10 @@ const firebaseConfig = {
 /**
  * Initialize Firebase APP
  */
-firebase.initializeApp(firebaseConfig);
-
-if (process.env.NODE_ENV === "development") {
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
   window.firebase = firebase;
 }
 

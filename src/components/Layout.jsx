@@ -1,9 +1,16 @@
 import { jsx } from "@emotion/core";
 import Link from "next/link";
-import React from "react";
+import React, { Fragment } from "react";
 import Logo from "components/Logo";
+import { useUser } from "features/user";
 
 function Layout({ children }) {
+  const { user, signInWithGoogle, logout } = useUser();
+
+  const handleLogin = () => {
+    signInWithGoogle();
+  };
+
   return (
     <div>
       <header
@@ -22,7 +29,13 @@ function Layout({ children }) {
           }}
         >
           <Logo />
-          <button>SIgn in</button>
+          {user ? (
+            <Fragment>
+              "logged in" <button onClick={logout}>logout</button>
+            </Fragment>
+          ) : (
+            <button onClick={handleLogin}>SIgn in</button>
+          )}
           <button>Cart</button>
           <button>Favorites</button>
         </div>
