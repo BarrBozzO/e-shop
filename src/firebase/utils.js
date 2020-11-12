@@ -48,3 +48,12 @@ export const mapUserAuthData = async (user) => {
     token,
   };
 };
+
+// export const getDocs = async (collection) => {
+//   try {
+//     const snapshot = await
+//   } catch (error) {
+//     console.error(error);
+//     return null;
+//   }
+// };
