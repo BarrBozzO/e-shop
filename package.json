@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@emotion/babel-preset-css-prop": "^10.2.1",
+    "babel-plugin-inline-react-svg": "^1.1.2",
     "cross-env": "^7.0.2"
   }
 }
