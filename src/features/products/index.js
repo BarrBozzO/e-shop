@@ -11,5 +11,15 @@ export const fetchProducts = async () => {
   }));
 };
 
+export const fetchProduct = async (id) => {
+  const snapshot = await firestore.doc(`products/${id}`).get();
+  const product = await snapshot.data();
+
+  return {
+    id: snapshot.id,
+    ...product,
+  };
+};
+
 export const List = ListComponent;
 export const Filter = FilterComponent;
