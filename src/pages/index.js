@@ -10,9 +10,7 @@ function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1>Title</h1>
-      </main>
+      <h1>Title</h1>
     </Layout>
   );
 }

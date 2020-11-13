@@ -45,19 +45,26 @@ function Layout({ children }) {
             justifyContent: "center",
           }}
         >
-          <Link href="/women">
+          <Link href="/products/women">
             <a>Women</a>
           </Link>
-          <Link href="/men">
+          <Link href="/products/men">
             <a>Men</a>
           </Link>
-          <Link href="/kids">
+          <Link href="/products/kids">
             <a>Kids</a>
           </Link>
         </nav>
       </header>
       <main>{children}</main>
-      <footer>Footer</footer>
+      <footer
+        css={{
+          height: "100px",
+          backgroundColor: "#faf9f8",
+        }}
+      >
+        Footer
+      </footer>
     </div>
   );
 }
