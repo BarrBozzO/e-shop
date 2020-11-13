@@ -8,7 +8,7 @@ function ViewAll({ products }) {
   return (
     <Layout>
       <Head>
-        <title>View All - Shop Women's Clothing online</title>
+        <title>View All - Shop Men's Clothing online</title>
       </Head>
 
       <BreadCrumbs
@@ -22,8 +22,8 @@ function ViewAll({ products }) {
             text: "Products",
           },
           {
-            url: "/products/women",
-            text: "Women",
+            url: "/products/men",
+            text: "Men",
           },
           {
             text: "View All",
@@ -41,8 +41,8 @@ function ViewAll({ products }) {
 
 export const getStaticProps = async () => {
   const products = await fetchProducts({
-    sex: "female",
     age: "adult",
+    sex: "male",
   });
 
   return {
