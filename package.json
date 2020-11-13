@@ -16,6 +16,8 @@
     "react-dom": "17.0.1"
   },
   "devDependencies": {
-    "@emotion/babel-preset-css-prop": "^10.2.1"
+    "@emotion/babel-preset-css-prop": "^10.2.1",
+    "babel-plugin-inline-react-svg": "^1.1.2",
+    "react-svg-loader": "^3.0.3"
   }
 }
