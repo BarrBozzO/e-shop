@@ -27,7 +27,7 @@ function WomenProducts() {
       />
       <h1>Women's Clothing</h1>
       <div>
-        <Link href="/products/women/clothes">
+        <Link href="/products/women/all">
           <a>Go Shopping</a>
         </Link>
       </div>
