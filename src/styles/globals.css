@@ -4,6 +4,7 @@ body {
   margin: 0;
   font-family: PTSans, sans-serif;
   background-color: #faf9f8;
+  color: rgb(34, 34, 34);
 }
 
 @font-face {

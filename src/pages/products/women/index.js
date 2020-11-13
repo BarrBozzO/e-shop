@@ -20,6 +20,9 @@ function WomenProducts() {
             url: "/products",
             text: "Products",
           },
+          {
+            text: "Women",
+          },
         ]}
       />
       <h1>Women's Clothing</h1>
