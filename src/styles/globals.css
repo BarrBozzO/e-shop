@@ -2,9 +2,17 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: PTSans, sans-serif;
   background-color: #faf9f8;
+  color: rgb(34, 34, 34);
+}
+
+@font-face {
+  font-family: "PTSans", sans-serif, "Arial";
+  src: url("/fonts/PTSans-Regular.ttf") format("truetype"),
+    url("/fonts/PTSans-Bold.ttf") format("truetype"),
+    url("/fonts/PTSans-BoldItalic.ttf") format("truetype"),
+    url("/fonts/PTSans-Italic.ttf") format("truetype");
 }
 
 a {

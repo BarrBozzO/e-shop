@@ -1,7 +1,7 @@
 import React from "react";
 
-function Logo() {
-  return <div>LOGO</div>;
+function Logo(props) {
+  return <div {...props}>LOGO</div>;
 }
 
 export default Logo;
