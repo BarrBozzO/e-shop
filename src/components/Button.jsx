@@ -16,6 +16,7 @@ function Button({ onClick, children, ...remainingProps }) {
         border: 0,
         textTransform: "uppercase",
       }}
+      onClick={onClick}
       {...remainingProps}
     >
       {children}
