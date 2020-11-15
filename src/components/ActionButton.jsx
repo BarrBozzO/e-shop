@@ -10,7 +10,9 @@ function ActionButton({ icon, label, onClick, css, ...remainingProps }) {
 
   return (
     <div onClick={handleClick} css={[btnCSS, css]} {...remainingProps}>
-      {icon && <Icon size={icon.size} name={icon.name} css={iconCSS} />}
+      {icon && (
+        <Icon size={icon.size} name={icon.name} css={[iconCSS, icon.css]} />
+      )}
       {label && <span>{label}</span>}
     </div>
   );
