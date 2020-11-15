@@ -22,9 +22,11 @@ function List({ products: initProducts }) {
         justifyContent: "space-between",
       }}
     >
-      {products.map((product) => (
-        <List.Item key={product.id} product={product} />
-      ))}
+      {products
+        .filter((product) => product.data && product.data.images.length)
+        .map((product) => (
+          <List.Item key={product.id} product={product} />
+        ))}
     </div>
   );
 }
