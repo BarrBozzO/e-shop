@@ -1,12 +1,12 @@
 import React from "react";
 import Head from "next/head";
-import Link from "next/link";
 import Image from "next/image";
+import { css } from "@emotion/core";
 import Layout from "components/Layout";
 import BreadCrumbs from "components/Breadcrumbs";
 import Button from "components/Button";
+import ActionButton from "components/ActionButton";
 import { fetchProduct, fetchProducts } from "features/products";
-import HeartIcon from "../../icons/heart.svg";
 
 function Product({ data }) {
   if (!data) {
@@ -15,86 +15,91 @@ function Product({ data }) {
   }
 
   const ImagesContainer = () => {
+    const { images, description } = data;
+
+    if (!images.length) return null;
+
+    const [coverImage, extraImage, ...otherImgs] = images;
+
+    const rowCSS = css`
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 100%;
+      position: relative;
+    `;
+
+    const rowItemCSS = css`
+      flex: 1 0 calc(50% - 4px);
+      max-width: 600px;
+      position: relative;
+      margin: 0 2px;
+
+      @media (max-width: 1024px) {
+        flex: 1 0 100%;
+        margin: 2px 0;
+      }
+    `;
+
+    const imgWrapperCSS = css`
+      width: 100%;
+      height: 0;
+      padding-bottom: 150%;
+    `;
+
+    const descCSS = css`
+      padding: 2rem;
+      margin: 2rem 0;
+      font-size: 1.2rem;
+      background-color: #ffffff;
+    `;
+
     return (
       <div
         css={{
           width: "70vw",
         }}
       >
-        <div
-          css={{
-            display: "flex",
-            justifyContent: "space-between",
-            width: "100%",
-            height: "80vh",
-            position: "relative",
-          }}
-        >
-          <div
-            css={{
-              height: "100%",
-              width: "calc( 50% - 2px )",
-              position: "relative",
-            }}
-          >
-            <Image layout="fill" alt="product image" src={data.images[0].url} />
+        <div css={rowCSS}>
+          <div css={rowItemCSS}>
+            <div css={imgWrapperCSS}>
+              <Image layout="fill" alt="product image" src={coverImage.url} />
+            </div>
           </div>
-          <div
-            css={{
-              height: "100%",
-              width: "calc( 50% - 2px )",
-              position: "relative",
-            }}
-          >
-            <Image layout="fill" alt="product image" src={data.images[1].url} />
-          </div>
+          {extraImage && (
+            <div css={rowItemCSS}>
+              <div css={imgWrapperCSS}>
+                <Image layout="fill" alt="product image" src={extraImage.url} />
+              </div>
+            </div>
+          )}
         </div>
-        <div
-          css={{
-            padding: "2rem",
-            margin: "2rem 0",
-            fontSize: "1.2rem",
-            backgroundColor: "#ffffff",
-          }}
-        >
-          {data.description}
-        </div>
-        <div
-          css={{
-            display: "flex",
-            justifyContent: "space-between",
-            width: "100%",
-            height: "80vh",
-            position: "relative",
-          }}
-        >
-          <div
-            css={{
-              height: "100%",
-              width: "calc( 50% - 2px )",
-              position: "relative",
-            }}
-          >
-            <Image layout="fill" alt="product image" src={data.images[2].url} />
+        <div css={descCSS}>{description}</div>
+        {Boolean(otherImgs.length) && (
+          <div css={rowCSS}>
+            {otherImgs.map((img) => (
+              <div css={rowItemCSS}>
+                <div css={imgWrapperCSS}>
+                  <Image layout="fill" alt="product image" src={img.url} />
+                </div>
+              </div>
+            ))}
           </div>
-          <div
-            css={{
-              height: "100%",
-              width: "calc( 50% - 2px )",
-              position: "relative",
-            }}
-          >
-            <Image layout="fill" alt="product image" src={data.images[3].url} />
-          </div>
-        </div>
+        )}
       </div>
     );
   };
 
+  const { name, age, sex } = data;
+
+  const isKid = age === "kid";
+  const isMale = sex === "male";
+  const isFemale = !isMale;
+
   return (
     <Layout>
       <Head>
-        <title>{data.name}</title>
+        <title>{name}</title>
       </Head>
       <BreadCrumbs
         path={[
@@ -106,6 +111,19 @@ function Product({ data }) {
             url: "/products",
             text: "Products",
           },
+          {
+            url: `/products/${isKid ? "kids" : isFemale ? "women" : "men"}`,
+            text: isFemale ? "women" : "men",
+          },
+          {
+            url: `/products/${
+              age === "kid" ? "kids" : sex === "female" ? "women" : "men"
+            }/all`,
+            text: "All",
+          },
+          {
+            text: name,
+          },
         ]}
       />
       <div
@@ -115,18 +133,11 @@ function Product({ data }) {
           maxWidth: "1600px",
           margin: "2rem auto 0",
           position: "relative",
+          padding: "0 2rem",
         }}
       >
         <ImagesContainer />
-        <div
-          css={{
-            position: "sticky",
-            top: 0,
-            width: "30vw",
-            height: "auto",
-            padding: "0 2rem",
-          }}
-        >
+        <div css={sidebarCSS}>
           <div
             css={{
               position: "relative",
@@ -136,16 +147,22 @@ function Product({ data }) {
             <h1 css={{ margin: "0 0 1rem", fontSize: "1.4rem" }}>
               {data.name}
             </h1>
-            <div
-              css={{
-                position: "absolute",
-                top: "0.4rem",
-                right: "0.4rem",
-                cursor: "pointer",
+            <ActionButton
+              css={css`
+                position: absolute;
+                top: 0;
+                right: 0;
+                cursor: pointer;
+              `}
+              icon={{
+                name: "heart",
+                size: 22,
+                css: css`
+                  margin: 0;
+                `,
               }}
-            >
-              <HeartIcon css={{ display: "block", width: "1.4rem" }} />
-            </div>
+              onClick={() => undefined}
+            />
           </div>
           <div
             css={{
@@ -165,6 +182,14 @@ function Product({ data }) {
   );
 }
 
+const sidebarCSS = css`
+  position: sticky;
+  top: 0;
+  width: 30vw;
+  height: auto;
+  padding: 1rem 2rem;
+`;
+
 export const getStaticProps = async (cxt) => {
   const product = await fetchProduct(cxt.params.id);
 
@@ -176,7 +201,7 @@ export const getStaticProps = async (cxt) => {
 };
 
 export const getStaticPaths = async () => {
-  // TODO render most popular - for others fallback
+  // TODO render most popular - for otherImgs fallback
   const products = await fetchProducts();
 
   return {

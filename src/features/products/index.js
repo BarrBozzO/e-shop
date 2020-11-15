@@ -2,7 +2,7 @@ import { firestore } from "../../firebase";
 import ListComponent from "./List";
 import FilterComponent from "./Filter";
 
-export const fetchProducts = async ({ sex, age }) => {
+export const fetchProducts = async ({ sex, age } = {}) => {
   let query = firestore.collection("products");
 
   if (sex) {

@@ -3,6 +3,8 @@ import "firebase/firestore";
 import "firebase/auth";
 import "firebase/storage";
 
+let initialized = false;
+
 const firebaseConfig = {
   apiKey: "AIzaSyChGpZS2YkMR63zKQhZAENVOyZ4blDDnvE",
   authDomain: "e-shop-11.firebaseapp.com",
@@ -19,17 +21,11 @@ const firebaseConfig = {
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
-if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
-  window.firebase = firebase;
-}
 
 /**
  * Initialize Firestore
  */
 export const firestore = firebase.firestore();
-firestore.settings({
-  timestampsInSnapshots: true,
-});
 
 /**
  * Initialize Storage
@@ -42,5 +38,19 @@ export const storage = firebase.storage();
 export const auth = firebase.auth();
 export const provider = new firebase.auth.GoogleAuthProvider();
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
+
+export const init = () => {
+  firestore.settings({
+    timestampsInSnapshots: true,
+  });
+  if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
+    window.firebase = firebase;
+  }
+};
+
+if (!initialized) {
+  // init();
+  initialized = true;
+}
 
 export default firebase;
