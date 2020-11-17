@@ -14,10 +14,14 @@ const signInWithCreds = (email, password) => {
   return auth.signInWithEmailAndPassword(email, password);
 };
 
+const signUp = (email, password) => {
+  return auth.createUserWithEmailAndPassword(email, password);
+};
+
 export const useUser = () => {
   const user = useContext(UserContext);
 
-  return { user, signInWithGoogle, logout, signInWithCreds };
+  return { user, signInWithGoogle, logout, signInWithCreds, signUp };
 };
 
 export const UserProvider = ({ children }) => {
