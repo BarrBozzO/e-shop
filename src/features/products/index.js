@@ -15,7 +15,7 @@ export const fetchProducts = async ({ sex, age } = {}) => {
 
   const snapshot = await query.get();
 
-  return await snapshot.docs.map((product) => ({
+  return snapshot.docs.map((product) => ({
     id: product.id,
     data: product.data(),
   }));
@@ -23,7 +23,7 @@ export const fetchProducts = async ({ sex, age } = {}) => {
 
 export const fetchProduct = async (id) => {
   const snapshot = await firestore.doc(`products/${id}`).get();
-  const product = await snapshot.data();
+  const product = snapshot.data();
 
   return {
     id: snapshot.id,

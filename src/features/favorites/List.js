@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { css } from "@emotion/core";
 import Link from "next/link";
 import Image from "next/image";
-import { useFavorites } from "features/favorites";
-import ActionButton from "components/ActionButton";
 
 function List({ products: initProducts }) {
   const [products, setProducts] = useState(initProducts);
@@ -20,7 +18,6 @@ function List({ products: initProducts }) {
         display: "flex",
         flexDirection: "row",
         flexWrap: "wrap",
-        justifyContent: "space-between",
       }}
     >
       {products
@@ -33,48 +30,11 @@ function List({ products: initProducts }) {
 }
 
 List.Item = ({ product: { id, data } }) => {
-  const { isFavorite, toggleFavorite } = useFavorites();
-  const favorited = isFavorite(id);
-
-  const FavButton = ({ id }) => {
-    const buttonCSS = css`
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      z-index: 10;
-      padding: 10px;
-      cursor: pointer;
-      margin: 0;
-
-      &:hover > svg {
-        fill: red;
-      }
-    `;
-
-    const isFavoriteCSS = css`
-      fill: red;
-    `;
-
-    return (
-      <ActionButton
-        css={[buttonCSS, !favorited || isFavoriteCSS]}
-        icon={{
-          name: favorited ? "heart-filled" : "heart",
-          size: 24,
-          css: css`
-            margin: 0;
-          `,
-        }}
-        onClick={() => toggleFavorite(id)}
-      />
-    );
-  };
-
   return (
     <div
       css={css`
-        flex: 0 0 33%;
-        margin-bottom: 2rem;
+        flex: 0 0 calc(33% - 0.1rem);
+        margin: 0 0.2rem 2rem;
       `}
     >
       <div
@@ -88,7 +48,6 @@ List.Item = ({ product: { id, data } }) => {
             <Image layout="fill" src={data.images[1].url} />
           </a>
         </Link>
-        <FavButton id={id} />
       </div>
       <div>
         <Link href={`/products/${id}`}>
