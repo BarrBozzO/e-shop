@@ -3,13 +3,18 @@ import firebase from "firebase";
 
 export default async (req, res) => {
   try {
+    const {
+      query: { id },
+    } = req;
     if (!req.query.id) {
       return res.json([]);
     }
 
+    const ids = Array.isArray(id) ? id : [id];
+
     const snapshot = await firestore
       .collection("products")
-      .where(firebase.firestore.FieldPath.documentId(), "in", [...req.query.id])
+      .where(firebase.firestore.FieldPath.documentId(), "in", ids)
       .get();
 
     const data = snapshot.docs.map((product) => ({
