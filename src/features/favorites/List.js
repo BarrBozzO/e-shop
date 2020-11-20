@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { css } from "@emotion/core";
 import Link from "next/link";
 import Image from "next/image";
+import Button from "components/Button";
 
 function List({ products: initProducts }) {
   const [products, setProducts] = useState(initProducts);
@@ -72,6 +73,9 @@ List.Item = ({ product: { id, data } }) => {
         >
           $ {data.price.value}
         </span>
+      </div>
+      <div css={{ marginTop: "1rem" }}>
+        <Button>ADD</Button>
       </div>
     </div>
   );
