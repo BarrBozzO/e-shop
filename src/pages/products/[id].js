@@ -1,20 +1,23 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { css } from "@emotion/core";
 import Layout from "components/Layout";
 import BreadCrumbs from "components/Breadcrumbs";
 import Button from "components/Button";
-import ActionButton from "components/ActionButton";
+import FavoriteButton from "components/FavoriteButton";
 import { fetchProduct, fetchProducts } from "features/products";
+import { useCart } from "features/cart";
 
 function Product({ data }) {
+  const { getCartItem, addToCart, deleteFromCart } = useCart();
+
   if (!data) {
     // display loading skeleton
     return null;
   }
 
-  const ImagesContainer = () => {
+  const ImagesContainer = useCallback(() => {
     const { images, description } = data;
 
     if (!images.length) return null;
@@ -88,13 +91,14 @@ function Product({ data }) {
         )}
       </div>
     );
-  };
+  }, [data.images]);
 
-  const { name, age, sex } = data;
+  const { name, age, sex, id } = data;
 
   const isKid = age === "kid";
   const isMale = sex === "male";
   const isFemale = !isMale;
+  const inCart = getCartItem(id);
 
   return (
     <Layout>
@@ -147,21 +151,11 @@ function Product({ data }) {
             <h1 css={{ margin: "0 0 1rem", fontSize: "1.4rem" }}>
               {data.name}
             </h1>
-            <ActionButton
-              css={css`
-                position: absolute;
-                top: 0;
-                right: 0;
-                cursor: pointer;
-              `}
-              icon={{
-                name: "heart",
-                size: 22,
-                css: css`
-                  margin: 0;
-                `,
+            <FavoriteButton
+              id={id}
+              styles={{
+                padding: 0,
               }}
-              onClick={() => undefined}
             />
           </div>
           <div
@@ -174,7 +168,11 @@ function Product({ data }) {
             {data.price.currency} {data.price.value}
           </div>
           <div>
-            <Button>Add</Button>
+            <Button
+              onClick={() => (!inCart ? addToCart(id) : deleteFromCart(id))}
+            >
+              {!inCart ? "Add" : "Remove"}
+            </Button>
           </div>
         </div>
       </div>

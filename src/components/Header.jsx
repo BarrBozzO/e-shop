@@ -5,11 +5,16 @@ import Link from "next/link";
 import Logo from "components/Logo";
 import ActionButton from "components/ActionButton";
 import { useUser, AuthDialog } from "features/user";
+import { useCart } from "features/cart";
 
 function Header({}) {
   const [displayAuth, setDisplayAuth] = useState(false);
+  const { getCount } = useCart();
   const { user, logout } = useUser();
   const router = useRouter();
+
+  const cartCount = getCount();
+  console.log(cartCount);
 
   const handleCart = () => {
     router.push("/cart");
@@ -55,7 +60,7 @@ function Header({}) {
             name: "cart",
             size: 20,
           }}
-          label="Shopping Cart"
+          label={`Shopping Cart${cartCount ? ` (${cartCount})` : ""}`}
           onClick={handleCart}
         />
       </div>
