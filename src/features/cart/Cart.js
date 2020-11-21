@@ -26,6 +26,10 @@ class Cart {
     return this.data.get(productId) || null;
   }
 
+  getSize() {
+    return this.data.size;
+  }
+
   _getPersistedData = () => {
     if (typeof window === "undefined") return [];
     return JSON.parse(localStorage.getItem(Cart.KEY)) || [];

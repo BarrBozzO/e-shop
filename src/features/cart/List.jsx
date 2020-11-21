@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { css } from "@emotion/core";
 import Link from "next/link";
 import Image from "next/image";
-import Button from "components/Button";
+import FavoriteButton from "components/FavoriteButton";
+import ActionButton from "components/ActionButton";
 
-function List({ products: initProducts }) {
+function List({ products: initProducts, onDelete }) {
   const [products, setProducts] = useState(initProducts);
 
   useEffect(async () => {
@@ -14,43 +15,54 @@ function List({ products: initProducts }) {
   if (!Array.isArray(products) || !products.length) return null;
 
   return (
-    <div
-      css={{
-        display: "flex",
-        flexDirection: "row",
-        flexWrap: "wrap",
-      }}
-    >
-      {products
-        .filter((product) => product.data && product.data.images.length)
-        .map((product) => (
-          <List.Item key={product.id} product={product} />
-        ))}
+    <div css={{}}>
+      {products.map((product) => (
+        <List.Item
+          key={product.id}
+          product={product}
+          onDelete={() => onDelete(product.id)}
+        />
+      ))}
     </div>
   );
 }
 
-List.Item = ({ product: { id, data } }) => {
+List.Item = ({ product: { id, data }, onDelete }) => {
+  const { images, price, name } = data;
+  const image = images[1] ? images[1] : images[0];
+
   return (
     <div
       css={css`
-        flex: 0 0 calc(33% - 0.1rem);
-        margin: 0 0.2rem 2rem;
+        width: 100%;
+        display: flex;
+        align-items: stretch;
+        justify-content: flex-start;
+        margin: 1rem 0;
       `}
     >
       <div
         css={{
+          width: "170px",
           position: "relative",
+          marginRight: "1rem",
         }}
       >
         <Link href={`/products/${id}`}>
           <a css={imageContainerCSS}>
-            <Image css={{ zIndex: 1 }} layout="fill" src={data.images[0].url} />
-            <Image layout="fill" src={data.images[1].url} />
+            <Image css={{ zIndex: 1 }} layout="fill" src={image.url} />
           </a>
         </Link>
       </div>
-      <div>
+      <div
+        css={{
+          flex: "1 0 auto",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "stretch",
+          position: "relative",
+        }}
+      >
         <Link href={`/products/${id}`}>
           <a
             css={{
@@ -60,7 +72,7 @@ List.Item = ({ product: { id, data } }) => {
               cursor: "pointer",
             }}
           >
-            {data.name}
+            {name}
           </a>
         </Link>
         <span
@@ -71,8 +83,34 @@ List.Item = ({ product: { id, data } }) => {
             fontSize: "1rem",
           }}
         >
-          $ {data.price.value}
+          $ {price.value}
         </span>
+        <div
+          css={{
+            marginTop: "auto",
+          }}
+        >
+          <FavoriteButton
+            id={id}
+            styles={{
+              width: "40px",
+              height: "40px",
+              position: "relative",
+              border: "1px solid #222",
+            }}
+          />
+        </div>
+        <ActionButton
+          icon={{
+            name: "cross",
+            css: css`
+              position: absolute;
+              top: 1rem;
+              right: 1rem;
+            `,
+          }}
+          onClick={onDelete}
+        />
       </div>
     </div>
   );
@@ -86,12 +124,6 @@ const imageContainerCSS = css`
   position: relative;
   cursor: pointer;
   overflow: hidden;
-
-  &:hover {
-    & > div:last-of-type {
-      z-index: 2;
-    }
-  }
 `;
 
 export default List;

@@ -36,7 +36,11 @@ const initCart = () => {
       return result;
     };
 
-    return { addToCart, getCartItem, getIds, deleteFromCart };
+    const getCount = () => {
+      return cart.getSize();
+    };
+
+    return { addToCart, getCartItem, getIds, deleteFromCart, getCount };
   };
 };
 
