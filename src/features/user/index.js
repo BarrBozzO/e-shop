@@ -2,16 +2,26 @@ import { useEffect, useContext, createContext, useState } from "react";
 import { auth, signInWithGoogle } from "../../firebase";
 import { mapUserAuthData } from "../../firebase/utils";
 
+import AuthDialogComponent from "./AuthDialog";
+
 const UserContext = createContext(null);
 
 const logout = () => {
   auth.signOut();
 };
 
+const signInWithCreds = (email, password) => {
+  return auth.signInWithEmailAndPassword(email, password);
+};
+
+const signUp = (email, password) => {
+  return auth.createUserWithEmailAndPassword(email, password);
+};
+
 export const useUser = () => {
   const user = useContext(UserContext);
 
-  return { user, signInWithGoogle, logout };
+  return { user, signInWithGoogle, logout, signInWithCreds, signUp };
 };
 
 export const UserProvider = ({ children }) => {
@@ -38,3 +48,5 @@ export const UserProvider = ({ children }) => {
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 };
+
+export const AuthDialog = AuthDialogComponent;

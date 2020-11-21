@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { css } from "@emotion/core";
 import Link from "next/link";
 import Image from "next/image";
-import FavoriteButton from "components/FavoriteButton";
+import Button from "components/Button";
 
 function List({ products: initProducts }) {
   const [products, setProducts] = useState(initProducts);
@@ -19,7 +19,6 @@ function List({ products: initProducts }) {
         display: "flex",
         flexDirection: "row",
         flexWrap: "wrap",
-        justifyContent: "space-between",
       }}
     >
       {products
@@ -35,8 +34,8 @@ List.Item = ({ product: { id, data } }) => {
   return (
     <div
       css={css`
-        flex: 0 0 33%;
-        margin-bottom: 2rem;
+        flex: 0 0 calc(33% - 0.1rem);
+        margin: 0 0.2rem 2rem;
       `}
     >
       <div
@@ -50,7 +49,6 @@ List.Item = ({ product: { id, data } }) => {
             <Image layout="fill" src={data.images[1].url} />
           </a>
         </Link>
-        <FavoriteButton id={id} />
       </div>
       <div>
         <Link href={`/products/${id}`}>
@@ -75,6 +73,9 @@ List.Item = ({ product: { id, data } }) => {
         >
           $ {data.price.value}
         </span>
+      </div>
+      <div css={{ marginTop: "1rem" }}>
+        <Button>ADD</Button>
       </div>
     </div>
   );

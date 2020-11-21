@@ -1,18 +1,20 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { useRouter } from "next/router";
 import { css } from "@emotion/core";
 import Link from "next/link";
 import Logo from "components/Logo";
 import ActionButton from "components/ActionButton";
-import { useUser } from "features/user";
+import { useUser, AuthDialog } from "features/user";
+import { useCart } from "features/cart";
 
 function Header({}) {
-  const { user, signInWithGoogle, logout } = useUser();
+  const [displayAuth, setDisplayAuth] = useState(false);
+  const { getCount } = useCart();
+  const { user, logout } = useUser();
   const router = useRouter();
 
-  const handleLogin = () => {
-    signInWithGoogle();
-  };
+  const cartCount = getCount();
+  console.log(cartCount);
 
   const handleCart = () => {
     router.push("/cart");
@@ -22,94 +24,103 @@ function Header({}) {
     router.push("/favorites");
   };
 
-  return (
-    <header
-      css={{
-        width: "100%",
-        "z-index": 1000,
-        padding: "16px",
-      }}
-    >
-      <div
-        css={{
-          display: "flex",
-          justifyContent: "flex-end",
-          position: "relative",
-        }}
-      >
-        {/* <div></div> */}
-        <Link href={"/"}>
-          <a>
-            <Logo
-              css={{
-                position: "absolute",
-                right: "50%",
-                top: "0",
-                transform: "translateX(50%)",
-              }}
-            />
-          </a>
-        </Link>
-        <div>
-          {user ? (
-            <Fragment>
-              "logged in" <button onClick={logout}>logout</button>
-            </Fragment>
-          ) : (
-            <ActionButton
-              key="profile"
-              css={btnCSS}
-              icon={{
-                name: "profile",
-                size: 20,
-              }}
-              label="Sign in"
-              onClick={handleLogin}
-            />
-          )}
+  const Actions = () => {
+    return (
+      <div>
+        {user ? (
+          <Fragment>
+            "logged in" <button onClick={logout}>logout</button>
+          </Fragment>
+        ) : (
           <ActionButton
-            key="heart"
+            key="profile"
             css={btnCSS}
             icon={{
-              name: "heart",
+              name: "profile",
               size: 20,
             }}
-            label="Favorites"
-            onClick={handleFavorites}
+            label="Sign in"
+            onClick={() => setDisplayAuth(true)}
           />
-          <ActionButton
-            key="cart"
-            css={btnCSS}
-            icon={{
-              name: "cart",
-              size: 20,
-            }}
-            label="Shopping Cart"
-            onClick={handleCart}
-          />
-        </div>
+        )}
+        <ActionButton
+          key="heart"
+          css={btnCSS}
+          icon={{
+            name: "heart",
+            size: 20,
+          }}
+          label="Favorites"
+          onClick={handleFavorites}
+        />
+        <ActionButton
+          key="cart"
+          css={btnCSS}
+          icon={{
+            name: "cart",
+            size: 20,
+          }}
+          label={`Shopping Cart${cartCount ? ` (${cartCount})` : ""}`}
+          onClick={handleCart}
+        />
       </div>
-      <nav
+    );
+  };
+
+  return (
+    <Fragment>
+      <header
         css={{
-          display: "flex",
-          justifyContent: "center",
-          marginTop: "2rem",
+          width: "100%",
+          "z-index": 1000,
+          padding: "16px",
         }}
       >
-        <Link href="/products/women">
-          <a css={linkStyles}>Women</a>
-        </Link>
-        <Link href="/products/men">
-          <a css={linkStyles}>Men</a>
-        </Link>
-        <Link href="/products/kids">
-          <a css={linkStyles}>Kids</a>
-        </Link>
-        <Link href="/sale">
-          <a css={linkStyles}>Sale</a>
-        </Link>
-      </nav>
-    </header>
+        <div
+          css={{
+            display: "flex",
+            justifyContent: "flex-end",
+            position: "relative",
+          }}
+        >
+          {/* <div></div> */}
+          <Link href={"/"}>
+            <a>
+              <Logo
+                css={{
+                  position: "absolute",
+                  right: "50%",
+                  top: "0",
+                  transform: "translateX(50%)",
+                }}
+              />
+            </a>
+          </Link>
+          <Actions />
+        </div>
+        <nav
+          css={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "2rem",
+          }}
+        >
+          <Link href="/products/women">
+            <a css={linkStyles}>Women</a>
+          </Link>
+          <Link href="/products/men">
+            <a css={linkStyles}>Men</a>
+          </Link>
+          <Link href="/products/kids">
+            <a css={linkStyles}>Kids</a>
+          </Link>
+          <Link href="/sale">
+            <a css={linkStyles}>Sale</a>
+          </Link>
+        </nav>
+      </header>
+      <AuthDialog isOpen={displayAuth} onClose={() => setDisplayAuth(false)} />
+    </Fragment>
   );
 }
 
