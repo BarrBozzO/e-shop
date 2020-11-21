@@ -14,7 +14,14 @@ class Cart {
   }
 
   remove(productId) {
-    this.data.delete(productId);
+    const current = this.data.get(productId) || 0;
+    const nextValue = current - 1;
+
+    if (nextValue > 0) {
+      this.data.set(productId, nextValue);
+    } else {
+      this.data.delete(productId);
+    }
     this._persist();
   }
 

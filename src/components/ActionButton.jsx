@@ -13,15 +13,20 @@ function ActionButton({ icon, label, onClick, css, ...remainingProps }) {
       {icon && (
         <Icon size={icon.size} name={icon.name} css={[iconCSS, icon.css]} />
       )}
-      {label && <span>{label}</span>}
+      {label && <span css={labelCSS}>{label}</span>}
     </div>
   );
 }
+
+const labelCSS = css`
+  display: inline-block;
+`;
 
 const btnCSS = css`
   display: flex;
   align-items: center;
   cursor: pointer;
+  user-select: none;
 `;
 
 const iconCSS = css`

@@ -12,7 +12,7 @@ import { useCart } from "features/cart";
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 function Cart() {
-  const { getIds, getCartItem, deleteFromCart } = useCart();
+  const { getIds, getCartItem, deleteFromCart, addToCart } = useCart();
   const params = new URLSearchParams(
     getIds().reduce((params, curr) => {
       params.push(["id", curr]);
@@ -33,7 +33,13 @@ function Cart() {
 
     if (!data.length) return "No Products";
 
-    return <List onDelete={deleteFromCart} products={getCartProducts()} />;
+    return (
+      <List
+        onDelete={deleteFromCart}
+        onAdd={addToCart}
+        products={getCartProducts()}
+      />
+    );
   };
 
   return (

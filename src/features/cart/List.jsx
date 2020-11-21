@@ -4,9 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import FavoriteButton from "components/FavoriteButton";
 import ActionButton from "components/ActionButton";
+import { useCart } from "features/cart";
 
-function List({ products: initProducts, onDelete }) {
+function List({ products: initProducts }) {
   const [products, setProducts] = useState(initProducts);
+  const { getCartItem, deleteFromCart, addToCart } = useCart();
 
   useEffect(async () => {
     setProducts(products);
@@ -20,14 +22,71 @@ function List({ products: initProducts, onDelete }) {
         <List.Item
           key={product.id}
           product={product}
-          onDelete={() => onDelete(product.id)}
+          countInCart={getCartItem(product.id)}
+          onDelete={() => deleteFromCart(product.id)}
+          onAdd={() => addToCart(product.id)}
         />
       ))}
     </div>
   );
 }
 
-List.Item = ({ product: { id, data }, onDelete }) => {
+List.CountControl = ({ count = 1, onAdd, onDelete }) => {
+  return (
+    <div
+      css={css`
+        display: inline-flex;
+        vertical-align: middle;
+        align-items: center;
+        height: 40px;
+      `}
+    >
+      {count > 1 && (
+        <ActionButton
+          css={{
+            fontSize: "2rem",
+            lineHeight: "2rem",
+            backgroundColor: "#e8e8e8",
+
+            "&:hover": {
+              color: "#e50010",
+            },
+
+            "& span": {
+              width: "100%",
+              height: "100%",
+              textAlign: "center",
+            },
+          }}
+          label="-"
+          onClick={onDelete}
+        />
+      )}
+      <span css={{ fontWeight: "700", fontSize: "1.4rem" }}>{count}</span>
+      <ActionButton
+        label="+"
+        onClick={onAdd}
+        css={{
+          fontSize: "2rem",
+          lineHeight: "2rem",
+          backgroundColor: "#e8e8e8",
+
+          "&:hover": {
+            color: "#e50010",
+          },
+
+          "& span": {
+            width: "100%",
+            height: "100%",
+            textAlign: "center",
+          },
+        }}
+      />
+    </div>
+  );
+};
+
+List.Item = ({ product: { id, data }, onDelete, onAdd, countInCart }) => {
   const { images, price, name } = data;
   const image = images[1] ? images[1] : images[0];
 
@@ -90,13 +149,21 @@ List.Item = ({ product: { id, data }, onDelete }) => {
             marginTop: "auto",
           }}
         >
+          <List.CountControl
+            count={countInCart}
+            onAdd={onAdd}
+            onDelete={onDelete}
+          />
           <FavoriteButton
             id={id}
             styles={{
+              padding: 0,
               width: "40px",
               height: "40px",
               position: "relative",
-              border: "1px solid #222",
+              display: "inline-flex",
+              verticalAlign: "middle",
+              marginLeft: "1rem",
             }}
           />
         </div>
