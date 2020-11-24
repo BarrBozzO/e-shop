@@ -1,9 +1,12 @@
+import firebase from "firebase";
 import { firestore } from "../../firebase";
 import ListComponent from "./List";
 import FilterComponent from "./Filter";
 
+const PAGE_SIZE = 20;
+
 export const fetchProducts = async ({ sex, age } = {}) => {
-  let query = firestore.collection("products");
+  let query = firestore.collection("products").orderBy(firebase.firestore.FieldPath.documentId()).limit(PAGE_SIZE);
 
   if (sex) {
     query = query.where("sex", "==", sex);
@@ -14,11 +17,12 @@ export const fetchProducts = async ({ sex, age } = {}) => {
   }
 
   const snapshot = await query.get();
-
-  return snapshot.docs.map((product) => ({
+  const data = snapshot.docs.map((product) => ({
     id: product.id,
     data: product.data(),
-  }));
+  }))
+
+  return data;
 };
 
 export const fetchProduct = async (id) => {
