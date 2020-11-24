@@ -4,6 +4,7 @@ import { useSWRInfinite } from 'swr';
 import Layout from "components/Layout";
 import BreadCrumbs from "components/Breadcrumbs";
 import Button from "components/Button";
+import AdBanner from "components/AdBanner";
 import { List, fetchProducts, Filter } from "features/products";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -50,6 +51,9 @@ function ViewAll({ initialProducts }) {
         ]}
       />
       <h1>View All</h1>
+      <div>
+        <AdBanner />
+      </div>
       <div>
         <Filter />
         <List products={products} loading={isLoading} />
