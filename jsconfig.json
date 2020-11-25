@@ -7,5 +7,6 @@
       "@/features/*": ["features/*"],
       "@/icons/*": ["icons/*"]
     }
-  }
+  },
+  "exclude": ["node_modules", ".next"]
 }
