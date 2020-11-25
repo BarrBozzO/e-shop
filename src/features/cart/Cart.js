@@ -1,4 +1,4 @@
-import { observable, action, computed, makeAutoObservable } from "mobx";
+import { action, computed, makeAutoObservable } from "mobx";
 class Cart {
   static KEY = "cart";
 
@@ -6,7 +6,6 @@ class Cart {
     const initValues = this._getPersistedData();
 
     this.data = new Map(initValues);
-    this.test = 5;
     makeAutoObservable(this);
   }
 

@@ -12,20 +12,27 @@ import { observer } from "mobx-react";
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const CartPage = observer(() => {
+  const cartProductIds = Cart.getIds();
+  const hasProductsInCart = cartProductIds.length;
+
+  // fetch products data
   const params = new URLSearchParams(
-    Cart.getIds().reduce((params, curr) => {
+    cartProductIds.reduce((params, curr) => {
       params.push(["id", curr]);
       return params;
     }, [])
   );
-  const { data, error } = useSWR(`/api/products?${params.toString()}`, fetcher);
-  const isLoading = !data && !error;
+  const { data: responsedProducts, error } = useSWR(
+    hasProductsInCart ? `/api/products?${params.toString()}` : null,
+    fetcher
+  );
+  const isLoading = !responsedProducts && hasProductsInCart && !error;
 
   const getCartProducts = () => {
     if (error) return [];
 
-    return data
-      ? data
+    return responsedProducts
+      ? responsedProducts
           .filter((product) => !!Cart.get(product.id))
           .map((product) => ({
             ...product,
@@ -36,10 +43,11 @@ const CartPage = observer(() => {
 
   const renderProducts = () => {
     if (error) return null;
+    const products = getCartProducts();
 
-    if (!data.length) return "No Products";
+    if (!products.length) return "No Products";
 
-    return <List products={getCartProducts()} />;
+    return <List products={products} />;
   };
 
   return (
