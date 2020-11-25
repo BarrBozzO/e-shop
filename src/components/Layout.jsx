@@ -1,20 +1,27 @@
 import React from "react";
 import Link from "next/link";
 import Header from "components/Header";
+import Footer from "components/Footer";
 
 function Layout({ children }) {
   return (
-    <div>
+    <div
+      css={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+      }}
+    >
       <Header />
-      <main>{children}</main>
-      <footer
+      <main
         css={{
-          height: "100px",
-          backgroundColor: "#faf9f8",
+          flex: "1 0 auto",
+          padding: "0 2rem",
         }}
       >
-        Footer
-      </footer>
+        {children}
+      </main>
+      <Footer />
     </div>
   );
 }

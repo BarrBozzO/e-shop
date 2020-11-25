@@ -2,7 +2,7 @@ import React from "react";
 import { css } from "@emotion/core";
 import Link from "next/link";
 
-function BreadCrumbs({ path }) {
+function Breadcrumbs({ path }) {
   return (
     <div
       css={{
@@ -50,4 +50,4 @@ const pathElementCSS = css`
   }
 `;
 
-export default BreadCrumbs;
+export default Breadcrumbs;

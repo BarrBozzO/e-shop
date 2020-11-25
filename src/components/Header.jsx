@@ -2,19 +2,18 @@ import React, { Fragment, useState } from "react";
 import { useRouter } from "next/router";
 import { css } from "@emotion/core";
 import Link from "next/link";
-import Logo from "components/Logo";
+import { observer } from "mobx-react";
 import ActionButton from "components/ActionButton";
+import Icon from "components/Icon";
 import { useUser, AuthDialog } from "features/user";
-import { useCart } from "features/cart";
+import Cart from "features/cart/Cart";
 
-function Header({}) {
+function Header() {
   const [displayAuth, setDisplayAuth] = useState(false);
-  const { getCount } = useCart();
   const { user, logout } = useUser();
   const router = useRouter();
 
-  const cartCount = getCount();
-  console.log(cartCount);
+  const cartCount = Cart.getSize();
 
   const handleCart = () => {
     router.push("/cart");
@@ -86,8 +85,11 @@ function Header({}) {
           {/* <div></div> */}
           <Link href={"/"}>
             <a>
-              <Logo
+              <Icon
+                name="logo"
                 css={{
+                  width: "68px",
+                  height: "44px",
                   position: "absolute",
                   right: "50%",
                   top: "0",
@@ -102,7 +104,7 @@ function Header({}) {
           css={{
             display: "flex",
             justifyContent: "center",
-            marginTop: "2rem",
+            marginTop: "3rem",
           }}
         >
           <Link href="/products/women">
@@ -142,6 +144,7 @@ const linkStyles = css`
   font-weight: 700;
   padding-bottom: 2px;
   color: rgb(74, 74, 74);
+  text-transform: uppercase;
 
   &:hover {
     cursor: pointer;
@@ -150,4 +153,4 @@ const linkStyles = css`
   }
 `;
 
-export default Header;
+export default observer(Header);
