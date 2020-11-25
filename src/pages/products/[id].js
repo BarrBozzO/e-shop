@@ -7,11 +7,9 @@ import BreadCrumbs from "components/Breadcrumbs";
 import Button from "components/Button";
 import FavoriteButton from "components/FavoriteButton";
 import { fetchProduct, fetchProducts } from "features/products";
-import { useCart } from "features/cart";
+import Cart from "features/cart/Cart";
 
 function Product({ data }) {
-  const { getCartItem, addToCart, deleteFromCart } = useCart();
-
   if (!data) {
     // display loading skeleton
     return null;
@@ -98,7 +96,7 @@ function Product({ data }) {
   const isKid = age === "kid";
   const isMale = sex === "male";
   const isFemale = !isMale;
-  const inCart = getCartItem(id);
+  const inCart = Cart.get(id);
 
   return (
     <Layout>
@@ -168,9 +166,7 @@ function Product({ data }) {
             {data.price.currency} {data.price.value}
           </div>
           <div>
-            <Button
-              onClick={() => (!inCart ? addToCart(id) : deleteFromCart(id))}
-            >
+            <Button onClick={() => (!inCart ? Cart.add(id) : Cart.remove(id))}>
               {!inCart ? "Add" : "Remove"}
             </Button>
           </div>

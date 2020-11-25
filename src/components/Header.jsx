@@ -2,20 +2,18 @@ import React, { Fragment, useState } from "react";
 import { useRouter } from "next/router";
 import { css } from "@emotion/core";
 import Link from "next/link";
-import Logo from "components/Logo";
+import { observer } from "mobx-react";
 import ActionButton from "components/ActionButton";
 import Icon from "components/Icon";
 import { useUser, AuthDialog } from "features/user";
-import { useCart } from "features/cart";
+import Cart from "features/cart/Cart";
 
-function Header({}) {
+function Header() {
   const [displayAuth, setDisplayAuth] = useState(false);
-  const { getCount } = useCart();
   const { user, logout } = useUser();
   const router = useRouter();
 
-  const cartCount = getCount();
-  console.log(cartCount);
+  const cartCount = Cart.getSize();
 
   const handleCart = () => {
     router.push("/cart");
@@ -155,4 +153,4 @@ const linkStyles = css`
   }
 `;
 
-export default Header;
+export default observer(Header);
