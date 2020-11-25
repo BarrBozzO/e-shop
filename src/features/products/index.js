@@ -2,6 +2,7 @@ import firebase from "firebase";
 import { firestore } from "../../firebase";
 import ListComponent from "./List";
 import FilterComponent from "./Filter";
+import useFetchProducts from "./useFetchProducts";
 
 const PAGE_SIZE = 20;
 
@@ -37,3 +38,7 @@ export const fetchProduct = async (id) => {
 
 export const List = ListComponent;
 export const Filter = FilterComponent;
+
+export {
+  useFetchProducts
+};

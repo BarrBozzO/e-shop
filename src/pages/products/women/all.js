@@ -1,20 +1,13 @@
 import React, { useMemo } from "react";
 import Head from "next/head";
-import { useSWRInfinite } from 'swr';
 import Layout from "components/Layout";
 import BreadCrumbs from "components/Breadcrumbs";
 import Button from "components/Button";
 import AdBanner from "components/AdBanner";
-import { List, fetchProducts, Filter } from "features/products";
-
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
-
-const getKey = (pageIndex, previousPageData) => {
-  return `/api/products/women?${previousPageData && previousPageData.cursor ? `cursor=${previousPageData.cursor}` : ''}`;
-}
+import { List, fetchProducts, Filter, useFetchProducts } from "features/products";
 
 function ViewAll({ initialProducts }) {
-  const { data, error, size, setSize } = useSWRInfinite(getKey, fetcher, { initialData: [{ data: initialProducts, cursor: initialProducts[initialProducts.length - 1].id }], refreshInterval: 0 });
+  const { data, error, size, setSize } = useFetchProducts({ initialData: [{ data: initialProducts, cursor: initialProducts[initialProducts.length - 1].id }], category: "women" });
 
   const isLoading = (size > 0 && data && typeof data[size - 1] === "undefined");
 

@@ -148,7 +148,7 @@ function Product({ data }) {
               paddingRight: "2rem",
             }}
           >
-            <h1 css={{ margin: "0 0 1rem", fontSize: "1.4rem" }}>
+            <h1 css={{ margin: "0 0 1rem", fontSize: "1.4rem", padding: "0", textAlign: "left" }}>
               {data.name}
             </h1>
             <FavoriteButton

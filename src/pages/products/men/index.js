@@ -10,8 +10,6 @@ function MenProducts() {
       <Head>
         <title>Men's Clothing</title>
       </Head>
-
-      <h1>Men's Clothing</h1>
       <BreadCrumbs
         path={[
           {
@@ -22,9 +20,17 @@ function MenProducts() {
             url: "/products",
             text: "Products",
           },
+          {
+            text: "Men",
+          },
         ]}
       />
-      <div></div>
+      <h1>Men's Clothing</h1>
+      <div>
+        <Link href="/products/men/all">
+          <a>Go Shopping</a>
+        </Link>
+      </div>
     </Layout>
   );
 }
