@@ -5,16 +5,15 @@ import Breadcrumbs from "components/Breadcrumbs";
 import Preloader from "components/Preloader";
 import Order from "features/cart/Order";
 import List from "features/cart/List";
-import { css } from "@emotion/core";
 import useSWR from "swr";
-import { useCart } from "features/cart";
+import Cart from "features/cart/Cart";
+import { observer } from "mobx-react";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-function Cart() {
-  const { getIds, getCartItem, deleteFromCart, addToCart } = useCart();
+const CartPage = observer(() => {
   const params = new URLSearchParams(
-    getIds().reduce((params, curr) => {
+    Cart.getIds().reduce((params, curr) => {
       params.push(["id", curr]);
       return params;
     }, [])
@@ -25,7 +24,14 @@ function Cart() {
   const getCartProducts = () => {
     if (error) return [];
 
-    return data ? data.filter((product) => !!getCartItem(product.id)) : []; // skip removed products
+    return data
+      ? data
+          .filter((product) => !!Cart.get(product.id))
+          .map((product) => ({
+            ...product,
+            __count: Cart.get(product.id),
+          }))
+      : []; // skip removed products
   };
 
   const renderProducts = () => {
@@ -33,13 +39,7 @@ function Cart() {
 
     if (!data.length) return "No Products";
 
-    return (
-      <List
-        onDelete={deleteFromCart}
-        onAdd={addToCart}
-        products={getCartProducts()}
-      />
-    );
+    return <List products={getCartProducts()} />;
   };
 
   return (
@@ -76,6 +76,6 @@ function Cart() {
       </div>
     </Layout>
   );
-}
+});
 
-export default Cart;
+export default CartPage;

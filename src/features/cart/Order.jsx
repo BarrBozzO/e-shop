@@ -7,7 +7,9 @@ const SHIPPING_PRICE = 100;
 
 function Order({ products }) {
   const productsPrice = products.reduce((total, currentProduct) => {
-    let value = Number.parseFloat(currentProduct?.data?.price?.value);
+    let value =
+      Number.parseFloat(currentProduct?.data?.price?.value) *
+      currentProduct.__count;
     if (isNaN(value)) {
       throw new Error("Appliaction failed");
     }
@@ -47,7 +49,7 @@ function Order({ products }) {
                 textAlign: "right",
               }}
             >
-              ${productsPrice}
+              ${productsPrice.toFixed(2)}
             </div>
           </div>
           <div css={shippingCSS}>

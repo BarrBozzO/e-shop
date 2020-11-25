@@ -1,47 +1,44 @@
-import { useState, useEffect } from "react";
-import Cart from "./Cart";
+// import { useState } from "react";
+// import Cart from "./Cart";
 
-const initCart = () => {
-  const cart = new Cart();
+// const initCart = () => {
+//   const cart = new Cart();
 
-  return () => {
-    const [cartItem, setCartItem] = useState(null);
+//   return () => {
+//     const [cartItem, setCartItem] = useState(0);
 
-    useEffect(() => {
-      setCartItem(0); // to update on clinet side only
-    }, []);
+//     const getCartItem = (id) => {
+//       return cart.get(id);
+//     };
 
-    const getCartItem = (id) => {
-      return cart.get(id);
-    };
+//     const deleteFromCart = (productId) => {
+//       cart.remove(productId);
+//       setCartItem(cartItem + 1);
+//     };
 
-    const deleteFromCart = (productId) => {
-      cart.remove(productId);
-      setCartItem(cartItem + 1);
-    };
+//     const addToCart = (productId) => {
+//       cart.add(productId);
+//       setCartItem(cartItem + 1);
+//     };
 
-    const addToCart = (productId) => {
-      cart.add(productId);
-      setCartItem(cartItem + 1);
-    };
+//     const getIds = () => {
+//       const items = cart.get();
+//       const result = [];
 
-    const getIds = () => {
-      const items = cart.get();
-      const result = [];
+//       for (const item of items) {
+//         result.push(item[0]);
+//       }
 
-      for (const item of items) {
-        result.push(item[0]);
-      }
+//       return result;
+//     };
 
-      return result;
-    };
+//     const getCount = () => {
+//       return cart.getSize();
+//     };
 
-    const getCount = () => {
-      return cart.getSize();
-    };
+//     return { addToCart, getCartItem, getIds, deleteFromCart, getCount };
+//   };
+// };
 
-    return { addToCart, getCartItem, getIds, deleteFromCart, getCount };
-  };
-};
-
-export const useCart = initCart();
+// initCart();
+export const useCart = {};

@@ -1,19 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { css } from "@emotion/core";
 import Link from "next/link";
 import Image from "next/image";
 import FavoriteButton from "components/FavoriteButton";
 import ActionButton from "components/ActionButton";
-import { useCart } from "features/cart";
+import Cart from "features/cart/Cart";
 
-function List({ products: initProducts }) {
-  const [products, setProducts] = useState(initProducts);
-  const { getCartItem, deleteFromCart, addToCart } = useCart();
-
-  useEffect(async () => {
-    setProducts(products);
-  }, []);
-
+function List({ products }) {
   if (!Array.isArray(products) || !products.length) return null;
 
   return (
@@ -22,9 +15,8 @@ function List({ products: initProducts }) {
         <List.Item
           key={product.id}
           product={product}
-          countInCart={getCartItem(product.id)}
-          onDelete={() => deleteFromCart(product.id)}
-          onAdd={() => addToCart(product.id)}
+          onDelete={(reset) => Cart.remove(product.id, reset)}
+          onAdd={() => Cart.add(product.id)}
         />
       ))}
     </div>
@@ -86,7 +78,7 @@ List.CountControl = ({ count = 1, onAdd, onDelete }) => {
   );
 };
 
-List.Item = ({ product: { id, data }, onDelete, onAdd, countInCart }) => {
+List.Item = ({ product: { id, data, __count }, onDelete, onAdd }) => {
   const { images, price, name } = data;
   const image = images[1] ? images[1] : images[0];
 
@@ -150,9 +142,9 @@ List.Item = ({ product: { id, data }, onDelete, onAdd, countInCart }) => {
           }}
         >
           <List.CountControl
-            count={countInCart}
+            count={__count}
             onAdd={onAdd}
-            onDelete={onDelete}
+            onDelete={() => onDelete()}
           />
           <FavoriteButton
             id={id}
@@ -176,7 +168,7 @@ List.Item = ({ product: { id, data }, onDelete, onAdd, countInCart }) => {
               right: 1rem;
             `,
           }}
-          onClick={onDelete}
+          onClick={() => onDelete(true)}
         />
       </div>
     </div>
