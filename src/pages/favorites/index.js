@@ -19,7 +19,7 @@ function Favorites() {
   );
 
   const { data, error } = useSWR(
-    `/api/favorites?${params.toString()}`,
+    `/api/products?${params.toString()}`,
     fetcher
   );
   const isLoading = !data && !error;

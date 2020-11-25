@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { css } from "@emotion/core";
 import Link from "next/link";
 import Image from "next/image";
 import FavoriteButton from "components/FavoriteButton";
+import Preloader from "components/Preloader";
 
-function List({ products: initProducts }) {
-  const [products, setProducts] = useState(initProducts);
-
-  useEffect(async () => {
-    setProducts(products);
-  }, []);
-
+function List({ products, loading }) {
   if (!Array.isArray(products) || !products.length) return null;
+
+  if (loading) return <Preloader />;
 
   return (
     <div
@@ -35,8 +32,10 @@ List.Item = ({ product: { id, data } }) => {
   return (
     <div
       css={css`
-        flex: 0 0 33%;
+        flex: 0 0 calc( 33% - 1rem );
+        margin-left: 0.5rem;
         margin-bottom: 2rem;
+        margin-right: 0.5rem;
       `}
     >
       <div
