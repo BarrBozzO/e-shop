@@ -1,36 +1,38 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 body {
-  padding: 0;
-  margin: 0;
-  font-family: PTSans, sans-serif;
-  background-color: #faf9f8;
-  color: rgb(34, 34, 34);
-  position: relative;
-  font-size: 14px;
+    padding: 0;
+    margin: 0;
+    font-family: PTSans, sans-serif;
+    background-color: #faf9f8;
+    color: rgb(34, 34, 34);
+    position: relative;
+    font-size: 14px;
 }
 
 @font-face {
-  font-family: "PTSans", sans-serif, "Arial";
-  src: url("/fonts/PTSans-Regular.ttf") format("truetype"),
-    url("/fonts/PTSans-Bold.ttf") format("truetype"),
-    url("/fonts/PTSans-BoldItalic.ttf") format("truetype"),
-    url("/fonts/PTSans-Italic.ttf") format("truetype");
+    font-family: 'PTSans', sans-serif, 'Arial';
+    src: url('/fonts/PTSans-Regular.ttf') format('truetype'),
+        url('/fonts/PTSans-Bold.ttf') format('truetype'),
+        url('/fonts/PTSans-BoldItalic.ttf') format('truetype'),
+        url('/fonts/PTSans-Italic.ttf') format('truetype');
 }
 
 a {
-  cursor: pointer;
-  color: inherit;
-  text-decoration: none;
+    cursor: pointer;
+    color: inherit;
+    text-decoration: none;
 }
 
-* {
-  box-sizing: border-box;
+ul {
+    list-style: none;
 }
 
 h1 {
-  font-size: 3rem;
-  padding: 32px;
-  text-align: center;
+    margin: 0;
+}
+
+* {
+    box-sizing: border-box;
 }

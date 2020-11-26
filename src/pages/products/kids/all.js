@@ -1,54 +1,155 @@
-import React from "react";
-import Head from "next/head";
-import Layout from "components/Layout";
-import BreadCrumbs from "components/Breadcrumbs";
-import { List, fetchProducts, Filter } from "features/products";
+import React, { useMemo } from 'react';
+import Head from 'next/head';
+import Layout from 'components/Layout';
+import BreadCrumbs from 'components/Breadcrumbs';
+import Button from 'components/Button';
+import AdBanner from 'components/AdBanner';
+import {
+    List,
+    fetchProducts,
+    Filter,
+    useFetchProducts,
+    Nav
+} from 'features/products';
+import { useUser } from 'features/user';
 
-function ViewAll({ products }) {
-  return (
-    <Layout>
-      <Head>
-        <title>View All - Shop Kid's Clothing online</title>
-      </Head>
+function ViewAll({ initialProducts }) {
+    const { user } = useUser();
+    const { data, error, size, setSize } = useFetchProducts({
+        initialData: [
+            {
+                data: initialProducts,
+                cursor: initialProducts[initialProducts.length - 1].id
+            }
+        ],
+        category: 'kids'
+    });
 
-      <BreadCrumbs
-        path={[
-          {
-            url: "/",
-            text: "Home",
-          },
-          {
-            url: "/products",
-            text: "Products",
-          },
-          {
-            url: "/products/kids",
-            text: "Kids",
-          },
-          {
-            text: "View All",
-          },
-        ]}
-      />
-      <h1>View All</h1>
-      <div>
-        <Filter />
-        <List products={products} />
-      </div>
-    </Layout>
-  );
+    const isLoading = !data && !error;
+
+    const products = useMemo(() => {
+        return data
+            ? data.reduce((allPages, page) => {
+                  return allPages.concat(page.data);
+              }, [])
+            : [];
+    }, [data]);
+
+    return (
+        <Layout>
+            <Head>
+                <title>View All - Shop Kid's Clothing online</title>
+            </Head>
+
+            <BreadCrumbs
+                path={[
+                    {
+                        url: '/',
+                        text: 'Home'
+                    },
+                    {
+                        url: '/products',
+                        text: 'Products'
+                    },
+                    {
+                        url: '/products/kids',
+                        text: 'Kids'
+                    },
+                    {
+                        text: 'View All'
+                    }
+                ]}
+            />
+            {!user && <AdBanner />}
+            <div
+                css={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'flex-start',
+                    width: '100%'
+                }}
+            >
+                <Nav links={seoLinks} />
+                <div css={{ flex: '1 0 0' }}>
+                    <h1
+                        css={{
+                            fontSize: '3rem',
+                            textTransform: 'uppercase'
+                        }}
+                    >
+                        View All
+                    </h1>
+                    <Filter />
+                    <List products={products} loading={isLoading} />
+                    <Button
+                        css={{
+                            display: 'block',
+                            width: '300px',
+                            height: '47px',
+                            margin: '0 auto'
+                        }}
+                        disabled={isLoading}
+                        onClick={() => setSize(size + 1)}
+                    >
+                        Load More Products
+                    </Button>
+                </div>
+            </div>
+        </Layout>
+    );
 }
 
 export const getStaticProps = async () => {
-  const products = await fetchProducts({
-    age: "kid",
-  });
+    const products = await fetchProducts({
+        age: 'kid'
+    });
 
-  return {
-    props: {
-      products,
-    },
-  };
+    return {
+        props: {
+            initialProducts: products
+        }
+    };
 };
+
+const seoLinks = [
+    {
+        label: 'Shop by Product',
+        links: [
+            {
+                label: 'View All',
+                url: '/products/kids/all'
+            },
+            {
+                label: 'Newborn 0-9m',
+                url: '/products/kids/newborn-0m-9m'
+            },
+            {
+                label: 'Baby Girls 4m-4Y',
+                url: '/products/kids/girls-4m-4Y'
+            },
+            {
+                label: 'Baby Boys 4m-4Y',
+                url: '/products/kids/boys-4m-4Y'
+            }
+        ]
+    },
+    {
+        label: 'Offers & Deals',
+        links: [
+            {
+                label: 'Up to 60% off'
+            },
+            {
+                label: 'Sale'
+            },
+            {
+                label: 'BESTSELLERS FROM $9.99'
+            },
+            {
+                label: 'MULTIPACK MAGIC FROM $19.99'
+            }
+        ]
+    }
+];
 
 export default ViewAll;

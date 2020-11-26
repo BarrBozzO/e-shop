@@ -1,7 +1,7 @@
 import { firestore } from '../../../firebase';
 import firebase from 'firebase';
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 
 export default async (req, res) => {
     try {
@@ -10,13 +10,18 @@ export default async (req, res) => {
         } = req;
 
         if (!req.query.id) {
+            // debugger;
             let query = firestore
                 .collection('products')
+                .where('sex', '==', 'male')
+                .where('age', '==', 'adult')
                 .orderBy(firebase.firestore.FieldPath.documentId())
                 .limit(PAGE_SIZE);
+
             if (cursor) {
                 query = query.startAfter(cursor); // prev doc.id
             }
+
             const snapshot = await query.get();
 
             const data = snapshot.docs.map((product) => ({
@@ -24,7 +29,7 @@ export default async (req, res) => {
                 data: product.data()
             }));
 
-            res.json({ data, cursor: data[data.length - 1].id });
+            res.json({ data, cursor: data[data.length - 1]?.id || null });
         } else {
             const ids = Array.isArray(id) ? id : [id];
 

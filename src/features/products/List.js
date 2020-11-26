@@ -9,14 +9,14 @@ function List({ products, loading }) {
     if (!Array.isArray(products) || !products.length) return null;
 
     if (loading) return <Preloader />;
-    debugger;
+
     return (
         <div
             css={{
                 display: 'flex',
                 flexDirection: 'row',
                 flexWrap: 'wrap',
-                justifyContent: 'space-between'
+                justifyContent: 'flex-start'
             }}
         >
             {products
