@@ -6,16 +6,39 @@ const PAGE_SIZE = 20;
 export default async (req, res) => {
     try {
         const {
-            query: { id, cursor }
+            query: { id, cursor, category, filters }
         } = req;
 
-        if (!req.query.id) {
+        if (!id) {
             let query = firestore
                 .collection('products')
                 .orderBy(firebase.firestore.FieldPath.documentId())
                 .limit(PAGE_SIZE);
             if (cursor) {
                 query = query.startAfter(cursor); // prev doc.id
+            }
+            if (category) {
+                switch (category) {
+                    case 'women':
+                        {
+                            query = query
+                                .where('age', '==', 'adult')
+                                .where('sex', '==', 'female');
+                        }
+                        break;
+                    case 'men':
+                        {
+                            query = query
+                                .where('age', '==', 'adult')
+                                .where('sex', '==', 'male');
+                        }
+                        break;
+                    case 'kids':
+                        {
+                            query = query.where('age', '==', 'kids');
+                        }
+                        break;
+                }
             }
             const snapshot = await query.get();
 

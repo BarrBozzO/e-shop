@@ -1,20 +1,22 @@
 import { useSWRInfinite } from 'swr';
+import { stringify } from 'qs';
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-const getKey = (category) => (pageIndex, previousPageData) => {
+const getKey = (category, filters) => (pageIndex, previousPageData) => {
     if (previousPageData && previousPageData.cursor === null) return null;
-    return `/api/products/${category}?${
-        previousPageData && previousPageData.cursor
-            ? `cursor=${previousPageData.cursor}`
-            : ''
-    }`;
+
+    return `/api/products?${stringify({
+        filters,
+        category,
+        cursor: previousPageData?.cursor
+    })}`;
 };
 
-const useFetchProduct = ({ initialData, category }) => {
-    return useSWRInfinite(getKey(category), fetcher, {
+const useFetchProduct = ({ initialData, category, filters }) => {
+    return useSWRInfinite(getKey(category, filters), fetcher, {
         initialData,
-        refreshInterval: 0
+        revalidateAll: false
     });
 };
 
