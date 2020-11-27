@@ -10,13 +10,9 @@ export default async (req, res) => {
         } = req;
 
         if (!id) {
-            let query = firestore
-                .collection('products')
-                .orderBy(firebase.firestore.FieldPath.documentId())
-                .limit(PAGE_SIZE);
-            if (cursor) {
-                query = query.startAfter(cursor); // prev doc.id
-            }
+            let isOrdered = false;
+            let query = firestore.collection('products');
+
             if (category) {
                 switch (category) {
                     case 'women':
@@ -35,19 +31,70 @@ export default async (req, res) => {
                         break;
                     case 'kids':
                         {
-                            query = query.where('age', '==', 'kids');
+                            query = query.where('age', '==', 'kid');
                         }
                         break;
                 }
             }
-            const snapshot = await query.get();
+
+            if (filters) {
+                const { sort, type } = JSON.parse(filters);
+
+                if (sort) {
+                    switch (sort) {
+                        case 'recommended': {
+                            isOrdered = true;
+                            break;
+                        }
+                        case 'newest': {
+                            // query = query.orderBy('price.value', 'desc');
+                            isOrdered = true;
+                            break;
+                        }
+                        case 'lowest-price': {
+                            query = query.orderBy('price.value', 'asc');
+                            isOrdered = true;
+                            break;
+                        }
+                        case 'highest-price': {
+                            query = query.orderBy('price.value', 'desc');
+                            isOrdered = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (type) {
+                    query = query.where('type', '==', type);
+                }
+            }
+
+            if (!isOrdered) {
+                query = query.orderBy(
+                    firebase.firestore.FieldPath.documentId()
+                );
+            }
+
+            if (cursor) {
+                // debugger;
+                const prev = await firestore
+                    .collection('products')
+                    .doc(cursor)
+                    .get();
+                query = query.startAfter(prev); // prev doc.id
+            }
+
+            const snapshot = await query.limit(PAGE_SIZE).get();
 
             const data = snapshot.docs.map((product) => ({
                 id: product.id,
                 data: product.data()
             }));
 
-            res.json({ data, cursor: data[data.length - 1].id });
+            res.json({
+                data,
+                cursor: data.length ? data[data.length - 1].id : null
+            });
         } else {
             const ids = Array.isArray(id) ? id : [id];
 

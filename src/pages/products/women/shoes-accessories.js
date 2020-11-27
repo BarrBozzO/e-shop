@@ -14,7 +14,9 @@ import {
 import { useUser } from 'features/user';
 
 function ViewAll({ initialProducts }) {
-    const [filters, setFilters] = useState({});
+    const [filters, setFilters] = useState({
+        type: 'shoes&accessories'
+    });
     const { user } = useUser();
     const { data, error, size, setSize, revalidate } = useFetchProducts({
         initialData: [
@@ -23,7 +25,7 @@ function ViewAll({ initialProducts }) {
                 cursor: initialProducts[initialProducts.length - 1].id
             }
         ],
-        category: 'men',
+        category: 'women',
         filters
     });
 
@@ -46,7 +48,7 @@ function ViewAll({ initialProducts }) {
     return (
         <Layout>
             <Head>
-                <title>View All - Shop Men's Clothing online</title>
+                <title>UNDERWEAR & NIGHTWEAR</title>
             </Head>
 
             <BreadCrumbs
@@ -60,8 +62,8 @@ function ViewAll({ initialProducts }) {
                         text: 'Products'
                     },
                     {
-                        url: '/products/men',
-                        text: 'Men'
+                        url: '/products/women',
+                        text: 'Women'
                     },
                     {
                         text: 'View All'
@@ -85,24 +87,22 @@ function ViewAll({ initialProducts }) {
                             textTransform: 'uppercase'
                         }}
                     >
-                        View All
+                        UNDERWEAR & NIGHTWEAR
                     </h1>
-                    <div>
-                        <Filter filters={filters} onChange={setFilters} />
-                        <List products={products} />
-                        <Button
-                            css={{
-                                display: 'block',
-                                width: '300px',
-                                height: '47px',
-                                margin: '0 auto'
-                            }}
-                            disabled={isLoading}
-                            onClick={() => setSize(size + 1)}
-                        >
-                            Load More Products
-                        </Button>
-                    </div>
+                    <Filter filters={filters} onChange={setFilters} />
+                    <List products={products} loading={isLoading} />
+                    <Button
+                        css={{
+                            display: 'block',
+                            width: '300px',
+                            height: '47px',
+                            margin: '0 auto'
+                        }}
+                        disabled={isLoading}
+                        onClick={() => setSize(size + 1)}
+                    >
+                        Load More Products
+                    </Button>
                 </div>
             </div>
         </Layout>
@@ -111,8 +111,8 @@ function ViewAll({ initialProducts }) {
 
 export const getStaticProps = async () => {
     const products = await fetchProducts({
-        age: 'adult',
-        sex: 'male'
+        sex: 'female',
+        age: 'adult'
     });
 
     return {
@@ -135,8 +135,12 @@ const seoLinks = [
                 url: '/products/women/clothes'
             },
             {
+                label: 'Underwear &amp; Nightwear',
+                url: '/products/women/underwear-nightwear'
+            },
+            {
                 label: 'Shoes &amp; Accessories',
-                url: '/shoes-accessories'
+                url: '/products/women/shoes-accessories'
             }
         ]
     },
@@ -150,7 +154,7 @@ const seoLinks = [
                 label: 'Sale'
             },
             {
-                label: 'Socks: B2G1'
+                label: 'Join Loyalty: Get 10% Off'
             },
             {
                 label: 'Student Discount: Get 15% off'
@@ -161,19 +165,16 @@ const seoLinks = [
         label: 'Trending Now',
         links: [
             {
-                label: 'Winter Essentials'
+                label: 'Trend Edit'
             },
             {
                 label: 'The Holiday Shop'
             },
             {
-                label: 'Holiday Knitwear'
+                label: 'Fashion Finds Under $25'
             },
             {
-                label: 'Most Popular Tops & Pants'
-            },
-            {
-                label: 'The Graphics Shop'
+                label: 'Shop by Product'
             }
         ]
     }

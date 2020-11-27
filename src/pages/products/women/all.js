@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Layout from 'components/Layout';
 import BreadCrumbs from 'components/Breadcrumbs';
@@ -14,7 +14,6 @@ import {
 import { useUser } from 'features/user';
 
 function ViewAll({ initialProducts }) {
-    const didMountRef = useRef(false);
     const [filters, setFilters] = useState({});
     const { user } = useUser();
     const { data, error, size, setSize, revalidate } = useFetchProducts({
@@ -29,22 +28,20 @@ function ViewAll({ initialProducts }) {
     });
 
     useEffect(() => {
-        if (didMountRef.current) {
-            revalidate();
-        } else {
-            didMountRef.current = true;
-        }
+        revalidate();
     }, [filters]);
 
     const isLoading = !data && !error;
 
-    const products = useMemo(() => {
-        return data
-            ? data.reduce((allPages, page) => {
-                  return allPages.concat(page.data);
-              }, [])
-            : [];
-    }, [data]);
+    if (error) {
+        console.error(error);
+    }
+
+    const products = data
+        ? data.reduce((allPages, page) => {
+              return allPages.concat(page.data);
+          }, [])
+        : [];
 
     return (
         <Layout>
@@ -137,11 +134,11 @@ const seoLinks = [
             },
             {
                 label: 'Underwear &amp; Nightwear',
-                url: '/underwear-nightwear'
+                url: '/products/women/underwear-nightwear'
             },
             {
                 label: 'Shoes &amp; Accessories',
-                url: '/shoes-accessories'
+                url: '/products/women/shoes-accessories'
             }
         ]
     },

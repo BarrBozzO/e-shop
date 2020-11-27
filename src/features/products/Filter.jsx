@@ -24,8 +24,8 @@ const Sort = ({ onChange }) => {
     const options = [
         { value: 'recommended', label: 'Recommended' },
         { value: 'newest', label: 'Newest' },
-        { value: 'lowest', label: 'Lowest Price' },
-        { value: 'highest', label: 'Highest Price' }
+        { value: 'lowest-price', label: 'Lowest Price' },
+        { value: 'highest-price', label: 'Highest Price' }
     ];
 
     const styles = {

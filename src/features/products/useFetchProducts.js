@@ -6,17 +6,27 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const getKey = (category, filters) => (pageIndex, previousPageData) => {
     if (previousPageData && previousPageData.cursor === null) return null;
 
-    return `/api/products?${stringify({
-        filters,
-        category,
-        cursor: previousPageData?.cursor
-    })}`;
+    const qParams = {};
+
+    if (filters) {
+        qParams.filters = JSON.stringify(filters);
+    }
+
+    if (category) {
+        qParams.category = category;
+    }
+
+    if (previousPageData && previousPageData.cursor) {
+        qParams.cursor = previousPageData.cursor;
+    }
+
+    return `/api/products?${stringify(qParams)}`;
 };
 
 const useFetchProduct = ({ initialData, category, filters }) => {
     return useSWRInfinite(getKey(category, filters), fetcher, {
         initialData,
-        revalidateAll: false
+        revalidateOnFocus: false
     });
 };
 
