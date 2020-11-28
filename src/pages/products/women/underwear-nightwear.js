@@ -112,7 +112,8 @@ function ViewAll({ initialProducts }) {
 export const getStaticProps = async () => {
     const products = await fetchProducts({
         sex: 'female',
-        age: 'adult'
+        age: 'adult',
+        type: 'underwear'
     });
 
     return {

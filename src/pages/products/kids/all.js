@@ -14,7 +14,9 @@ import {
 import { useUser } from 'features/user';
 
 function ViewAll({ initialProducts }) {
-    const [filters, setFilters] = useState({});
+    const [filters, setFilters] = useState({
+        age: 'kid'
+    });
     const { user } = useUser();
     const { data, error, size, setSize, revalidate } = useFetchProducts({
         initialData: [
@@ -129,15 +131,15 @@ const seoLinks = [
             },
             {
                 label: 'Newborn 0-9m',
-                url: '/products/kids/newborn-0m-9m'
+                url: '/products/kids/newborn'
             },
             {
                 label: 'Baby Girls 4m-4Y',
-                url: '/products/kids/girls-4m-4Y'
+                url: '/products/kids/baby-girls'
             },
             {
                 label: 'Baby Boys 4m-4Y',
-                url: '/products/kids/boys-4m-4Y'
+                url: '/products/kids/baby-boys'
             }
         ]
     },

@@ -38,7 +38,7 @@ export default async (req, res) => {
             }
 
             if (filters) {
-                const { sort, type } = JSON.parse(filters);
+                const { sort, type, seo } = JSON.parse(filters);
 
                 if (sort) {
                     switch (sort) {
@@ -66,6 +66,10 @@ export default async (req, res) => {
 
                 if (type) {
                     query = query.where('type', '==', type);
+                }
+
+                if (seo) {
+                    query = query.where('seo', 'array-contains', seo);
                 }
             }
 

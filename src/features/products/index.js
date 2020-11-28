@@ -7,7 +7,7 @@ import useFetchProducts from './useFetchProducts';
 
 const PAGE_SIZE = 20;
 
-export const fetchProducts = async ({ sex, age } = {}) => {
+export const fetchProducts = async ({ sex, age, seo, type } = {}) => {
     let query = firestore
         .collection('products')
         .orderBy(firebase.firestore.FieldPath.documentId())
@@ -19,6 +19,14 @@ export const fetchProducts = async ({ sex, age } = {}) => {
 
     if (age) {
         query = query.where('age', '==', age);
+    }
+
+    if (seo) {
+        query = query.where('seo', 'array-contains', seo);
+    }
+
+    if (type) {
+        query = query.where('type', '==', type);
     }
 
     const snapshot = await query.get();

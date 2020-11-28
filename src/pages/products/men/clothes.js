@@ -13,8 +13,10 @@ import {
 } from 'features/products';
 import { useUser } from 'features/user';
 
-function ViewAll({ initialProducts }) {
-    const [filters, setFilters] = useState({});
+function Clothes({ initialProducts }) {
+    const [filters, setFilters] = useState({
+        type: 'clothes'
+    });
     const { user } = useUser();
     const { data, error, size, setSize, revalidate } = useFetchProducts({
         initialData: [
@@ -46,7 +48,7 @@ function ViewAll({ initialProducts }) {
     return (
         <Layout>
             <Head>
-                <title>View All - Shop Men's Clothing online</title>
+                <title>Clothes</title>
             </Head>
 
             <BreadCrumbs
@@ -85,7 +87,7 @@ function ViewAll({ initialProducts }) {
                             textTransform: 'uppercase'
                         }}
                     >
-                        View All
+                        Clothes
                     </h1>
                     <div>
                         <Filter filters={filters} onChange={setFilters} />
@@ -112,7 +114,8 @@ function ViewAll({ initialProducts }) {
 export const getStaticProps = async () => {
     const products = await fetchProducts({
         age: 'adult',
-        sex: 'male'
+        sex: 'male',
+        type: 'clothes'
     });
 
     return {
@@ -179,4 +182,4 @@ const seoLinks = [
     }
 ];
 
-export default ViewAll;
+export default Clothes;
