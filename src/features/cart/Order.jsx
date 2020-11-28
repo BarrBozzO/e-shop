@@ -9,7 +9,7 @@ function Order({ products }) {
     const productsPrice = products.reduce((total, currentProduct) => {
         let value =
             Number.parseFloat(currentProduct?.data?.price?.value) *
-            currentProduct.__count;
+            currentProduct.__total;
         if (isNaN(value)) {
             throw new Error('Appliaction failed');
         }

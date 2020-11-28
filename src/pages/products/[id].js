@@ -1,27 +1,28 @@
-import React, { useCallback } from 'react'
-import Head from 'next/head'
-import Image from 'next/image'
-import { css } from '@emotion/core'
-import { observer } from 'mobx-react'
-import Layout from 'components/Layout'
-import BreadCrumbs from 'components/Breadcrumbs'
-import Button from 'components/Button'
-import FavoriteButton from 'components/FavoriteButton'
-import { fetchProduct, fetchProducts } from 'features/products'
-import Cart from 'features/cart/Cart'
+import React, { useState } from 'react';
+import Head from 'next/head';
+import Image from 'next/image';
+import { css } from '@emotion/core';
+import { observer } from 'mobx-react';
+import Layout from 'components/Layout';
+import BreadCrumbs from 'components/Breadcrumbs';
+import Button from 'components/Button';
+import FavoriteButton from 'components/FavoriteButton';
+import { fetchProduct, fetchProducts } from 'features/products';
+import Cart from 'features/cart/Cart';
 
 function Product({ data }) {
+    const [size, setSize] = useState(null);
+
     if (!data) {
         // display loading skeleton
-        return null
+        return null;
     }
+    const ImagesContainer = () => {
+        const { images, description } = data;
 
-    const ImagesContainer = useCallback(() => {
-        const { images, description } = data
+        if (!images.length) return null;
 
-        if (!images.length) return null
-
-        const [coverImage, extraImage, ...otherImgs] = images
+        const [coverImage, extraImage, ...otherImgs] = images;
 
         const rowCSS = css`
             display: flex;
@@ -29,7 +30,7 @@ function Product({ data }) {
             flex-wrap: wrap;
             width: 100%;
             position: relative;
-        `
+        `;
 
         const rowItemCSS = css`
             flex: 1 0 calc(50% - 4px);
@@ -41,25 +42,25 @@ function Product({ data }) {
                 flex: 1 0 100%;
                 margin: 2px 0;
             }
-        `
+        `;
 
         const imgWrapperCSS = css`
             width: 100%;
             height: 0;
             padding-bottom: 150%;
-        `
+        `;
 
         const descCSS = css`
             padding: 2rem;
             margin: 2rem 0;
             font-size: 1.2rem;
             background-color: #ffffff;
-        `
+        `;
 
         return (
             <div
                 css={{
-                    width: '70vw',
+                    width: '70vw'
                 }}
             >
                 <div css={rowCSS}>
@@ -101,15 +102,14 @@ function Product({ data }) {
                     </div>
                 )}
             </div>
-        )
-    }, [data.images])
+        );
+    };
 
-    const { name, age, sex, id } = data
+    const { name, age, sex, id } = data;
 
-    const isKid = age === 'kid'
-    const isMale = sex === 'male'
-    const isFemale = !isMale
-    const inCart = Cart.get(id)
+    const isKid = age === 'kid';
+    const isMale = sex === 'male';
+    const isFemale = !isMale;
 
     return (
         <Layout>
@@ -120,17 +120,17 @@ function Product({ data }) {
                 path={[
                     {
                         url: '/',
-                        text: 'Home',
+                        text: 'Home'
                     },
                     {
                         url: '/products',
-                        text: 'Products',
+                        text: 'Products'
                     },
                     {
                         url: `/products/${
                             isKid ? 'kids' : isFemale ? 'women' : 'men'
                         }`,
-                        text: isFemale ? 'women' : 'men',
+                        text: isFemale ? 'women' : 'men'
                     },
                     {
                         url: `/products/${
@@ -140,11 +140,11 @@ function Product({ data }) {
                                 ? 'women'
                                 : 'men'
                         }/all`,
-                        text: 'All',
+                        text: 'All'
                     },
                     {
-                        text: name,
-                    },
+                        text: name
+                    }
                 ]}
             />
             <div
@@ -154,7 +154,7 @@ function Product({ data }) {
                     maxWidth: '1600px',
                     margin: '2rem auto 0',
                     position: 'relative',
-                    padding: '0 2rem',
+                    padding: '0 2rem'
                 }}
             >
                 <ImagesContainer />
@@ -162,7 +162,7 @@ function Product({ data }) {
                     <div
                         css={{
                             position: 'relative',
-                            paddingRight: '2rem',
+                            paddingRight: '2rem'
                         }}
                     >
                         <h1
@@ -170,7 +170,7 @@ function Product({ data }) {
                                 margin: '0 0 1rem',
                                 fontSize: '1.4rem',
                                 padding: '0',
-                                textAlign: 'left',
+                                textAlign: 'left'
                             }}
                         >
                             {data.name}
@@ -178,7 +178,7 @@ function Product({ data }) {
                         <FavoriteButton
                             id={id}
                             styles={{
-                                padding: 0,
+                                padding: 0
                             }}
                         />
                     </div>
@@ -186,24 +186,20 @@ function Product({ data }) {
                         css={{
                             fontWeight: '500',
                             fontSize: '1.2rem',
-                            marginBottom: '1rem',
+                            marginBottom: '1rem'
                         }}
                     >
                         {data.price.currency} {data.price.value}
                     </div>
                     <div>
-                        <Button
-                            onClick={() =>
-                                !inCart ? Cart.add(id) : Cart.remove(id)
-                            }
-                        >
-                            {!inCart ? 'Add' : 'Remove'}
+                        <Button onClick={() => Cart.add(id, 'xl' /* size */)}>
+                            Add
                         </Button>
                     </div>
                 </div>
             </div>
         </Layout>
-    )
+    );
 }
 
 const sidebarCSS = css`
@@ -212,30 +208,30 @@ const sidebarCSS = css`
     width: 30vw;
     height: auto;
     padding: 1rem 2rem;
-`
+`;
 
 export const getStaticProps = async (cxt) => {
-    const product = await fetchProduct(cxt.params.id)
+    const product = await fetchProduct(cxt.params.id);
 
     return {
         props: {
-            data: product,
-        },
-    }
-}
+            data: product
+        }
+    };
+};
 
 export const getStaticPaths = async () => {
     // TODO render most popular - for otherImgs fallback
-    const products = await fetchProducts()
+    const products = await fetchProducts();
 
     return {
         paths: products.map((product) => ({
             params: {
-                id: product.id,
-            },
+                id: product.id
+            }
         })),
-        fallback: true,
-    }
-}
+        fallback: true
+    };
+};
 
-export default observer(Product)
+export default observer(Product);
