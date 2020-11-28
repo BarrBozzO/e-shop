@@ -14,7 +14,10 @@ import {
 import { useUser } from 'features/user';
 
 function ViewAll({ initialProducts }) {
-    const [filters, setFilters] = useState({});
+    const [filters, setFilters] = useState({
+        age: 'kid',
+        seo: 'newborn'
+    });
     const { user } = useUser();
     const { data, error, size, setSize, revalidate } = useFetchProducts({
         initialData: [
@@ -23,7 +26,7 @@ function ViewAll({ initialProducts }) {
                 cursor: initialProducts[initialProducts.length - 1].id
             }
         ],
-        category: 'men',
+        category: 'kids',
         filters
     });
 
@@ -46,7 +49,7 @@ function ViewAll({ initialProducts }) {
     return (
         <Layout>
             <Head>
-                <title>View All - Shop Men's Clothing online</title>
+                <title>View All - Shop Kid's Clothing online</title>
             </Head>
 
             <BreadCrumbs
@@ -60,8 +63,8 @@ function ViewAll({ initialProducts }) {
                         text: 'Products'
                     },
                     {
-                        url: '/products/men',
-                        text: 'Men'
+                        url: '/products/kids',
+                        text: 'Kids'
                     },
                     {
                         text: 'View All'
@@ -87,22 +90,20 @@ function ViewAll({ initialProducts }) {
                     >
                         View All
                     </h1>
-                    <div>
-                        <Filter filters={filters} onChange={setFilters} />
-                        <List products={products} />
-                        <Button
-                            css={{
-                                display: 'block',
-                                width: '300px',
-                                height: '47px',
-                                margin: '0 auto'
-                            }}
-                            disabled={isLoading}
-                            onClick={() => setSize(size + 1)}
-                        >
-                            Load More Products
-                        </Button>
-                    </div>
+                    <Filter filters={filters} onChange={setFilters} />
+                    <List products={products} loading={isLoading} />
+                    <Button
+                        css={{
+                            display: 'block',
+                            width: '300px',
+                            height: '47px',
+                            margin: '0 auto'
+                        }}
+                        disabled={isLoading}
+                        onClick={() => setSize(size + 1)}
+                    >
+                        Load More Products
+                    </Button>
                 </div>
             </div>
         </Layout>
@@ -111,8 +112,8 @@ function ViewAll({ initialProducts }) {
 
 export const getStaticProps = async () => {
     const products = await fetchProducts({
-        age: 'adult',
-        sex: 'male'
+        age: 'kid',
+        seo: 'newborn'
     });
 
     return {
@@ -124,24 +125,28 @@ export const getStaticProps = async () => {
 
 const seoLinks = [
     {
-        label: 'New Arrivals',
+        label: 'Shop by Product',
         links: [
             {
                 label: 'View All',
-                url: '/products/men/all'
+                url: '/products/kids/all'
             },
             {
-                label: 'Clothes',
-                url: '/products/men/clothes'
+                label: 'Newborn 0-9m',
+                url: '/products/kids/newborn'
             },
             {
-                label: 'Shoes &amp; Accessories',
-                url: '/products/men/shoes-accessories'
+                label: 'Baby Girls 4m-4Y',
+                url: '/products/kids/baby-girls'
+            },
+            {
+                label: 'Baby Boys 4m-4Y',
+                url: '/products/kids/baby-boys'
             }
         ]
     },
     {
-        label: 'Offers',
+        label: 'Offers & Deals',
         links: [
             {
                 label: 'Up to 60% off'
@@ -150,30 +155,10 @@ const seoLinks = [
                 label: 'Sale'
             },
             {
-                label: 'Socks: B2G1'
+                label: 'BESTSELLERS FROM $9.99'
             },
             {
-                label: 'Student Discount: Get 15% off'
-            }
-        ]
-    },
-    {
-        label: 'Trending Now',
-        links: [
-            {
-                label: 'Winter Essentials'
-            },
-            {
-                label: 'The Holiday Shop'
-            },
-            {
-                label: 'Holiday Knitwear'
-            },
-            {
-                label: 'Most Popular Tops & Pants'
-            },
-            {
-                label: 'The Graphics Shop'
+                label: 'MULTIPACK MAGIC FROM $19.99'
             }
         ]
     }

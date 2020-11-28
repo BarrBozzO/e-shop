@@ -14,7 +14,9 @@ import {
 import { useUser } from 'features/user';
 
 function ViewAll({ initialProducts }) {
-    const [filters, setFilters] = useState({});
+    const [filters, setFilters] = useState({
+        type: 'shoes&accessories'
+    });
     const { user } = useUser();
     const { data, error, size, setSize, revalidate } = useFetchProducts({
         initialData: [
@@ -112,7 +114,8 @@ function ViewAll({ initialProducts }) {
 export const getStaticProps = async () => {
     const products = await fetchProducts({
         age: 'adult',
-        sex: 'male'
+        sex: 'male',
+        type: 'shoes&accessories'
     });
 
     return {
