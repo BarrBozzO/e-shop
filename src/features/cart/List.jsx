@@ -80,7 +80,7 @@ List.CountControl = ({ count, onAdd, onDelete }) => {
     );
 };
 
-List.Item = ({ product: { id, data, __total }, onDelete, onAdd }) => {
+List.Item = ({ product: { id, data, __total, __size }, onDelete, onAdd }) => {
     const { images, price, name } = data;
     const image = images[1] ? images[1] : images[0];
 
@@ -141,6 +141,16 @@ List.Item = ({ product: { id, data, __total }, onDelete, onAdd }) => {
                     }}
                 >
                     $ {price.value}
+                </span>
+                <span
+                    css={{
+                        display: 'inline-block',
+                        width: '100%',
+                        marginTop: '0.4rem',
+                        fontSize: '1rem'
+                    }}
+                >
+                    size: {__size}
                 </span>
                 <div
                     css={{

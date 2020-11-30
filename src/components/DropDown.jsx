@@ -8,7 +8,8 @@ function DropDown({
     onChange,
     isSearchable = false,
     placeholder = '',
-    defaultValue
+    defaultValue,
+    value
 }) {
     const handleChange = (value) => {
         onChange(value);
@@ -18,6 +19,7 @@ function DropDown({
         <div>
             <Select
                 onChange={handleChange}
+                value={value}
                 styles={styles}
                 options={options}
                 label={label}

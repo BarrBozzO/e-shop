@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { css } from '@emotion/core';
@@ -6,17 +6,25 @@ import { observer } from 'mobx-react';
 import Layout from 'components/Layout';
 import BreadCrumbs from 'components/Breadcrumbs';
 import Button from 'components/Button';
+import DropDown from 'components/DropDown';
 import FavoriteButton from 'components/FavoriteButton';
 import { fetchProduct, fetchProducts } from 'features/products';
 import Cart from 'features/cart/Cart';
 
 function Product({ data }) {
-    const [size, setSize] = useState(null);
+    const [size, setSize] = useState(); // set null while ssr
+
+    useEffect(() => {
+        if (data) {
+            setSize(SIZE_OPTIONS[data.type][0]);
+        }
+    }, [data]);
 
     if (!data) {
         // display loading skeleton
         return null;
     }
+
     const ImagesContainer = () => {
         const { images, description } = data;
 
@@ -191,8 +199,28 @@ function Product({ data }) {
                     >
                         {data.price.currency} {data.price.value}
                     </div>
+                    <div
+                        css={{
+                            marginBottom: '2rem'
+                        }}
+                    >
+                        <DropDown
+                            styles={{
+                                option: (provided, state) => ({
+                                    ...provided,
+                                    backgroundColor: state.isSelected
+                                        ? '#222'
+                                        : '#fff',
+                                    color: state.isSelected ? '#fff' : '#222'
+                                })
+                            }}
+                            value={size}
+                            options={SIZE_OPTIONS[data.type]}
+                            onChange={setSize}
+                        />
+                    </div>
                     <div>
-                        <Button onClick={() => Cart.add(id, 'xl' /* size */)}>
+                        <Button onClick={() => Cart.add(id, size.value)}>
                             Add
                         </Button>
                     </div>
@@ -201,6 +229,75 @@ function Product({ data }) {
         </Layout>
     );
 }
+
+const SIZE_OPTIONS = {
+    clothes: [
+        {
+            value: 's',
+            label: 'S - small'
+        },
+        {
+            value: 'm',
+            label: 'M - medium'
+        },
+        {
+            value: 'l',
+            label: 'L - large'
+        },
+        {
+            value: 'xl',
+            label: 'XL - extra large'
+        },
+        {
+            value: 'xxl',
+            label: 'XXL - extra-extra large'
+        }
+    ],
+    underwear: [
+        {
+            value: 's',
+            label: 'S - small'
+        },
+        {
+            value: 'm',
+            label: 'M - medium'
+        },
+        {
+            value: 'l',
+            label: 'L - large'
+        },
+        {
+            value: 'xl',
+            label: 'XL - extra large'
+        },
+        {
+            value: 'xxl',
+            label: 'XXL - extra-extra large'
+        }
+    ],
+    'shoes&accessories': [
+        {
+            value: 's',
+            label: 'S - small'
+        },
+        {
+            value: 'm',
+            label: 'M - medium'
+        },
+        {
+            value: 'l',
+            label: 'L - large'
+        },
+        {
+            value: 'xl',
+            label: 'XL - extra large'
+        },
+        {
+            value: 'xxl',
+            label: 'XXL - extra-extra large'
+        }
+    ]
+};
 
 const sidebarCSS = css`
     position: sticky;

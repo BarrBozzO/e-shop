@@ -19,7 +19,10 @@ const CartPage = observer(() => {
     // fetch products data
     const { data, error } = useSWR(
         hasProductsInCart
-            ? `/api/products?${stringify(Cart.getProductIds())}`
+            ? `/api/products?${stringify(
+                  { id: Cart.getProductIds() },
+                  { indices: false }
+              )}`
             : null,
         fetcher
     );
