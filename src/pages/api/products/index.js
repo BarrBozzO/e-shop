@@ -112,7 +112,7 @@ export default async (req, res) => {
                 data: product.data()
             }));
 
-            res.json(data);
+            res.json({ data });
         }
     } catch (error) {
         res.json({ error: error.toString() });
