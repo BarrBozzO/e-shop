@@ -45,12 +45,34 @@ List.Item = ({ product: { id, data } }) => {
             >
                 <Link href={`/products/${id}`}>
                     <a css={imageContainerCSS}>
+                        <div
+                            css={{
+                                zIndex: '1',
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)'
+                            }}
+                        >
+                            <Preloader
+                                cssParams={{
+                                    fill: '#e50010',
+                                    width: '24px',
+                                    height: '24px'
+                                }}
+                                size={24}
+                            />
+                        </div>
                         <Image
-                            css={{ zIndex: 1 }}
+                            css={{ zIndex: 2 }}
                             layout="fill"
                             src={data.images[0].url}
                         />
-                        <Image layout="fill" src={data.images[1].url} />
+                        <Image
+                            css={{ zIndex: 1 }}
+                            layout="fill"
+                            src={data.images[1].url}
+                        />
                     </a>
                 </Link>
                 <FavoriteButton id={id} />
