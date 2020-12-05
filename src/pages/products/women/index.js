@@ -1,6 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import Layout from 'components/Layout';
 import BreadCrumbs from 'components/Breadcrumbs';
 import Button from 'components/Button';
@@ -63,20 +64,13 @@ function WomenProducts() {
                             <div
                                 css={{
                                     position: 'absolute',
+                                    textAlign: 'center',
                                     bottom: '1rem',
                                     left: '50%',
                                     transform: 'translate(-50%)',
                                     zIndex: '2'
                                 }}
                             >
-                                <p
-                                    css={{
-                                        color: '#fff',
-                                        textAlign: 'center'
-                                    }}
-                                >
-                                    On my wish list
-                                </p>
                                 <h3
                                     css={{
                                         fontSize: '3rem',
@@ -84,20 +78,31 @@ function WomenProducts() {
                                         marginBottom: '1rem'
                                     }}
                                 >
-                                    Sequins made for the future
+                                    The Holiday Shop
                                 </h3>
-                                <Button
+                                <p
                                     css={{
-                                        display: 'block',
-                                        width: '200px',
-                                        borderColor: '#fff',
-                                        backgroundColor: '#fff',
-                                        color: '#222',
-                                        margin: '1rem auto'
+                                        color: '#fff',
+                                        textAlign: 'center'
                                     }}
                                 >
-                                    Shop Now
-                                </Button>
+                                    Gift for her
+                                </p>
+                                <Link href="/products/women/holiday">
+                                    <a
+                                        css={{
+                                            display: 'block',
+                                            width: '200px',
+                                            borderColor: '#fff',
+                                            backgroundColor: '#fff',
+                                            color: '#222',
+                                            padding: '1rem 0.5rem',
+                                            margin: '1rem auto'
+                                        }}
+                                    >
+                                        Shop Now
+                                    </a>
+                                </Link>
                             </div>
                         </div>
                     </section>

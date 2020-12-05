@@ -1,9 +1,9 @@
 import React from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import Layout from 'components/Layout';
 import BreadCrumbs from 'components/Breadcrumbs';
-import Button from 'components/Button';
 import { Nav } from 'features/products';
 
 function KidsHome() {
@@ -66,7 +66,8 @@ function KidsHome() {
                                     bottom: '1rem',
                                     left: '50%',
                                     transform: 'translate(-50%)',
-                                    zIndex: '2'
+                                    zIndex: '2',
+                                    textAlign: 'center'
                                 }}
                             >
                                 <h3
@@ -87,18 +88,21 @@ function KidsHome() {
                                     Your one-stop shop for perfect presents &
                                     seasonal must-haves
                                 </p>
-                                <Button
-                                    css={{
-                                        display: 'block',
-                                        width: '200px',
-                                        borderColor: '#fff',
-                                        backgroundColor: '#fff',
-                                        color: '#222',
-                                        margin: '1rem auto'
-                                    }}
-                                >
-                                    Shop Now
-                                </Button>
+                                <Link href="/products/kids/holiday">
+                                    <a
+                                        css={{
+                                            display: 'block',
+                                            width: '200px',
+                                            borderColor: '#fff',
+                                            backgroundColor: '#fff',
+                                            color: '#222',
+                                            padding: '1rem 0.5rem',
+                                            margin: '1rem auto'
+                                        }}
+                                    >
+                                        Shop Now
+                                    </a>
+                                </Link>
                             </div>
                         </div>
                     </section>
