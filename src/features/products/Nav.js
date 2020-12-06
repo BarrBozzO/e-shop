@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import Link from 'next/link';
+import NavLink from 'components/NavLink';
 
 function Nav({ links }) {
     return (
@@ -37,24 +37,28 @@ function Nav({ links }) {
                                         return (
                                             <li>
                                                 {link.url ? (
-                                                    <Link href={link.url}>
-                                                        <a
-                                                            css={{
-                                                                '&:hover': {
-                                                                    color:
-                                                                        '#e50010',
-                                                                    textDecoration:
-                                                                        'underline'
-                                                                },
-                                                                lineHeight:
-                                                                    '1.6rem'
-                                                            }}
+                                                    <NavLink
+                                                        href={link.url}
+                                                        linkCSS={{
+                                                            '&:hover': {
+                                                                color:
+                                                                    '#e50010',
+                                                                textDecoration:
+                                                                    'underline'
+                                                            },
+                                                            lineHeight: '1.6rem'
+                                                        }}
+                                                        activeCSS={{
+                                                            color: '#e50010'
+                                                        }}
+                                                    >
+                                                        <span
                                                             dangerouslySetInnerHTML={{
                                                                 __html:
                                                                     link.label
                                                             }}
                                                         />
-                                                    </Link>
+                                                    </NavLink>
                                                 ) : (
                                                     <Fragment>
                                                         <span
