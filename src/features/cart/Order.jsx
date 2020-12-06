@@ -4,7 +4,7 @@ import { css } from '@emotion/core';
 import Button from 'components/Button';
 import { useRouter } from 'next/router';
 
-const SHIPPING_PRICE = 100;
+const SHIPPING_PRICE = 3.99;
 
 function Order({ products }) {
     const router = useRouter();
