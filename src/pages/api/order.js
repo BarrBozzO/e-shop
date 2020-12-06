@@ -4,16 +4,44 @@ import firebase from 'firebase';
 export default async (req, res) => {
     try {
         const { body } = req;
-        // debugger;
+        const { details, products } = body;
 
-        // check if logged in
-        const { details } = body;
+        if (!details) throw new Error('Details required!');
+        else {
+            if (!details.email) throw new Error('Email required!');
+            if (!details.first) throw new Error('First Name required!');
+            if (!details.last) throw new Error('Last Name required!');
+            if (!details.zip) throw new Error('Zip required!');
+            if (!details.state) throw new Error('State required!');
+            if (!details.city) throw new Error('City required!');
+            if (!details.address) throw new Error('Address required!');
+            if (!details.address) throw new Error('Address required!');
+        }
 
-        if (!details) throw new Error('');
+        if (!Array.isArray(products) || products.length === 0)
+            throw new Error('Products required!');
+        else {
+            products.forEach((p, index) => {
+                if (!p.id)
+                    throw new Error(
+                        `products[${index}] - Product id required!`
+                    );
+                if (!p.count)
+                    throw new Error(
+                        `products[${index}] - Product count required!`
+                    );
+                if (!p.size)
+                    throw new Error(
+                        `products[${index}] - Product size required!`
+                    );
+            });
+        }
 
         const ordersRef = firestore.collection('orders');
         const created = await ordersRef.add({
-            details
+            email: details.email,
+            details,
+            products
         });
 
         res.json({

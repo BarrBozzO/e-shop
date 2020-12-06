@@ -8,7 +8,7 @@ import Icon from 'components/Icon';
 import { useUser, AuthDialog } from 'features/user';
 import Cart from 'features/cart/Cart';
 
-function Header() {
+function Header({ minimal, back }) {
     const [displayAuth, setDisplayAuth] = useState(false);
     const { user, logout } = useUser();
     const router = useRouter();
@@ -42,26 +42,32 @@ function Header() {
                         onClick={() => setDisplayAuth(true)}
                     />
                 )}
-                <ActionButton
-                    key="heart"
-                    css={btnCSS}
-                    icon={{
-                        name: 'heart',
-                        size: 20
-                    }}
-                    label="Favorites"
-                    onClick={handleFavorites}
-                />
-                <ActionButton
-                    key="cart"
-                    css={btnCSS}
-                    icon={{
-                        name: 'cart',
-                        size: 20
-                    }}
-                    label={`Shopping Cart${cartCount ? ` (${cartCount})` : ''}`}
-                    onClick={handleCart}
-                />
+                {!minimal && (
+                    <Fragment>
+                        <ActionButton
+                            key="heart"
+                            css={btnCSS}
+                            icon={{
+                                name: 'heart',
+                                size: 20
+                            }}
+                            label="Favorites"
+                            onClick={handleFavorites}
+                        />
+                        <ActionButton
+                            key="cart"
+                            css={btnCSS}
+                            icon={{
+                                name: 'cart',
+                                size: 20
+                            }}
+                            label={`Shopping Cart${
+                                cartCount ? ` (${cartCount})` : ''
+                            }`}
+                            onClick={handleCart}
+                        />
+                    </Fragment>
+                )}
             </div>
         );
     };
@@ -82,7 +88,19 @@ function Header() {
                         position: 'relative'
                     }}
                 >
-                    {/* <div></div> */}
+                    {back && (
+                        <Link href={back.url}>
+                            <a
+                                css={{
+                                    display: 'inline-flex',
+                                    marginRight: 'auto'
+                                }}
+                            >
+                                <span>←</span>
+                                <span>{back.label}</span>
+                            </a>
+                        </Link>
+                    )}
                     <Link href={'/'}>
                         <a>
                             <Icon
@@ -100,26 +118,28 @@ function Header() {
                     </Link>
                     <Actions />
                 </div>
-                <nav
-                    css={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        marginTop: '3rem'
-                    }}
-                >
-                    <Link href="/products/women">
-                        <a css={linkStyles}>Women</a>
-                    </Link>
-                    <Link href="/products/men">
-                        <a css={linkStyles}>Men</a>
-                    </Link>
-                    <Link href="/products/kids">
-                        <a css={linkStyles}>Kids</a>
-                    </Link>
-                    <Link href="/sale">
-                        <a css={linkStyles}>Sale</a>
-                    </Link>
-                </nav>
+                {!minimal && (
+                    <nav
+                        css={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            marginTop: '3rem'
+                        }}
+                    >
+                        <Link href="/products/women">
+                            <a css={linkStyles}>Women</a>
+                        </Link>
+                        <Link href="/products/men">
+                            <a css={linkStyles}>Men</a>
+                        </Link>
+                        <Link href="/products/kids">
+                            <a css={linkStyles}>Kids</a>
+                        </Link>
+                        <Link href="/sale">
+                            <a css={linkStyles}>Sale</a>
+                        </Link>
+                    </nav>
+                )}
             </header>
             <AuthDialog
                 isOpen={displayAuth}

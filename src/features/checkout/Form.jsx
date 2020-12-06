@@ -8,9 +8,8 @@ import Preloader from 'components/Preloader';
 import { Cart } from 'features/cart';
 import * as Yup from 'yup';
 
-function Form() {
+function Form({ products, loading, onComplete }) {
     const { user } = useUser();
-    const [done, setDone] = useState(false);
 
     const formik = useFormik({
         initialValues: {
@@ -23,17 +22,26 @@ function Form() {
             zip: ''
         },
         onSubmit: async (values, actions) => {
-            const success = await fetch('/api/order', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    details: values
-                })
-            });
-            Cart.reset();
-            setDone(true);
+            try {
+                await fetch('/api/order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        details: values,
+                        products: products.map((product) => ({
+                            id: product.id,
+                            count: product.__total,
+                            size: product.__size
+                        }))
+                    })
+                });
+                Cart.reset();
+                onComplete();
+            } catch (error) {
+                console.error(error);
+            }
         },
         validationSchema: Yup.object().shape({
             first: Yup.string().required('Please enter your first name.'),
@@ -49,39 +57,6 @@ function Form() {
                 : undefined
         })
     });
-
-    if (done) {
-        return (
-            <div
-                css={{
-                    textAlign: 'center',
-                    fontSize: '2rem'
-                }}
-            >
-                <div
-                    css={{
-                        fontSize: '3rem',
-                        marginBottom: '2rem',
-                        fontWeight: '700'
-                    }}
-                >
-                    Congratulations!
-                </div>
-                <div>Wait for delivery</div>
-                <div>Thanks ❤️</div>
-                <Link href={'/'}>
-                    <a
-                        css={{
-                            margin: '2rem 0',
-                            fontSize: '1rem'
-                        }}
-                    >
-                        Back to shopping →
-                    </a>
-                </Link>
-            </div>
-        );
-    }
 
     return (
         <div>
@@ -118,6 +93,7 @@ function Form() {
                             >
                                 <label css={labelCSS} htmlFor="email">
                                     Email
+                                    <Asterisk />
                                 </label>
                                 <input
                                     onChange={formik.handleChange}
@@ -142,6 +118,7 @@ function Form() {
                     >
                         <label css={labelCSS} htmlFor="first">
                             First Name
+                            <Asterisk />
                         </label>
                         <input
                             onChange={formik.handleChange}
@@ -161,6 +138,7 @@ function Form() {
                     >
                         <label css={labelCSS} htmlFor="last">
                             Last Name
+                            <Asterisk />
                         </label>
                         <input
                             onChange={formik.handleChange}
@@ -182,6 +160,7 @@ function Form() {
                     >
                         <label css={labelCSS} htmlFor="address">
                             Address
+                            <Asterisk />
                         </label>
                         <input
                             onChange={formik.handleChange}
@@ -201,6 +180,7 @@ function Form() {
                     >
                         <label css={labelCSS} htmlFor="city">
                             City
+                            <Asterisk />
                         </label>
                         <input
                             onChange={formik.handleChange}
@@ -222,6 +202,7 @@ function Form() {
                     >
                         <label css={labelCSS} htmlFor="state">
                             State
+                            <Asterisk />
                         </label>
                         <input
                             onChange={formik.handleChange}
@@ -241,6 +222,7 @@ function Form() {
                     >
                         <label css={labelCSS} htmlFor="zip">
                             ZIP
+                            <Asterisk />
                         </label>
                         <input
                             onChange={formik.handleChange}
@@ -251,21 +233,58 @@ function Form() {
                         {formik.errors.zip && <span>{formik.errors.zip}</span>}
                     </div>
                 </fieldset>
-                <Button
-                    css={{
-                        display: 'block',
-                        width: '100%',
-                        marginTop: '1rem'
-                    }}
-                    type="submit"
-                    disabled={formik.isSubmitting}
+                <div
+                    css={css`
+                        width: 600px;
+                    `}
                 >
-                    {formik.isSubmitting && <Preloader />} Complete Purchase
-                </Button>
+                    <p>
+                        With 'Complete Purchase' you accept H&M's{' '}
+                        <Link href={'/terms'}>
+                            <a
+                                css={{
+                                    textDecoration: 'underline'
+                                }}
+                            >
+                                Terms of Use
+                            </a>
+                        </Link>
+                    </p>
+                    <p>
+                        We will process your personal data in accordance with
+                        H&M's{' '}
+                        <Link href={'/privacy'}>
+                            <a
+                                css={{
+                                    textDecoration: 'underline'
+                                }}
+                            >
+                                Privacy Notice
+                            </a>
+                        </Link>
+                        .
+                    </p>
+                    <Button
+                        css={{
+                            display: 'block',
+                            width: '200px',
+                            marginTop: '1rem'
+                        }}
+                        type="submit"
+                        disabled={formik.isSubmitting || loading}
+                    >
+                        {(formik.isSubmitting || loading) && <Preloader />}{' '}
+                        Complete Purchase
+                    </Button>
+                </div>
             </form>
         </div>
     );
 }
+
+const Asterisk = () => (
+    <span css={{ color: 'red', marginLeft: '0.2rem' }}>*</span>
+);
 
 const fieldsetCSS = css`
     display: flex;
@@ -293,8 +312,11 @@ const labelCSS = css`
 `;
 
 const fieldCSS = css`
-    flex: 1 0 auto;
-    margin: 0 0.8rem;
+    flex: 0 0 50%;
+
+    &:first-child {
+        margin-right: 0.8rem;
+    }
 `;
 
 const invalidFieldCSS = css`

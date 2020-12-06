@@ -1,14 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { css } from '@emotion/core';
-import Button from 'components/Button';
-import { useRouter } from 'next/router';
 
 const SHIPPING_PRICE = 3.99;
 
 function Order({ products }) {
-    const router = useRouter();
-
     const productsPrice = products.reduce((total, currentProduct) => {
         let value =
             Number.parseFloat(currentProduct?.data?.price?.value) *
@@ -23,15 +19,11 @@ function Order({ products }) {
         return (SHIPPING_PRICE + productsPrice).toFixed(2);
     };
 
-    const handleCheckout = () => {
-        router.push('/checkout');
-    };
-
     return (
         <section
             css={{
                 flex: '0 0 auto',
-                maxWidth: '360px'
+                minWidth: '360px'
             }}
         >
             <div
@@ -40,7 +32,7 @@ function Order({ products }) {
                     padding: '1rem'
                 }}
             >
-                <h2 css={titleCSS}>Make order</h2>
+                <h2 css={titleCSS}>Your order</h2>
                 <div>
                     <div css={orderCSS}>
                         <div
@@ -94,48 +86,6 @@ function Order({ products }) {
                         </div>
                     </div>
                 </div>
-                <Button
-                    disabled={products.length === 0}
-                    onClick={handleCheckout}
-                >
-                    Continue to checkout
-                </Button>
-                <p css={discountCSS}>
-                    Become a member to get early access to Black Friday + a 10%
-                    off welcome offer!
-                </p>
-                <p css={taxCSS}>
-                    The estimated tax will be confirmed once you added your
-                    shipping address in checkout. 30-day returns. Read more
-                    about our{' '}
-                    <Link href="/returns-and-refund">
-                        <a
-                            css={{
-                                textDecoration: 'underline'
-                            }}
-                        >
-                            return and refund policy
-                        </a>
-                    </Link>
-                    .
-                </p>
-            </div>
-            <div css={shippingDescriptionCSS}>
-                Shipping Update: All orders will take 12-15 business days to be
-                delivered. Please take this into consideration before placing
-                your order. We appreciate your patience and understanding during
-                this time.
-                <h3>Shipping & Returns</h3>
-                Please ensure you have entered the correct shipping address, as
-                this cannot be changed after you have placed an order. Please
-                note, an order cannot be cancelled or modified once it has been
-                placed.
-                <h3>SHIPPING OPTIONS:</h3>
-                FREE STANDARD SHIPPING OVER $40 $3.99 below $40 (12-15 business
-                days)
-                <h3>RETURNS</h3>
-                Free in-store returns Return with USPS ($5.99) H&M HOME items
-                purchased online must be returned by mail
             </div>
         </section>
     );
@@ -163,21 +113,6 @@ const orderCSS = css`
     padding-bottom: 0.4rem;
 `;
 
-const taxCSS = css`
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: #777;
-    margin-bottom: 0;
-`;
-
-const discountCSS = css`
-    font-size: 0.8rem;
-    text-align: center;
-    font-weight: 700;
-    padding: 0 2rem;
-    color: rgb(214, 0, 28);
-`;
-
 const totalCSS = css`
     display: flex;
     align-items: center;
@@ -188,12 +123,6 @@ const totalCSS = css`
     padding-bottom: 1.4rem;
     font-weight: 700;
     font-size: 1.2rem;
-`;
-
-const shippingDescriptionCSS = css`
-    background-color: #fff;
-    padding: 1rem;
-    margin-top: 2rem;
 `;
 
 export default Order;
