@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 import Head from 'next/head';
+import useSWR from 'swr';
+import { stringify } from 'qs';
+import { observer } from 'mobx-react';
 import Layout from 'components/Layout';
 import Breadcrumbs from 'components/Breadcrumbs';
 import Preloader from 'components/Preloader';
 import Order from 'features/cart/Order';
 import List from 'features/cart/List';
-import useSWR from 'swr';
 import Cart from 'features/cart/Cart';
-import { stringify } from 'qs';
-import { observer } from 'mobx-react';
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -43,7 +43,21 @@ const CartPage = observer(() => {
     const renderProducts = () => {
         if (error) return null;
 
-        if (!products.length) return 'No Products';
+        if (!products.length)
+            return (
+                <div
+                    css={{
+                        textTransform: 'uppercase',
+                        fontSize: '2rem',
+                        fontWeight: '700',
+                        color: '#222',
+                        padding: '2rem',
+                        backgroundColor: '#ffffff'
+                    }}
+                >
+                    Your Shopping Cart is empty!
+                </div>
+            );
 
         return <List products={products} />;
     };
@@ -51,7 +65,7 @@ const CartPage = observer(() => {
     return (
         <Layout>
             <Head>
-                <title>Cart</title>
+                <title>Shopping Cart</title>
             </Head>
             <Breadcrumbs
                 path={[
@@ -64,7 +78,15 @@ const CartPage = observer(() => {
                     }
                 ]}
             />
-            <h1>Shopping Cart</h1>
+            <h1
+                css={{
+                    textAlign: 'center',
+                    margin: '2rem',
+                    fontSize: '3rem'
+                }}
+            >
+                Shopping Cart
+            </h1>
             <div
                 css={{
                     display: 'flex',

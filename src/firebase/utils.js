@@ -1,52 +1,52 @@
 export const createUserDocument = async (user, additionalData) => {
-  if (!user) return;
+    if (!user) return;
 
-  const userRef = firestore.doc(`users/${user.uid}`);
-  const userSnapshot = await userRef.get();
+    const userRef = firestore.doc(`users/${user.uid}`);
+    const userSnapshot = await userRef.get();
 
-  if (!userSnapshot.exists) {
-    const { displayName, photoURL, email } = user;
-    const createdAt = new Date(); // ? do we have that data from user object
+    if (!userSnapshot.exists) {
+        const { displayName, photoURL, email } = user;
+        const createdAt = new Date(); // ? do we have that data from user object
 
-    try {
-      await userRef.set({
-        displayName,
-        photoURL,
-        email,
-        createdAt,
-        ...additionalData,
-      });
-    } catch (error) {
-      console.error(error);
+        try {
+            await userRef.set({
+                displayName,
+                photoURL,
+                email,
+                createdAt,
+                ...additionalData
+            });
+        } catch (error) {
+            console.error(error);
+        }
     }
-  }
 
-  return getUserDocument(user.uid);
+    return getUserDocument(user.uid);
 };
 
 export const getUserDocument = async (uid) => {
-  if (!uid) return null;
+    if (!uid) return null;
 
-  try {
-    const user = await firestore.doc(`users/${uid}`).get();
+    try {
+        const user = await firestore.doc(`users/${uid}`).get();
 
-    return {
-      uid,
-      ...user.data(),
-    };
-  } catch (error) {
-    console.error(error);
-  }
+        return {
+            uid,
+            ...user.data()
+        };
+    } catch (error) {
+        console.error(error);
+    }
 };
 
 export const mapUserAuthData = async (user) => {
-  const { uid, email } = user;
-  const token = await user.getIdToken(true);
-  return {
-    id: uid,
-    email,
-    token,
-  };
+    const { uid, email } = user;
+    const token = await user.getIdToken(true);
+    return {
+        id: uid,
+        email,
+        token
+    };
 };
 
 // export const getDocs = async (collection) => {
