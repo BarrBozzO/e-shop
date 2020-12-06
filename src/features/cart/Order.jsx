@@ -2,10 +2,13 @@ import React from 'react';
 import Link from 'next/link';
 import { css } from '@emotion/core';
 import Button from 'components/Button';
+import { useRouter } from 'next/router';
 
 const SHIPPING_PRICE = 100;
 
 function Order({ products }) {
+    const router = useRouter();
+
     const productsPrice = products.reduce((total, currentProduct) => {
         let value =
             Number.parseFloat(currentProduct?.data?.price?.value) *
@@ -18,6 +21,10 @@ function Order({ products }) {
 
     const getTotal = () => {
         return (SHIPPING_PRICE + productsPrice).toFixed(2);
+    };
+
+    const handleCheckout = () => {
+        router.push('/checkout');
     };
 
     return (
@@ -87,7 +94,7 @@ function Order({ products }) {
                         </div>
                     </div>
                 </div>
-                <Button>Continue to checkout</Button>
+                <Button onClick={handleCheckout}>Continue to checkout</Button>
                 <p css={discountCSS}>
                     Become a member to get early access to Black Friday + a 10%
                     off welcome offer!

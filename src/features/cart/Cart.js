@@ -51,6 +51,12 @@ class Cart {
         this._persist();
     }
 
+    @action
+    reset() {
+        this.data.clear();
+        this._persist();
+    }
+
     @computed
     get(productId, size) {
         if (!productId) {
