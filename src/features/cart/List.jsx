@@ -30,17 +30,22 @@ List.CountControl = ({ count, onAdd, onDelete }) => {
         <div
             css={css`
                 display: inline-flex;
+                width: 80px;
+                justify-content: center;
                 vertical-align: middle;
                 align-items: center;
-                height: 40px;
+                background-color: #ffffff;
+                border: 1px solid #d0d0d0;
+                ${count <= 1 ? 'padding-left: 30px' : ''}
             `}
         >
             {count > 1 && (
                 <ActionButton
                     css={{
-                        fontSize: '2rem',
+                        flex: '1 0 auto',
+                        height: '2rem',
+                        fontSize: '1.4rem',
                         lineHeight: '2rem',
-                        backgroundColor: '#e8e8e8',
 
                         '&:hover': {
                             color: '#e50010'
@@ -53,17 +58,30 @@ List.CountControl = ({ count, onAdd, onDelete }) => {
                         }
                     }}
                     label="-"
+                    disabled={count <= 1}
                     onClick={onDelete}
                 />
             )}
-            <span css={{ fontWeight: '700', fontSize: '1.4rem' }}>{count}</span>
+
+            <span
+                css={{
+                    flex: '0 0 20px',
+                    textAlign: 'center',
+                    fontWeight: '400',
+                    fontSize: '1.2rem',
+                    lineHeight: '2rem'
+                }}
+            >
+                {count}
+            </span>
             <ActionButton
                 label="+"
                 onClick={onAdd}
                 css={{
-                    fontSize: '2rem',
+                    flex: '1 0 auto',
+                    height: '2rem',
+                    fontSize: '1.4rem',
                     lineHeight: '2rem',
-                    backgroundColor: '#e8e8e8',
 
                     '&:hover': {
                         color: '#e50010'
@@ -124,8 +142,7 @@ List.Item = ({ product: { id, data, __total, __size }, onDelete, onAdd }) => {
                     <a
                         css={{
                             display: 'inline-block',
-                            marginTop: '1rem',
-                            fontSize: '1.2rem',
+                            fontSize: '1.4rem',
                             cursor: 'pointer'
                         }}
                     >
@@ -137,7 +154,7 @@ List.Item = ({ product: { id, data, __total, __size }, onDelete, onAdd }) => {
                         display: 'inline-block',
                         width: '100%',
                         marginTop: '0.4rem',
-                        fontSize: '1rem'
+                        fontSize: '1.2rem'
                     }}
                 >
                     $ {price.value}
@@ -147,10 +164,17 @@ List.Item = ({ product: { id, data, __total, __size }, onDelete, onAdd }) => {
                         display: 'inline-block',
                         width: '100%',
                         marginTop: '0.4rem',
-                        fontSize: '1rem'
+                        fontSize: '1.2rem'
                     }}
                 >
-                    size: {__size}
+                    size:{' '}
+                    <span
+                        css={{
+                            textTransform: 'uppercase'
+                        }}
+                    >
+                        {__size}
+                    </span>
                 </span>
                 <div
                     css={{
