@@ -10,7 +10,7 @@ import Cart from 'features/cart/Cart';
 
 function Header({ minimal, back }) {
     const [displayAuth, setDisplayAuth] = useState(false);
-    const { user, logout } = useUser();
+    const { user } = useUser();
     const router = useRouter();
 
     const cartCount = Cart.getTotal();
@@ -26,22 +26,21 @@ function Header({ minimal, back }) {
     const Actions = () => {
         return (
             <div>
-                {user ? (
-                    <Fragment>
-                        "logged in" <button onClick={logout}>logout</button>
-                    </Fragment>
-                ) : (
-                    <ActionButton
-                        key="profile"
-                        css={btnCSS}
-                        icon={{
-                            name: 'profile',
-                            size: 20
-                        }}
-                        label="Sign in"
-                        onClick={() => setDisplayAuth(true)}
-                    />
-                )}
+                <ActionButton
+                    key="profile"
+                    css={btnCSS}
+                    icon={{
+                        name: 'profile',
+                        size: 20
+                    }}
+                    label={user ? 'My Account' : 'Sign in'}
+                    onClick={
+                        user
+                            ? () => router.push('/account')
+                            : () => setDisplayAuth(true)
+                    }
+                />
+
                 {!minimal && (
                     <Fragment>
                         <ActionButton
