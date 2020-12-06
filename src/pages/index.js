@@ -86,7 +86,8 @@ function Home() {
                             bottom: '1rem',
                             left: '50%',
                             transform: 'translate(-50%)',
-                            zIndex: '2'
+                            zIndex: '2',
+                            textAlign: 'center'
                         }}
                     >
                         <h3
@@ -106,18 +107,21 @@ function Home() {
                         >
                             Festive fashion at great prices
                         </p>
-                        <Button
-                            css={{
-                                display: 'block',
-                                width: '200px',
-                                borderColor: '#fff',
-                                backgroundColor: '#fff',
-                                color: '#222',
-                                margin: '1rem auto'
-                            }}
-                        >
-                            Shop Now
-                        </Button>
+                        <Link href="/products/kids/holiday">
+                            <a
+                                css={{
+                                    display: 'block',
+                                    width: '200px',
+                                    borderColor: '#fff',
+                                    backgroundColor: '#fff',
+                                    color: '#222',
+                                    padding: '1rem 0.5rem',
+                                    margin: '1rem auto'
+                                }}
+                            >
+                                Shop Now
+                            </a>
+                        </Link>
                     </div>
                 </div>
             </section>
@@ -162,7 +166,7 @@ function Home() {
                             alignItems: 'center'
                         }}
                     >
-                        <Link href="/women/holiday">
+                        <Link href="/products//women/holiday">
                             <a
                                 css={{
                                     border: '1px solid #fff',
@@ -177,7 +181,7 @@ function Home() {
                             </a>
                         </Link>
 
-                        <Link href="/men/holiday">
+                        <Link href="/products/men/holiday">
                             <a
                                 css={{
                                     border: '1px solid #fff',
@@ -192,7 +196,7 @@ function Home() {
                             </a>
                         </Link>
 
-                        <Link href="/kids/holiday">
+                        <Link href="/products/kids/holiday">
                             <a
                                 css={{
                                     border: '1px solid #fff',
