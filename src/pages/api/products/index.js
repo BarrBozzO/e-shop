@@ -47,7 +47,7 @@ export default async (req, res) => {
                             break;
                         }
                         case 'newest': {
-                            // query = query.orderBy('price.value', 'desc');
+                            query = query.orderBy('isNew', 'asc');
                             isOrdered = true;
                             break;
                         }
