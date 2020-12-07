@@ -114,30 +114,48 @@ function WomenProducts() {
                     >
                         Women's Clothing
                     </h1>
-                    <div
+                    <article
                         css={{
-                            fontSize: '0.8rem'
+                            fontSize: '1rem'
                         }}
                     >
-                        Shop the latest fashion online at H&M and discover new
-                        favorites in women’s clothing. Find everything from
-                        casual day dresses to sharp office wear. We have jeans
-                        in every fit, premium quality items and the latest
-                        fashion essentials. Check out our Conscious collection
-                        made out of more sustainable materials, we bring you
-                        women’s fashion in a more sustainable way Once you’ve
-                        found that perfect outfit complete your look with
-                        stylish shoes, bags and accessories. Don’t miss out on
-                        our wide range of on-point beauty products, not to
-                        mention beautiful and flattering lingerie, shapewear and
-                        loungewear. Update your gym bag with stylish, functional
-                        sportswear for the gym or the yoga class. Find
-                        flattering and on-trend bikinis and swimsuits. Start
-                        building your new wardrobe today. Browse our collections
-                        to find the latest in women’s fashion trends and update
-                        your wardrobe with stylish women’s clothes. Your new
-                        season style starts here at H&M.
-                    </div>
+                        <p>
+                            Shop the latest fashion online at H&M and discover
+                            new favourites in women’s clothing. Find everything
+                            from casual day dresses or cocktail dresses to sharp
+                            office wear. We have jeans in every fit, premium
+                            quality items and the latest fashion essentials.
+                            Check out our Conscious collection, made out of more
+                            sustainable materials, we bring you women’s fashion
+                            in a more sustainable way
+                        </p>
+                        <p>
+                            Once you’ve found that perfect outfit complete your
+                            look with stylish shoes, bags and accessories. Don’t
+                            miss out on our wide range of on-point beauty
+                            products, not to mention beautiful and flattering
+                            lingerie, shapewear and loungewear. Prepare for the
+                            cold season with our women’s winter coats.
+                        </p>
+                        <p>
+                            Update your gym bag with stylish, functional
+                            sportswear for the gym or the yoga class.
+                        </p>
+                        <p>
+                            If you have a big occasion coming up and an evening
+                            dress is the only thing to suffice we have suitable
+                            styles. For the biggest occasion of all we also have
+                            bridesmaids dresses to co-ordinate your bridal party
+                            and have the girls looking their absolute best.
+                        </p>
+                        <p>
+                            Find flattering and on-trend bikinis and swimsuits.
+                            Start building your new wardrobe today. Browse our
+                            collections to find the latest in women’s fashion
+                            trends and update your wardrobe with stylish women’s
+                            clothes. Your new season style starts here at H&M.
+                        </p>
+                    </article>
                 </div>
             </div>
         </Layout>

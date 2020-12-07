@@ -10,7 +10,7 @@ function KidsHome() {
     return (
         <Layout>
             <Head>
-                <title>Kids' Clothing</title>
+                <title>Kids' clothes</title>
             </Head>
             <BreadCrumbs
                 path={[
@@ -112,35 +112,55 @@ function KidsHome() {
                             textTransform: 'uppercase'
                         }}
                     >
-                        Kids' Clothing
+                        Kids' clothes
                     </h1>
-                    <div
+                    <article
                         css={{
-                            fontSize: '0.8rem'
+                            fontSize: '1rem'
                         }}
                     >
-                        Adorable clothes for babies, toddlers and teens. Find
-                        new fashion favourites in our wide range of kid’s
-                        clothing. For the babies We have your baby’s wardrobe
-                        covered with our range of pieces for newborn from 0-9
-                        months. Look out for multipacks of all-in-ones in
-                        super-soft organic cotton. As your baby grows, our
-                        clothes for baby girls 0-24 months and baby boys 0-24
-                        months has you covered with dungarees, soft jersey
-                        pieces and fun animal print tees. For the girls Girls
-                        from 1½-10 years will love our floral and butterfly
-                        prints, colourful stripes and Disney motifs. Browse our
-                        kids clothing including playsuits, ballet pumps and
-                        vibrant hair clips and Alice bands. Older girls from
-                        ages 8-14 years can choose from flowing jersey dresses,
-                        slim-fit jeans and floaty vest tops. For the boys Boys
-                        from 1½-10 years can explore our range of bold leafy
-                        graphics, dinosaur prints and nautical themed designs.
-                        Discover tapered jeans, cargo shorts and playful tees in
-                        this lively collection. Boys from 8-14 years can go for
-                        urban and surfwear-inspired looks featuring vivid slogan
-                        tees, sweatpants and snap-back caps.
-                    </div>
+                        <p>
+                            Adorable clothes for babies, toddlers and teens.
+                            Find new fashion favourites in our wide range of
+                            kid’s clothing.
+                        </p>
+                        <p>
+                            For the babies
+                            <br />
+                            We have your baby’s wardrobe covered with our range
+                            of pieces for newborn from 0-9 months. Look out for
+                            multipacks of all-in-ones in super-soft organic
+                            cotton. As your baby grows, our clothes for baby
+                            girls 0-24 months and baby boys 0-24 months has you
+                            covered with dungarees, soft jersey pieces and fun
+                            animal print tees.
+                        </p>
+                        <p>
+                            For the girls
+                            <br />
+                            Girls from 1½-10 years will love our floral and
+                            butterfly prints, colourful stripes and Disney
+                            motifs. Browse our kids clothing including
+                            playsuits, ballet pumps and vibrant hair clips and
+                            Alice bands. Older girls from ages 8-14 years can
+                            choose from flowing jersey dresses, slim-fit jeans
+                            and floaty vest tops.
+                        </p>
+                        <p>
+                            For the boys Boys from 1½-10 years can explore our
+                            range of bold leafy graphics, dinosaur prints and
+                            nautical themed designs. Discover tapered jeans,
+                            cargo shorts and playful tees in this lively
+                            collection. Boys from 8-14 years can go for urban
+                            and surfwear-inspired looks featuring vivid slogan
+                            tees, sweatpants and snap-back caps.
+                        </p>
+                        <p>
+                            Each season we bring together some of our favourite
+                            kids’ fashion for babies, toddlers and teens. Watch
+                            out for the latest looks we’re loving online at H&M!
+                        </p>
+                    </article>
                 </div>
             </div>
         </Layout>
