@@ -166,7 +166,7 @@ function Home() {
                             alignItems: 'center'
                         }}
                     >
-                        <Link href="/products//women/holiday">
+                        <Link href="/products/women/holiday">
                             <a
                                 css={{
                                     border: '1px solid #fff',

@@ -25,13 +25,13 @@ function BlogSection() {
                 display: 'flow-root',
                 backgroundColor: '#f4eddd',
                 margin: '0 -2rem',
-                padding: '2rem'
+                padding: '4rem'
             }}
         >
             <h2
                 css={{
                     textAlign: 'center',
-                    fontSize: '2rem',
+                    fontSize: '3rem',
                     textTransform: 'uppercase'
                 }}
             >
@@ -56,7 +56,7 @@ function BlogSection() {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    margin: '2rem 0'
+                    margin: '3rem 0'
                 }}
             >
                 <div css={itemCSS}>

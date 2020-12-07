@@ -8,8 +8,7 @@ function Footer() {
         <footer
             css={{
                 padding: '72px 0 54px',
-                backgroundColor: 'rgb(228, 228, 228)',
-                marginTop: '2rem'
+                backgroundColor: 'rgb(228, 228, 228)'
             }}
         >
             <div
