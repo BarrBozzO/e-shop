@@ -1,4 +1,4 @@
-import { useEffect, useContext, createContext, useState } from 'react';
+import { useEffect, useContext, createContext, useState, useRef } from 'react';
 import { auth, signInWithGoogle } from '../../firebase';
 import { mapUserAuthData } from '../../firebase/utils';
 
@@ -19,16 +19,25 @@ const signUp = (email, password) => {
 };
 
 export const useUser = () => {
-    const user = useContext(UserContext);
+    const { user, initializing } = useContext(UserContext);
 
-    return { user, signInWithGoogle, logout, signInWithCreds, signUp };
+    return {
+        user,
+        initializing,
+        signInWithGoogle,
+        logout,
+        signInWithCreds,
+        signUp
+    };
 };
 
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const initializing = useRef(true);
 
     useEffect(() => {
         const unsub = auth.onAuthStateChanged((auth) => {
+            if (initializing.current) initializing.current = false;
             if (!auth) return setUser(null);
 
             mapUserAuthData(auth).then((authData) => {
@@ -48,7 +57,13 @@ export const UserProvider = ({ children }) => {
         return unsub;
     }, []);
 
-    return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+    return (
+        <UserContext.Provider
+            value={{ user, initializing: initializing.current }}
+        >
+            {children}
+        </UserContext.Provider>
+    );
 };
 
 export const AuthDialog = AuthDialogComponent;

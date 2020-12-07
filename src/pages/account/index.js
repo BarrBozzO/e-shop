@@ -1,23 +1,21 @@
-import React, { useState, useMemo } from 'react';
-import useSWR from 'swr';
+import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { observer } from 'mobx-react';
-import { stringify } from 'qs';
 import { css } from '@emotion/core';
-import Layout from 'components/Layout';
-import ActionButton from 'components/ActionButton';
+import { Layout, ActionButton, Preloader, Button } from 'components';
 import { useUser } from 'features/user';
-import Button from 'components/Button';
 
 const Account = observer(() => {
     const router = useRouter();
-    const { user, logout } = useUser();
+    const { user, initializing: userInitializing, logout } = useUser();
 
-    if (!user && typeof window !== 'undefined') {
+    if (!user && !userInitializing && typeof window !== 'undefined') {
         router.replace('/');
     }
+
+    const email = user ? user.email : '';
 
     return (
         <Layout>
@@ -38,17 +36,23 @@ const Account = observer(() => {
                     }}
                 >
                     <div css={profileCSS}>
-                        <span css={profileEmailCSS}>{user.email}</span>
-                        <div css={profilePointsCSS}>
-                            <span>0 points</span>
-                            <p>
-                                You’re 200 points away from your next reward and
-                                500 points are needed to become a Plus member.
-                                Vouchers are issued 30 days after they are
-                                earned.
-                            </p>
-                        </div>
-                        <Button css={viewIdCSS}>VIEW MEMBER ID</Button>
+                        {userInitializing ? (
+                            <Preloader cssParams={profileLoadingCSS} />
+                        ) : (
+                            <>
+                                <span css={profileEmailCSS}>{email}</span>
+                                <div css={profilePointsCSS}>
+                                    <span>0 points</span>
+                                    <p>
+                                        You’re 200 points away from your next
+                                        reward and 500 points are needed to
+                                        become a Plus member. Vouchers are
+                                        issued 30 days after they are earned.
+                                    </p>
+                                </div>
+                                <Button css={viewIdCSS}>VIEW MEMBER ID</Button>
+                            </>
+                        )}
                     </div>
                     <h1>My Account</h1>
                     <ul css={linksListCSS}>
@@ -100,6 +104,10 @@ const profileCSS = css`
     padding: 1.6rem;
     background-color: #f5e6e0;
     margin-bottom: 2rem;
+`;
+
+const profileLoadingCSS = css`
+    fill: #222222;
 `;
 
 const profilePointsCSS = css`

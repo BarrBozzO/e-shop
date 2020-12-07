@@ -1,75 +1,12 @@
 import React, { Fragment, useState } from 'react';
-import { useRouter } from 'next/router';
 import { css } from '@emotion/core';
 import Link from 'next/link';
-import { observer } from 'mobx-react';
-import ActionButton from 'components/ActionButton';
-import Icon from 'components/Icon';
-import { useUser, AuthDialog } from 'features/user';
-import Cart from 'features/cart/Cart';
+import { Icon } from 'components';
+import { AuthDialog } from 'features/user';
+import Actions from './Actions';
 
 function Header({ minimal, back }) {
     const [displayAuth, setDisplayAuth] = useState(false);
-    const { user } = useUser();
-    const router = useRouter();
-
-    const cartCount = Cart.getTotal();
-
-    const handleCart = () => {
-        router.push('/cart');
-    };
-
-    const handleFavorites = () => {
-        router.push('/favorites');
-    };
-
-    const Actions = () => {
-        return (
-            <div>
-                <ActionButton
-                    key="profile"
-                    css={btnCSS}
-                    icon={{
-                        name: 'profile',
-                        size: 20
-                    }}
-                    label={user ? 'My Account' : 'Sign in'}
-                    onClick={
-                        user
-                            ? () => router.push('/account')
-                            : () => setDisplayAuth(true)
-                    }
-                />
-
-                {!minimal && (
-                    <Fragment>
-                        <ActionButton
-                            key="heart"
-                            css={btnCSS}
-                            icon={{
-                                name: 'heart',
-                                size: 20
-                            }}
-                            label="Favorites"
-                            onClick={handleFavorites}
-                        />
-                        <ActionButton
-                            key="cart"
-                            css={btnCSS}
-                            icon={{
-                                name: 'cart',
-                                size: 20
-                            }}
-                            label={`Shopping Cart${
-                                cartCount ? ` (${cartCount})` : ''
-                            }`}
-                            onClick={handleCart}
-                        />
-                    </Fragment>
-                )}
-            </div>
-        );
-    };
 
     return (
         <Fragment>
@@ -115,7 +52,10 @@ function Header({ minimal, back }) {
                             />
                         </a>
                     </Link>
-                    <Actions />
+                    <Actions
+                        minimal={minimal}
+                        handleDisplayAuth={() => setDisplayAuth(true)}
+                    />
                 </div>
                 {!minimal && (
                     <nav
@@ -148,18 +88,6 @@ function Header({ minimal, back }) {
     );
 }
 
-const btnCSS = css`
-    display: inline-flex;
-
-    &:hover {
-        color: #e50010;
-    }
-
-    & + & {
-        margin-left: 1rem;
-    }
-`;
-
 const linkStyles = css`
     margin: 0 0.6rem;
     font-size: 1rem;
@@ -175,4 +103,4 @@ const linkStyles = css`
     }
 `;
 
-export default observer(Header);
+export default Header;
