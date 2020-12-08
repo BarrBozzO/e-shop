@@ -1,5 +1,6 @@
 import { firestore } from '../../../firebase';
 import firebase from 'firebase';
+import cache from 'memory-cache';
 
 const PAGE_SIZE = 20;
 
@@ -12,6 +13,7 @@ export default async (req, res) => {
         if (!id) {
             let isOrdered = false;
             let query = firestore.collection('products');
+            let queryKey = 'q_products';
 
             if (category) {
                 switch (category) {
@@ -35,6 +37,7 @@ export default async (req, res) => {
                         }
                         break;
                 }
+                queryKey += `_${category}`;
             }
 
             if (filters) {
@@ -66,10 +69,12 @@ export default async (req, res) => {
 
                 if (type) {
                     query = query.where('type', '==', type);
+                    queryKey += `_${type}`;
                 }
 
                 if (seo) {
                     query = query.where('seo', 'array-contains', seo);
+                    queryKey += `_${seo}`;
                 }
             }
 
@@ -88,6 +93,7 @@ export default async (req, res) => {
                 query = query.startAfter(prev); // prev doc.id
             }
 
+            const total = await getTotal(queryKey, query);
             const snapshot = await query.limit(PAGE_SIZE).get();
 
             const data = snapshot.docs.map((product) => ({
@@ -97,6 +103,7 @@ export default async (req, res) => {
 
             res.json({
                 data,
+                total,
                 cursor: data.length ? data[data.length - 1].id : null
             });
         } else {
@@ -118,3 +125,16 @@ export default async (req, res) => {
         res.json({ error: error.toString() });
     }
 };
+
+const totalCache = new cache.Cache();
+
+async function getTotal(key, query) {
+    if (!totalCache.get(key)) {
+        const snapshot = await query.get();
+        const result = snapshot.docs.length;
+        totalCache.put(key, result);
+        return result;
+    }
+
+    return totalCache.get(key);
+}
