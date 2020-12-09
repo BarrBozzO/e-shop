@@ -1,12 +1,12 @@
 import React from 'react';
 import Head from 'next/head';
-import Layout from 'components/Layout';
-import Preloader from 'components/Preloader';
-import List from 'features/favorites/List';
+import { css } from '@emotion/core';
+import { observer } from 'mobx-react';
 import useSWR from 'swr';
 import { stringify } from 'qs';
+import { Layout, Preloader } from 'components';
+import List from 'features/favorites/List';
 import { FavoritesStore } from 'features/favorites';
-import { observer } from 'mobx-react';
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -33,10 +33,40 @@ const Favorites = observer(() => {
                 <title>Favorites</title>
             </Head>
 
-            <h1>Favorites</h1>
-            <div>{isLoading ? <Preloader /> : renderProducts()}</div>
+            <section
+                css={{
+                    maxWidth: '1188px',
+                    margin: '0 auto'
+                }}
+            >
+                <h1 css={titleCSS}>Favorites</h1>
+                <div>
+                    {isLoading ? (
+                        <Preloader />
+                    ) : (
+                        <div>
+                            <div css={totalCSS}>{data.length} items</div>
+                            {renderProducts()}
+                        </div>
+                    )}
+                </div>
+            </section>
         </Layout>
     );
 });
+
+const titleCSS = css`
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+`;
+
+const totalCSS = css`
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    text-align: right;
+    margin-bottom: 1rem;
+`;
 
 export default Favorites;
