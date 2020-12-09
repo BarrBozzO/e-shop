@@ -56,9 +56,16 @@ function Actions({ minimal, handleDisplayAuth }) {
                             name: 'cart',
                             size: 20
                         }}
-                        label={`Shopping Cart${
-                            cartCount ? ` (${cartCount})` : ''
-                        }`}
+                        label={
+                            <>
+                                Shopping Cart
+                                {Boolean(cartCount) && (
+                                    <span css={cartCounterCSS}>
+                                        {cartCount}
+                                    </span>
+                                )}
+                            </>
+                        }
                         onClick={handleCart}
                     />
                 </Fragment>
@@ -77,6 +84,22 @@ const btnCSS = css`
     & + & {
         margin-left: 1rem;
     }
+`;
+
+const cartCounterCSS = css`
+    display: inline-block;
+    margin-left: 0.4rem;
+    background-color: #e50010;
+    border-radius: 50%;
+    width: 1.4rem;
+    height: 1.4rem;
+    text-align: center;
+    color: #ffffff;
+    font-weight: 700;
+    line-height: 170%;
+    overflow: hidden;
+    vertical-align: middle;
+    font-size: 0.9rem;
 `;
 
 export default observer(Actions);

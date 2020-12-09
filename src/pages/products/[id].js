@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { css } from '@emotion/core';
 import { observer } from 'mobx-react';
-import Layout from 'components/Layout';
-import BreadCrumbs from 'components/Breadcrumbs';
-import Button from 'components/Button';
-import DropDown from 'components/DropDown';
-import FavoriteButton from 'components/FavoriteButton';
+import {
+    Layout,
+    Breadcrumbs,
+    Button,
+    DropDown,
+    FavoriteButton,
+    Icon
+} from 'components';
 import { fetchProduct, fetchProducts } from 'features/products';
-import Cart from 'features/cart/Cart';
+import { Cart, AddProductPopup } from 'features/cart';
 
 function Product({ data }) {
     const [size, setSize] = useState(); // set null while ssr
+    const [display, setDisplay] = useState(false);
 
     useEffect(() => {
         if (data) {
@@ -20,12 +24,9 @@ function Product({ data }) {
         }
     }, [data]);
 
-    if (!data) {
-        // display loading skeleton
-        return null;
-    }
+    const ImagesContainer = useCallback(() => {
+        if (!data) return null;
 
-    const ImagesContainer = () => {
         const { images, description } = data;
 
         if (!images.length) return null;
@@ -111,7 +112,17 @@ function Product({ data }) {
                 )}
             </div>
         );
-    };
+    }, [data]);
+
+    const handleAddToCart = useCallback(() => {
+        setDisplay(true);
+        Cart.add(data.id, size.value);
+    }, [data, size]);
+
+    if (!data) {
+        // display loading skeleton
+        return null;
+    }
 
     const { name, age, sex, id } = data;
 
@@ -124,7 +135,7 @@ function Product({ data }) {
             <Head>
                 <title>{name}</title>
             </Head>
-            <BreadCrumbs
+            <Breadcrumbs
                 path={[
                     {
                         url: '/',
@@ -160,7 +171,7 @@ function Product({ data }) {
                     display: 'flex',
                     alignItems: 'flex-start',
                     maxWidth: '1600px',
-                    margin: '2rem auto 0',
+                    margin: '2rem auto',
                     position: 'relative',
                     padding: '0 2rem'
                 }}
@@ -197,7 +208,7 @@ function Product({ data }) {
                             marginBottom: '1rem'
                         }}
                     >
-                        {data.price.currency} {data.price.value}
+                        $ {data.price.value}
                     </div>
                     <div
                         css={{
@@ -220,12 +231,31 @@ function Product({ data }) {
                         />
                     </div>
                     <div>
-                        <Button onClick={() => Cart.add(id, size.value)}>
+                        <Button onClick={handleAddToCart}>
+                            <Icon
+                                name="cart"
+                                size={14}
+                                css={{
+                                    display: 'inline-block',
+                                    fill: '#ffffff',
+                                    marginRight: '0.2rem',
+                                    verticalAlign: 'top'
+                                }}
+                            />{' '}
                             Add
                         </Button>
                     </div>
                 </div>
             </div>
+
+            <AddProductPopup
+                isOpen={display}
+                data={{
+                    ...data,
+                    __size: size && size.value
+                }}
+                onClose={() => setDisplay(false)}
+            />
         </Layout>
     );
 }
