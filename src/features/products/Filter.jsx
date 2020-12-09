@@ -1,7 +1,7 @@
 import React from 'react';
 import DropDown from 'components/DropDown';
 
-function Filter({ filters, onChange }) {
+function Filter({ filters, onChange, total }) {
     const handleSortChange = (value) => {
         onChange({
             ...filters,
@@ -12,10 +12,22 @@ function Filter({ filters, onChange }) {
     return (
         <div
             css={{
-                margin: '2rem 0'
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                margin: '2rem 0.5rem'
             }}
         >
             <Sort onChange={handleSortChange} />
+            <div
+                css={{
+                    flex: '1 0 auto',
+                    textAlign: 'right',
+                    fontWeight: 700
+                }}
+            >
+                {total} items
+            </div>
         </div>
     );
 }
@@ -63,7 +75,6 @@ const Sort = ({ onChange }) => {
             color: '#e50010'
         }),
         singleValue: (provided, state) => {
-            // debugger;
             return {
                 ...provided,
                 color: state.hasValue ? '#e50010' : '#222',

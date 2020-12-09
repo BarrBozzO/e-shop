@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
-import Layout from 'components/Layout';
-import BreadCrumbs from 'components/Breadcrumbs';
-import Button from 'components/Button';
-import AdBanner from 'components/AdBanner';
+import { Layout, Breadcrumbs, AdBanner } from 'components';
 import {
     List,
     fetchProducts,
@@ -13,10 +10,8 @@ import {
 } from 'features/products';
 import { useUser } from 'features/user';
 
-function HolidayShop({ initialProducts }) {
-    const [filters, setFilters] = useState({
-        seo: 'holiday'
-    });
+function ViewAll({ initialProducts, seoData }) {
+    const [filters, setFilters] = useState({});
     const { user } = useUser();
     const { data, error, size, setSize, revalidate } = useFetchProducts({
         initialData: [
@@ -33,12 +28,18 @@ function HolidayShop({ initialProducts }) {
         revalidate();
     }, [filters]);
 
+    const handleLoadMore = useCallback(() => setSize(size + 1), [
+        size,
+        setSize
+    ]);
+
     const isLoading = !data && !error;
 
     if (error) {
         console.error(error);
     }
 
+    const totalProductsCount = data ? data[0].total : 0;
     const products = data
         ? data.reduce((allPages, page) => {
               return allPages.concat(page.data);
@@ -48,10 +49,10 @@ function HolidayShop({ initialProducts }) {
     return (
         <Layout>
             <Head>
-                <title>The Holiday Shop</title>
+                <title>{seoData.title}</title>
             </Head>
 
-            <BreadCrumbs
+            <Breadcrumbs
                 path={[
                     {
                         url: '/',
@@ -62,11 +63,11 @@ function HolidayShop({ initialProducts }) {
                         text: 'Products'
                     },
                     {
-                        url: '/products/men',
+                        url: '/products/Men',
                         text: 'Men'
                     },
                     {
-                        text: 'The Holiday Shop'
+                        text: seoData.h1
                     }
                 ]}
             />
@@ -87,47 +88,46 @@ function HolidayShop({ initialProducts }) {
                             textTransform: 'uppercase'
                         }}
                     >
-                        The Holiday Shop
+                        {seoData.h1}
                     </h1>
-                    <p>
-                        From great gifts for him to a wide range of festive
-                        outfits, find everything he'll need to navigate the
-                        season in our Holiday Shop for men. Find ugly Christmas
-                        sweaters, classic knits, pajamas, socks and more.
-                        There's plenty of inspiration in our holiday gift guide
-                        for even the most hard-to-buy-for guy!
-                    </p>
-                    <Filter filters={filters} onChange={setFilters} />
-                    <List products={products} loading={isLoading} />
-                    <Button
-                        css={{
-                            display: 'block',
-                            width: '300px',
-                            height: '47px',
-                            margin: '0 auto'
-                        }}
-                        disabled={isLoading}
-                        onClick={() => setSize(size + 1)}
-                    >
-                        Load More Products
-                    </Button>
+                    {seoData.description && <p>{seoData.description}</p>}
+                    <Filter
+                        filters={filters}
+                        onChange={setFilters}
+                        total={totalProductsCount}
+                    />
+                    <List
+                        products={products}
+                        isLastPage={products.length >= totalProductsCount}
+                        loading={isLoading}
+                        handleLoadMore={handleLoadMore}
+                    />
                 </div>
             </div>
         </Layout>
     );
 }
 
-export const getStaticProps = async () => {
-    const products = await fetchProducts({
-        sex: 'male',
-        age: 'adult',
-        seo: 'holiday'
-    });
+export const getStaticProps = async ({ params }) => {
+    const seoData = seoPages[params.seo];
+    const products = await fetchProducts(seoData.staticFilters);
 
     return {
         props: {
-            initialProducts: products
+            initialProducts: products,
+            seoData
         }
+    };
+};
+
+export const getStaticPaths = async () => {
+    return {
+        paths: Object.keys(seoPages).map((seoSlug) => ({
+            params: {
+                seo: seoSlug
+            }
+        })),
+        fallback: false
     };
 };
 
@@ -188,4 +188,54 @@ const seoLinks = [
     }
 ];
 
-export default HolidayShop;
+const seoPages = {
+    all: {
+        title: "View All - Shop Men's Clothing online",
+        h1: 'View All',
+        staticFilters: {
+            sex: 'male',
+            age: 'adult'
+        },
+        filters: {}
+    },
+    clothes: {
+        title: "Clothes - Shop Men's Clothing online",
+        h1: 'Clothes',
+        staticFilters: {
+            sex: 'male',
+            age: 'adult',
+            type: 'clothes'
+        },
+        fitlers: {
+            type: 'clothes'
+        }
+    },
+    'shoes-accessories': {
+        title: "Shoes & Accessories - Shop Men's Clothing online",
+        h1: 'Shoes & Accessories',
+        staticFilters: {
+            sex: 'male',
+            age: 'adult',
+            type: 'shoes&accessories'
+        },
+        filters: {
+            type: 'shoes&accessories'
+        }
+    },
+    holiday: {
+        title: "The Holiday Shop - Shop Men's Clothing online",
+        h1: 'The Holiday Shop',
+        description:
+            "From great gifts for him to a wide range of festive outfits, find everything he'll need to navigate the season in our Holiday Shop for men. Find ugly Christmas sweaters, classic knits, pajamas, socks and more. There's plenty of inspiration in our holiday gift guide for even the most hard-to-buy-for guy!",
+        staticFilters: {
+            sex: 'male',
+            age: 'adult',
+            seo: 'holiday'
+        },
+        filters: {
+            seo: 'holiday'
+        }
+    }
+};
+
+export default ViewAll;

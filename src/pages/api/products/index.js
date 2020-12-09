@@ -104,7 +104,10 @@ export default async (req, res) => {
             res.json({
                 data,
                 total,
-                cursor: data.length ? data[data.length - 1].id : null
+                cursor:
+                    data.length && data.length <= PAGE_SIZE
+                        ? data[data.length - 1].id
+                        : null
             });
         } else {
             const ids = Array.isArray(id) ? id : [id];

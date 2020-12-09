@@ -2,29 +2,45 @@ import React from 'react';
 import { css } from '@emotion/core';
 import Link from 'next/link';
 import Image from 'next/image';
-import FavoriteButton from 'components/FavoriteButton';
-import Preloader from 'components/Preloader';
+import { Preloader, FavoriteButton, Button } from 'components';
 
-function List({ products, loading }) {
+function List({ products, isLastPage, handleLoadMore, loading }) {
     if (!Array.isArray(products) || !products.length) return null;
 
-    if (loading) return <Preloader />;
-
     return (
-        <div
-            css={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                justifyContent: 'flex-start'
-            }}
-        >
-            {products
-                .filter((product) => product.data && product.data.images.length)
-                .map((product) => (
-                    <List.Item key={product.id} product={product} />
-                ))}
-        </div>
+        <>
+            <div
+                css={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    justifyContent: 'flex-start'
+                }}
+            >
+                {products
+                    .filter(
+                        (product) => product.data && product.data.images.length
+                    )
+                    .map((product) => (
+                        <List.Item key={product.id} product={product} />
+                    ))}
+            </div>
+            {loading && <Preloader />}
+            {!isLastPage && (
+                <Button
+                    css={{
+                        display: 'block',
+                        width: '300px',
+                        height: '47px',
+                        margin: '0 auto'
+                    }}
+                    disabled={loading}
+                    onClick={handleLoadMore}
+                >
+                    Load More Products
+                </Button>
+            )}
+        </>
     );
 }
 
