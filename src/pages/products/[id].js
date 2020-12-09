@@ -12,10 +12,11 @@ import {
     Icon
 } from 'components';
 import { fetchProduct, fetchProducts } from 'features/products';
-import Cart from 'features/cart/Cart';
+import { Cart, AddProductPopup } from 'features/cart';
 
 function Product({ data }) {
     const [size, setSize] = useState(); // set null while ssr
+    const [display, setDisplay] = useState(false);
 
     useEffect(() => {
         if (data) {
@@ -112,6 +113,11 @@ function Product({ data }) {
             </div>
         );
     }, [data]);
+
+    const handleAddToCart = useCallback(() => {
+        setDisplay(true);
+        Cart.add(data.id, size.value);
+    }, [data, size]);
 
     if (!data) {
         // display loading skeleton
@@ -225,7 +231,7 @@ function Product({ data }) {
                         />
                     </div>
                     <div>
-                        <Button onClick={() => Cart.add(id, size.value)}>
+                        <Button onClick={handleAddToCart}>
                             <Icon
                                 name="cart"
                                 size={14}
@@ -241,6 +247,15 @@ function Product({ data }) {
                     </div>
                 </div>
             </div>
+
+            <AddProductPopup
+                isOpen={display}
+                data={{
+                    ...data,
+                    __size: size && size.value
+                }}
+                onClose={() => setDisplay(false)}
+            />
         </Layout>
     );
 }
