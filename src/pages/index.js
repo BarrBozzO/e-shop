@@ -1,8 +1,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import Layout from 'components/Layout';
-import Button from 'components/Button';
+import { Layout } from 'components';
 import BlogSection from 'features/blog/BlogSection';
 
 function Home() {
@@ -21,6 +20,16 @@ function Home() {
                     margin: '2rem auto'
                 }}
             >
+                <div>
+                    <p
+                        css={{
+                            textAlign: 'center',
+                            color: '#e50010'
+                        }}
+                    >
+                        DEMO PROJECT FOR PRESENTATION ONLY PURPOSES
+                    </p>
+                </div>
                 <div
                     css={{
                         display: 'flex',
@@ -212,6 +221,61 @@ function Home() {
                         </Link>
                     </div>
                 </article>
+            </section>
+            <section
+                css={{
+                    maxWidth: '960px',
+                    margin: '2rem auto'
+                }}
+            >
+                <div
+                    css={{
+                        position: 'relative',
+                        display: 'flex',
+                        width: '100%',
+                        paddingBottom: '66%',
+                        flexDirection: 'column',
+                        alignItems: 'stretch'
+                    }}
+                >
+                    <Image
+                        css={{
+                            zIndex: '1'
+                        }}
+                        src="/imgs/home-classic.jpeg"
+                        layout="fill"
+                    />
+                    <div
+                        css={{
+                            position: 'absolute',
+                            bottom: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%)',
+                            zIndex: '2',
+                            textAlign: 'center'
+                        }}
+                    >
+                        <h3
+                            css={{
+                                fontSize: '4rem',
+                                color: '#fff',
+                                marginBottom: '1rem'
+                            }}
+                        >
+                            Home Classic
+                        </h3>
+                        <p
+                            css={{
+                                color: '#fff',
+                                fontSize: '2rem',
+                                textAlign: 'center',
+                                marginTop: '1rem'
+                            }}
+                        >
+                            COMING SOON
+                        </p>
+                    </div>
+                </div>
             </section>
             <BlogSection />
         </Layout>

@@ -66,17 +66,17 @@ function Header({ minimal, back }) {
                         }}
                     >
                         <Link href="/products/women">
-                            <a css={linkStyles}>Women</a>
+                            <a css={linkCSS}>Women</a>
                         </Link>
                         <Link href="/products/men">
-                            <a css={linkStyles}>Men</a>
+                            <a css={linkCSS}>Men</a>
                         </Link>
                         <Link href="/products/kids">
-                            <a css={linkStyles}>Kids</a>
+                            <a css={linkCSS}>Kids</a>
                         </Link>
-                        <Link href="/sale">
-                            <a css={linkStyles}>Sale</a>
-                        </Link>
+                        {/* <Link href="/sale"> */}
+                        <span css={[linkCSS, disabledLinkCSS]}>H&M Home</span>
+                        {/* </Link> */}
                     </nav>
                 )}
             </header>
@@ -88,17 +88,28 @@ function Header({ minimal, back }) {
     );
 }
 
-const linkStyles = css`
+const linkCSS = css`
     margin: 0 0.6rem;
     font-size: 1rem;
     font-weight: 700;
     padding-bottom: 2px;
     color: rgb(74, 74, 74);
     text-transform: uppercase;
+    user-select: none;
 
     &:hover {
         cursor: pointer;
         border-bottom: 2px solid rgb(34, 34, 34);
+        padding-bottom: 0;
+    }
+`;
+
+const disabledLinkCSS = css`
+    opacity: 0.6;
+
+    &:hover {
+        cursor: default;
+        border-bottom: none;
         padding-bottom: 0;
     }
 `;
