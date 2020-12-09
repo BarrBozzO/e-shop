@@ -100,6 +100,7 @@ class Cart {
             if (product.total === 0) return;
 
             Object.keys(product.sizes).forEach((size) => {
+                if (product.sizes[size] < 1) return;
                 result.push({
                     id,
                     size,
