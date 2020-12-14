@@ -99,6 +99,7 @@ const readMoreCSS = css`
 const linksColumn = css`
     h4 {
         text-transform: uppercase;
+        margin-bottom: 1rem;
     }
 
     & + & {
