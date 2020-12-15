@@ -211,7 +211,7 @@ const seoPages = {
             type: 'clothes'
         }
     },
-    'underwear-nightware': {
+    'underwear-nightwear': {
         title: "Underwear & Nightwear - Shop Women's Clothing online",
         h1: 'UNDERWEAR & NIGHTWEAR',
         staticFilters: {
