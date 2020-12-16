@@ -4,19 +4,14 @@ import Link from 'next/link';
 import { Icon } from 'components';
 import { AuthDialog } from 'features/user';
 import Actions from './Actions';
+import { mobileDevice } from 'styles/utils';
 
 function Header({ minimal, back }) {
     const [displayAuth, setDisplayAuth] = useState(false);
 
     return (
         <Fragment>
-            <header
-                css={{
-                    width: '100%',
-                    'z-index': 1000,
-                    padding: '16px'
-                }}
-            >
+            <header css={headerCSS}>
                 <div
                     css={{
                         display: 'flex',
@@ -26,12 +21,7 @@ function Header({ minimal, back }) {
                 >
                     {back && (
                         <Link href={back.url}>
-                            <a
-                                css={{
-                                    display: 'inline-flex',
-                                    marginRight: 'auto'
-                                }}
-                            >
+                            <a css={backCSS}>
                                 <span>←</span>
                                 <span>{back.label}</span>
                             </a>
@@ -39,17 +29,7 @@ function Header({ minimal, back }) {
                     )}
                     <Link href={'/'}>
                         <a>
-                            <Icon
-                                name="logo"
-                                css={{
-                                    width: '68px',
-                                    height: '44px',
-                                    position: 'absolute',
-                                    right: '50%',
-                                    top: '0',
-                                    transform: 'translateX(50%)'
-                                }}
-                            />
+                            <Icon name="logo" css={logoCSS} />
                         </a>
                     </Link>
                     <Actions
@@ -58,25 +38,19 @@ function Header({ minimal, back }) {
                     />
                 </div>
                 {!minimal && (
-                    <nav
-                        css={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            marginTop: '3rem'
-                        }}
-                    >
+                    <nav css={navCSS}>
                         <Link href="/products/women">
-                            <a css={linkCSS}>Women</a>
+                            <a css={navLinkCSS}>Women</a>
                         </Link>
                         <Link href="/products/men">
-                            <a css={linkCSS}>Men</a>
+                            <a css={navLinkCSS}>Men</a>
                         </Link>
                         <Link href="/products/kids">
-                            <a css={linkCSS}>Kids</a>
+                            <a css={navLinkCSS}>Kids</a>
                         </Link>
-                        {/* <Link href="/sale"> */}
-                        <span css={[linkCSS, disabledLinkCSS]}>H&M Home</span>
-                        {/* </Link> */}
+                        <span css={[navLinkCSS, disabledLinkCSS]}>
+                            H&M Home
+                        </span>
                     </nav>
                 )}
             </header>
@@ -88,7 +62,58 @@ function Header({ minimal, back }) {
     );
 }
 
-const linkCSS = css`
+const backCSS = css`
+    display: inline-flex;
+    margin-right: auto;
+
+    ${mobileDevice(css`
+        max-width: 120px;
+
+        span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    `)}
+`;
+
+const headerCSS = css`
+    width: 100%;
+    z-index: 1000;
+    padding: 16px;
+
+    ${mobileDevice(css`
+        padding: 8px;
+    `)}
+`;
+
+const logoCSS = css`
+    width: 68px;
+    height: 44px;
+    position: absolute;
+    right: 50%;
+    top: 0;
+    transform: translateX(50%);
+
+    ${mobileDevice(css`
+        width: 36px;
+        height: 36px;
+    `)}
+`;
+
+const navCSS = css`
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+
+    ${mobileDevice(
+        css`
+            width: 80%;
+            margin: 2rem auto 0;
+        `
+    )}
+`;
+
+const navLinkCSS = css`
     margin: 0 0.6rem;
     font-size: 1rem;
     font-weight: 700;
@@ -102,6 +127,13 @@ const linkCSS = css`
         border-bottom: 2px solid rgb(34, 34, 34);
         padding-bottom: 0;
     }
+
+    ${mobileDevice(css`
+        flex: 1 0 25%;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    `)}
 `;
 
 const disabledLinkCSS = css`

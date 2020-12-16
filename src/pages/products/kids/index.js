@@ -2,8 +2,9 @@ import React from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import Layout from 'components/Layout';
-import BreadCrumbs from 'components/Breadcrumbs';
+import { css } from '@emotion/core';
+import { mobileDevice } from 'styles/utils';
+import { Layout, Breadcrumbs } from 'components';
 import { Nav } from 'features/products';
 
 function KidsHome() {
@@ -12,7 +13,7 @@ function KidsHome() {
             <Head>
                 <title>Kids' clothes</title>
             </Head>
-            <BreadCrumbs
+            <Breadcrumbs
                 path={[
                     {
                         url: '/',
@@ -27,14 +28,7 @@ function KidsHome() {
                     }
                 ]}
             />
-            <div
-                css={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'flex-start',
-                    width: '100%'
-                }}
-            >
+            <div css={containerCSS}>
                 <Nav links={seoLinks} />
                 <div css={{ flex: '1 0 0' }}>
                     <section
@@ -43,16 +37,7 @@ function KidsHome() {
                             margin: '2rem auto'
                         }}
                     >
-                        <div
-                            css={{
-                                position: 'relative',
-                                display: 'flex',
-                                width: '100%',
-                                paddingBottom: '66%',
-                                flexDirection: 'column',
-                                alignItems: 'stretch'
-                            }}
-                        >
+                        <div css={seoBlockCSS}>
                             <Image
                                 css={{
                                     zIndex: '1'
@@ -70,24 +55,13 @@ function KidsHome() {
                                     textAlign: 'center'
                                 }}
                             >
-                                <h3
-                                    css={{
-                                        fontSize: '3rem',
-                                        color: '#fff',
-                                        marginBottom: '1rem'
-                                    }}
-                                >
+                                <h3>
                                     Holiday Delights
+                                    <span>
+                                        Your one-stop shop for perfect presents
+                                        & seasonal must-haves
+                                    </span>
                                 </h3>
-                                <p
-                                    css={{
-                                        color: '#fff',
-                                        textAlign: 'center'
-                                    }}
-                                >
-                                    Your one-stop shop for perfect presents &
-                                    seasonal must-haves
-                                </p>
                                 <Link href="/products/kids/holiday">
                                     <a
                                         css={{
@@ -166,6 +140,47 @@ function KidsHome() {
         </Layout>
     );
 }
+
+const containerCSS = css`
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 2rem;
+
+    ${mobileDevice(css`
+        flex-direction: column;
+    `)}
+`;
+
+const seoBlockCSS = css`
+    position: relative;
+    display: flex;
+    width: 100%;
+    padding-bottom: 66%;
+    flex-direction: column;
+    align-items: stretch;
+
+    h3 {
+        font-size: 3rem;
+        color: #fff;
+        margin-bottom: 1rem;
+        text-shadow: 0px 0px 20px rgba(0, 9, 84, 0.2);
+
+        ${mobileDevice(css`
+            font-size: 2rem;
+        `)}
+
+        span {
+            display: inline-block;
+            width: 100%;
+            font-weight: 400;
+            font-size: 1rem;
+            color: #fff;
+            text-align: center;
+        }
+    }
+`;
 
 const seoLinks = [
     {

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { useFormik } from 'formik';
 import { css } from '@emotion/core';
+import { mobileDevice } from 'styles/utils';
 import { useUser } from 'features/user';
-import Button from 'components/Button';
-import Preloader from 'components/Preloader';
+import { Button, Preloader } from 'components';
 import { Cart } from 'features/cart';
 import * as Yup from 'yup';
 
@@ -86,7 +86,7 @@ function Form({ products, loading, onComplete }) {
                         My Information
                     </h1>
                     {user ? (
-                        <div>
+                        <div css={emailCSS}>
                             <span>Email</span>
                             <br />
                             <b>{user.email}</b>
@@ -241,17 +241,14 @@ function Form({ products, loading, onComplete }) {
                         {formik.errors.zip && <span>{formik.errors.zip}</span>}
                     </div>
                 </fieldset>
-                <div
-                    css={css`
-                        width: 600px;
-                    `}
-                >
+                <div>
                     <p>
                         With 'Complete Purchase' you accept H&M's{' '}
                         <Link href={'/terms'}>
                             <a
                                 css={{
-                                    textDecoration: 'underline'
+                                    textDecoration: 'underline',
+                                    whiteSpace: 'nowrap'
                                 }}
                             >
                                 Terms of Use
@@ -264,7 +261,8 @@ function Form({ products, loading, onComplete }) {
                         <Link href={'/privacy'}>
                             <a
                                 css={{
-                                    textDecoration: 'underline'
+                                    textDecoration: 'underline',
+                                    whiteSpace: 'nowrap'
                                 }}
                             >
                                 Privacy Notice
@@ -294,12 +292,21 @@ const Asterisk = () => (
     <span css={{ color: 'red', marginLeft: '0.2rem' }}>*</span>
 );
 
+const emailCSS = css`
+    margin-bottom: 1rem;
+`;
+
 const fieldsetCSS = css`
     display: flex;
     flex-direction: flex-start;
     align-items: center;
     border: 0;
     margin-bottom: 1rem;
+
+    ${mobileDevice(css`
+        flex-wrap: wrap;
+        padding: 0;
+    `)}
 `;
 
 const inputCSS = css`
@@ -325,6 +332,15 @@ const fieldCSS = css`
     &:first-child {
         margin-right: 0.8rem;
     }
+
+    ${mobileDevice(css`
+        flex: 1 0 auto;
+        margin-top: 1rem;
+
+        &:first-child {
+            margin-right: 0;
+        }
+    `)}
 `;
 
 const invalidFieldCSS = css`

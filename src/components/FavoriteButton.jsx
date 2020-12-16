@@ -4,7 +4,7 @@ import { css } from '@emotion/core';
 import { FavoritesStore } from 'features/favorites';
 import { observer } from 'mobx-react';
 
-const FavoriteButton = observer(({ id, styles }) => {
+const FavoriteButton = observer(({ id, size = 24, styles }) => {
     const inFavorites = FavoritesStore.has(id);
     const buttonCSS = css`
         position: absolute;
@@ -29,7 +29,7 @@ const FavoriteButton = observer(({ id, styles }) => {
             css={[buttonCSS, !inFavorites || isFavoriteCSS, styles]}
             icon={{
                 name: inFavorites ? 'heart-filled' : 'heart',
-                size: 24,
+                size,
                 css: css`
                     margin: 0;
                 `

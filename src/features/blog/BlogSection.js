@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { css } from '@emotion/core';
+import { mobileDevice } from 'styles/utils';
 
 const ReadTheStory = () => {
     return (
@@ -20,14 +21,7 @@ const ReadTheStory = () => {
 
 function BlogSection() {
     return (
-        <section
-            css={{
-                display: 'flow-root',
-                backgroundColor: '#f4eddd',
-                margin: '0 -2rem',
-                padding: '4rem'
-            }}
-        >
+        <section css={sectionCSS}>
             <h2
                 css={{
                     textAlign: 'center',
@@ -51,14 +45,7 @@ function BlogSection() {
                     Read The Magazine
                 </a>
             </Link>
-            <div
-                css={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    margin: '3rem 0'
-                }}
-            >
+            <div css={itemsCSS}>
                 <div css={itemCSS}>
                     <Link href={'/blog/jeans'}>
                         <a css={itemLinkCSS}>
@@ -124,12 +111,50 @@ function BlogSection() {
     );
 }
 
+const sectionCSS = css`
+    display: flow-root;
+    background-color: #f4eddd;
+    margin: 0 -2rem;
+    padding: 4rem;
+
+    ${mobileDevice(css`
+        margin: 0 -1rem;
+        padding: 3rem;
+    `)}
+`;
+
+const itemsCSS = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 3rem 0;
+
+    ${mobileDevice(
+        css`
+            flex-direction: column;
+            margin: 3rem 0 0;
+        `
+    )}
+`;
+
 const itemCSS = css`
     flex: 1 0 calc(33% - 1rem);
     max-width: 310px;
     margin: 0 0.5rem;
     min-height: 300px;
     background-color: #ffffff;
+
+    ${mobileDevice(
+        css`
+            flex: auto;
+            max-width: none;
+            width: 100%;
+
+            & + & {
+                margin-top: 1rem;
+            }
+        `
+    )}
 `;
 
 const itemLinkCSS = css`

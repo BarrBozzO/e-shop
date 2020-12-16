@@ -8,6 +8,7 @@ import { css } from '@emotion/core';
 import { Layout, ActionButton, Preloader, Button } from 'components';
 import { useUser } from 'features/user';
 import { useOrderStats } from 'features/orders';
+import { mobileDevice } from 'styles/utils';
 
 const Account = observer(() => {
     const router = useRouter();
@@ -28,12 +29,7 @@ const Account = observer(() => {
             <Head>
                 <title>My Account</title>
             </Head>
-            <div
-                css={{
-                    display: 'flex',
-                    alignItems: 'flex-start'
-                }}
-            >
+            <div css={containerCSS}>
                 <section
                     css={{
                         flex: '0 0 314px',
@@ -73,7 +69,11 @@ const Account = observer(() => {
                             </Link>
                         </li>
                         <li>
-                            <ActionButton label={'Sign Out'} onClick={logout} />
+                            <ActionButton
+                                css={linkCSS}
+                                label={'Sign Out'}
+                                onClick={logout}
+                            />
                         </li>
                     </ul>
                 </section>
@@ -122,6 +122,16 @@ const Account = observer(() => {
     );
 });
 
+const containerCSS = css`
+    display: flex;
+    align-items: flex-start;
+    margin: 2rem auto;
+
+    ${mobileDevice(css`
+        flex-direction: column;
+    `)}
+`;
+
 const viewIdCSS = css`
     display: block;
     width: 60%;
@@ -166,6 +176,15 @@ const linksListCSS = css`
         padding: 0.4rem 0;
         text-transform: uppercase;
     }
+
+    ${mobileDevice(css`
+        display: flex;
+
+        li {
+            flex: 1 0 auto;
+            padding: 0;
+        }
+    `)}
 `;
 
 const linkCSS = css`
@@ -183,6 +202,18 @@ const linkCSS = css`
         right: 0;
         content: '⟶';
     }
+
+    ${mobileDevice(css`
+        text-decoration: underline;
+
+        span {
+            text-decoration: underline;
+        }
+
+        &::after {
+            content: '';
+        }
+    `)}
 `;
 
 const insightsItemCSS = css`

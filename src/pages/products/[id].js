@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { css } from '@emotion/core';
+import { mobileDevice } from 'styles/utils';
 import { observer } from 'mobx-react';
 import {
     Layout,
@@ -67,11 +68,7 @@ function Product({ data }) {
         `;
 
         return (
-            <div
-                css={{
-                    width: '70vw'
-                }}
-            >
+            <div css={imagesContainerCSS}>
                 <div css={rowCSS}>
                     <div css={rowItemCSS}>
                         <div css={imgWrapperCSS}>
@@ -166,16 +163,7 @@ function Product({ data }) {
                     }
                 ]}
             />
-            <div
-                css={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    maxWidth: '1600px',
-                    margin: '2rem auto',
-                    position: 'relative',
-                    padding: '0 2rem'
-                }}
-            >
+            <div css={containerCSS}>
                 <ImagesContainer />
                 <div css={sidebarCSS}>
                     <div
@@ -184,37 +172,11 @@ function Product({ data }) {
                             paddingRight: '2rem'
                         }}
                     >
-                        <h1
-                            css={{
-                                margin: '0 0 1rem',
-                                fontSize: '1.4rem',
-                                padding: '0',
-                                textAlign: 'left'
-                            }}
-                        >
-                            {data.name}
-                        </h1>
-                        <FavoriteButton
-                            id={id}
-                            styles={{
-                                padding: 0
-                            }}
-                        />
+                        <h1 css={titleCSS}>{data.name}</h1>
+                        <FavoriteButton id={id} styles={favCSS} />
                     </div>
-                    <div
-                        css={{
-                            fontWeight: '500',
-                            fontSize: '1.2rem',
-                            marginBottom: '1rem'
-                        }}
-                    >
-                        $ {data.price.value}
-                    </div>
-                    <div
-                        css={{
-                            marginBottom: '2rem'
-                        }}
-                    >
+                    <div css={productPriceCSS}>$ {data.price.value}</div>
+                    <div css={productSizeCSS}>
                         <DropDown
                             styles={{
                                 option: (provided, state) => ({
@@ -329,12 +291,83 @@ const SIZE_OPTIONS = {
     ]
 };
 
+const imagesContainerCSS = css`
+    width: 70vw;
+
+    ${mobileDevice(css`
+        width: 100%;
+    `)}
+`;
+
+const favCSS = css`
+    width: 20px;
+    height: 20px;
+    padding: 0;
+`;
+
+const containerCSS = css`
+    display: flex;
+    align-items: flex-start;
+    max-width: 1600px;
+    margin: 2rem auto;
+    position: relative;
+    padding: 0 2rem;
+
+    ${mobileDevice(css`
+        flex-direction: column;
+        padding: 0;
+    `)}
+`;
+
 const sidebarCSS = css`
     position: sticky;
     top: 0;
     width: 30vw;
     height: auto;
     padding: 1rem 2rem;
+
+    ${mobileDevice(css`
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        left: 0;
+        background: #fff;
+        box-shadow: 0 -2px 10px 0 rgba(0, 0, 0, 0.1);
+        padding: 1rem 2rem 0.8rem;
+    `)}
+`;
+
+const productPriceCSS = css`
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+
+    ${mobileDevice(css`
+        display: inline-block;
+        width: 30%;
+    `)}
+`;
+
+const productSizeCSS = css`
+    display: inline-block;
+    width: 70%;
+    margin-bottom: 2rem;
+
+    ${mobileDevice(css`
+        margin-bottom: 1rem;
+    `)}
+`;
+
+const titleCSS = css`
+    margin: 0 0 1rem;
+    font-size: 1.4rem;
+    padding: 0;
+    text-align: left;
+
+    ${mobileDevice(css`
+        font-size: 1.2rem;
+    `)}
 `;
 
 export const getStaticProps = async (cxt) => {

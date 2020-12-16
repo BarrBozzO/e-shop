@@ -50,7 +50,8 @@ function Register() {
             <h1
                 css={{
                     width: '100%',
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    margin: '2rem auto'
                 }}
             >
                 Sign Up
@@ -58,7 +59,7 @@ function Register() {
             <div
                 css={{
                     maxWidth: '750px',
-                    margin: '0 auto'
+                    margin: '2rem auto'
                 }}
             >
                 <p css={{ fontSize: '0.8rem', textAlign: 'center' }}>

@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { ActionButton } from 'components';
 import Cart from 'features/cart/Cart';
 import { useUser } from 'features/user';
+import { mobileDevice } from 'styles/utils';
 
 function Actions({ minimal, handleDisplayAuth }) {
     const { user } = useUser();
@@ -33,7 +34,11 @@ function Actions({ minimal, handleDisplayAuth }) {
                     name: 'profile',
                     size: 20
                 }}
-                label={user ? 'My Account' : 'Sign in'}
+                label={
+                    <span css={btnLabelCSS}>
+                        {user ? 'My Account' : 'Sign in'}
+                    </span>
+                }
                 onClick={handleUserClick}
             />
 
@@ -46,7 +51,7 @@ function Actions({ minimal, handleDisplayAuth }) {
                             name: 'heart',
                             size: 20
                         }}
-                        label="Favorites"
+                        label={<span css={btnLabelCSS}>Favorites</span>}
                         onClick={handleFavorites}
                     />
                     <ActionButton
@@ -58,7 +63,7 @@ function Actions({ minimal, handleDisplayAuth }) {
                         }}
                         label={
                             <>
-                                Shopping Cart
+                                <span css={btnLabelCSS}>Shopping Cart</span>
                                 {Boolean(cartCount) && (
                                     <span css={cartCounterCSS}>
                                         {cartCount}
@@ -84,7 +89,19 @@ const btnCSS = css`
     & + & {
         margin-left: 1rem;
     }
+
+    ${mobileDevice(css`
+        & + & {
+            margin-left: 0.6rem;
+        }
+    `)}
 `;
+
+const btnLabelCSS = mobileDevice(
+    css`
+        display: none;
+    `
+);
 
 const cartCounterCSS = css`
     display: inline-block;
@@ -100,6 +117,15 @@ const cartCounterCSS = css`
     overflow: hidden;
     vertical-align: middle;
     font-size: 0.9rem;
+
+    ${mobileDevice(
+        css`
+            width: 1.2rem;
+            height: 1.2rem;
+            margin-left: 0.2rem;
+            font-size: 0.8rem;
+        `
+    )}
 `;
 
 export default observer(Actions);
