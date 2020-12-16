@@ -23,13 +23,16 @@ function Form({ products, loading, onComplete }) {
         },
         onSubmit: async (values, actions) => {
             try {
-                await fetch('/api/order', {
+                const res = await fetch('/api/order', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        details: values,
+                        details: {
+                            ...values,
+                            email: user ? user.email : values.email
+                        },
                         products: products.map((product) => ({
                             id: product.id,
                             count: product.__total,
@@ -37,6 +40,11 @@ function Form({ products, loading, onComplete }) {
                         }))
                     })
                 });
+                const { success, error } = await res.json();
+
+                if (error) {
+                    throw new Error(error);
+                }
                 Cart.reset();
                 onComplete();
             } catch (error) {

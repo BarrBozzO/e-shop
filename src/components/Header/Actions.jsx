@@ -21,7 +21,7 @@ function Actions({ minimal, handleDisplayAuth }) {
     };
 
     const handleUserClick = () => {
-        return user ? router.push('/account') : handleDisplayAuth;
+        return user ? router.push('/account') : handleDisplayAuth();
     };
 
     return (

@@ -41,7 +41,8 @@ export default async (req, res) => {
         const created = await ordersRef.add({
             email: details.email,
             details,
-            products
+            products,
+            datetime: firebase.firestore.FieldValue.serverTimestamp()
         });
 
         res.json({

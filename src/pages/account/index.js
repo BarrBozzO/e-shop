@@ -1,20 +1,26 @@
 import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import { format } from 'date-fns';
 import { useRouter } from 'next/router';
 import { observer } from 'mobx-react';
 import { css } from '@emotion/core';
 import { Layout, ActionButton, Preloader, Button } from 'components';
 import { useUser } from 'features/user';
+import { useOrderStats } from 'features/orders';
 
 const Account = observer(() => {
     const router = useRouter();
     const { user, initializing: userInitializing, logout } = useUser();
+    const { data: orderStats, error: orderStatsError } = useOrderStats(
+        user?.token
+    );
 
     if (!user && !userInitializing && typeof window !== 'undefined') {
         router.replace('/');
     }
 
+    const isLoadingStats = !orderStats && !orderStatsError;
     const email = user ? user.email : '';
 
     return (
@@ -42,7 +48,7 @@ const Account = observer(() => {
                             <>
                                 <span css={profileEmailCSS}>{email}</span>
                                 <div css={profilePointsCSS}>
-                                    <span>0 points</span>
+                                    <span>777 points</span>
                                     <p>
                                         You’re 200 points away from your next
                                         reward and 500 points are needed to
@@ -78,7 +84,33 @@ const Account = observer(() => {
                 >
                     <div css={insightsItemCSS}>
                         <h3>Purchases</h3>
-                        <div>No purchases made</div>
+                        <div>
+                            {isLoadingStats ? (
+                                <Preloader />
+                            ) : (
+                                <div>
+                                    <div css={purchaseStatItemCSS}>
+                                        <span>Total</span>
+                                        <span>{orderStats.data.total}</span>
+                                    </div>
+                                    <div css={purchaseStatItemCSS}>
+                                        <span>Total Products</span>
+                                        <span>{orderStats.data.items}</span>
+                                    </div>
+                                    <div css={purchaseStatItemCSS}>
+                                        <span>Latest order</span>
+                                        <span>
+                                            {format(
+                                                new Date(
+                                                    orderStats.data.latest
+                                                ),
+                                                'mm/dd/yyyy'
+                                            )}
+                                        </span>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <div css={insightsItemCSS}>
                         <h3>Reviews</h3>
@@ -162,7 +194,29 @@ const insightsItemCSS = css`
     }
 
     h3 {
+        font-size: 1.8rem;
         margin-top: 0;
+        margin-bottom: 1rem;
+    }
+`;
+
+const purchaseStatItemCSS = css`
+    width: 33%;
+    display: inline-block;
+    text-align: center;
+
+    & > span:first-child {
+        display: inline-block;
+        width: 100%;
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+        text-transform: uppercase;
+    }
+
+    & > span:last-child {
+        color: #666;
+        font-size: 1.2rem;
     }
 `;
 
