@@ -1,47 +1,72 @@
-import React from "react";
-import Head from "next/head";
-import Layout from "components/Layout";
-import Preloader from "components/Preloader";
-import List from "features/favorites/List";
-import useSWR from "swr";
-import { useFavorites } from "features/favorites";
+import React from 'react';
+import Head from 'next/head';
+import { css } from '@emotion/core';
+import { observer } from 'mobx-react';
+import useSWR from 'swr';
+import { stringify } from 'qs';
+import { Layout, Preloader } from 'components';
+import List from 'features/favorites/List';
+import { FavoritesStore } from 'features/favorites';
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-function Favorites() {
-  const { getIds } = useFavorites();
-  const favIds = getIds();
-  const params = new URLSearchParams(
-    favIds.reduce((params, curr) => {
-      params.push(["id", curr]);
-      return params;
-    }, [])
-  );
+const Favorites = observer(() => {
+    const favIds = FavoritesStore.get();
 
-  const { data, error } = useSWR(
-    `/api/products?${params.toString()}`,
-    fetcher
-  );
-  const isLoading = !data && !error;
+    const { data: { data } = {}, error } = useSWR(
+        `/api/products?${stringify({ id: favIds }, { indices: false })}`,
+        fetcher
+    );
+    const isLoading = !data && !error;
 
-  const renderProducts = () => {
-    if (error) return null;
+    const renderProducts = () => {
+        if (error) return null;
 
-    if (!data.length) return "No Products";
+        if (!data.length) return 'No Products';
 
-    return <List products={data} />;
-  };
+        return <List products={data} />;
+    };
 
-  return (
-    <Layout>
-      <Head>
-        <title>Favorites</title>
-      </Head>
+    return (
+        <Layout>
+            <Head>
+                <title>Favorites</title>
+            </Head>
 
-      <h1>Favorites</h1>
-      <div>{isLoading ? <Preloader /> : renderProducts()}</div>
-    </Layout>
-  );
-}
+            <section
+                css={{
+                    maxWidth: '1188px',
+                    margin: '0 auto'
+                }}
+            >
+                <h1 css={titleCSS}>Favorites</h1>
+                <div>
+                    {isLoading ? (
+                        <Preloader />
+                    ) : (
+                        <div>
+                            <div css={totalCSS}>{data.length} items</div>
+                            {renderProducts()}
+                        </div>
+                    )}
+                </div>
+            </section>
+        </Layout>
+    );
+});
+
+const titleCSS = css`
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+`;
+
+const totalCSS = css`
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    text-align: right;
+    margin-bottom: 1rem;
+`;
 
 export default Favorites;

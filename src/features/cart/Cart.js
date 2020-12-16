@@ -1,68 +1,125 @@
-import { action, computed, makeAutoObservable } from "mobx";
+import { action, computed, makeAutoObservable } from 'mobx';
 class Cart {
-  static KEY = "cart";
+    static KEY = 'cart';
 
-  constructor() {
-    const initValues = this._getPersistedData();
+    constructor() {
+        const initValues = this._getPersistedData();
 
-    this.data = new Map(initValues);
-    makeAutoObservable(this);
-  }
-
-  @action
-  add(productId) {
-    const current = this.data.get(productId) || 0;
-    this.data.set(productId, current + 1);
-    this._persist();
-  }
-
-  @action
-  remove(productId, reset = false) {
-    const current = this.data.get(productId) || 0;
-    const nextValue = current - 1;
-
-    if (nextValue > 0 && !reset) {
-      this.data.set(productId, nextValue);
-    } else {
-      this.data.delete(productId);
-    }
-    this._persist();
-  }
-
-  @computed
-  get(productId) {
-    if (!productId) {
-      return this.data;
+        this.data = new Map(initValues);
+        makeAutoObservable(this);
     }
 
-    return this.data.get(productId) || null;
-  }
+    @action
+    add(productId, size) {
+        let current = this.data.get(productId);
 
-  @computed
-  getIds() {
-    const items = this.get();
-    const result = [];
+        if (!current) {
+            current = {
+                total: 0,
+                sizes: {
+                    [size]: 0
+                }
+            };
+        }
 
-    for (const item of items) {
-      result.push(item[0]);
+        const next = {
+            total: current.total + 1,
+            sizes: {
+                ...current.sizes,
+                [size]: (current.sizes[size] || 0) + 1
+            }
+        };
+
+        this.data.set(productId, next);
+        this._persist();
     }
 
-    return result;
-  }
+    @action
+    remove(productId, size, reset = false) {
+        const current = this.data.get(productId);
 
-  @computed
-  getSize() {
-    return this.data.size;
-  }
+        if (current === null) throw new Error('Wrong product ID');
 
-  _getPersistedData = () => {
-    if (typeof window === "undefined") return [];
-    return JSON.parse(localStorage.getItem(Cart.KEY)) || [];
-  };
+        const next = {
+            total: current.total - (reset ? current.sizes[size] : 1),
+            sizes: {
+                ...current.sizes,
+                [size]: reset ? 0 : current.sizes[size] - 1
+            }
+        };
+        this.data.set(productId, next);
+        this._persist();
+    }
 
-  _persist() {
-    localStorage.setItem(Cart.KEY, JSON.stringify([...this.get()]));
-  }
+    @action
+    reset() {
+        this.data.clear();
+        this._persist();
+    }
+
+    @computed
+    get(productId, size) {
+        if (!productId) {
+            return this.data;
+        }
+
+        const product = this.data.get(productId) || null;
+
+        if (!product || product.total === 0) return null;
+
+        return size ? product.sizes[size] : product;
+    }
+
+    @computed
+    getProductIds() {
+        const result = [];
+
+        this.data.forEach((product, id) => {
+            if (product.total === 0) return;
+            result.push(id);
+        });
+
+        return result;
+    }
+
+    @computed
+    getTotal() {
+        let result = 0;
+        this.data.forEach((product) => {
+            result += product.total;
+        });
+
+        return result;
+    }
+
+    @computed
+    getBySizes() {
+        const result = [];
+
+        this.data.forEach((product, id) => {
+            if (product.total === 0) return;
+
+            Object.keys(product.sizes).forEach((size) => {
+                if (product.sizes[size] < 1) return;
+                result.push({
+                    id,
+                    size,
+                    total: product.sizes[size]
+                });
+            });
+        });
+
+        return result;
+    }
+
+    _getPersistedData = () => {
+        if (typeof window === 'undefined') return [];
+        return JSON.parse(localStorage.getItem(Cart.KEY)) || [];
+    };
+
+    _persist() {
+        localStorage.setItem(Cart.KEY, JSON.stringify([...this.get()]));
+    }
 }
 
 export default new Cart();
