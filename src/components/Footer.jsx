@@ -2,29 +2,18 @@ import React from 'react';
 import Link from 'next/link';
 import { css } from '@emotion/core';
 import Icon from 'components/Icon';
+import { mobileDevice } from 'styles/utils';
 
 function Footer() {
     return (
-        <footer
-            css={{
-                padding: '72px 0 54px',
-                backgroundColor: 'rgb(228, 228, 228)'
-            }}
-        >
+        <footer css={footerCSS}>
             <div
                 css={{
                     maxWidth: '960px',
                     margin: '0 auto'
                 }}
             >
-                <div
-                    css={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'flex-start'
-                    }}
-                >
+                <div css={columnsCSS}>
                     <div css={linksColumn}>
                         <h4>shop</h4>
                         <Link href="/products/women">
@@ -82,6 +71,15 @@ function Footer() {
     );
 }
 
+const footerCSS = css`
+    padding: 72px 0 54px;
+    background-color: rgb(228, 228, 228);
+
+    ${mobileDevice(css`
+        padding: 48px 0;
+    `)}
+`;
+
 const linkCSS = css`
     display: block;
     margin-bottom: 1rem;
@@ -96,6 +94,20 @@ const readMoreCSS = css`
     }
 `;
 
+const columnsCSS = css`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+
+    ${mobileDevice(css`
+        flex-direction: column;
+        align-items: flex-start;
+        width: 80%;
+        margin: 0 auto;
+    `)}
+`;
+
 const linksColumn = css`
     h4 {
         text-transform: uppercase;
@@ -105,6 +117,15 @@ const linksColumn = css`
     & + & {
         margin-left: 2rem;
     }
+
+    ${mobileDevice(
+        css`
+            & + & {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+        `
+    )}
 `;
 
 export default Footer;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { css } from '@emotion/core';
+import { mobileDevice } from 'styles/utils';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Preloader, FavoriteButton, Button } from 'components';
@@ -46,14 +47,7 @@ function List({ products, isLastPage, handleLoadMore, loading }) {
 
 List.Item = ({ product: { id, data } }) => {
     return (
-        <div
-            css={css`
-                flex: 0 0 calc(33% - 1rem);
-                margin-left: 0.5rem;
-                margin-bottom: 2rem;
-                margin-right: 0.5rem;
-            `}
-        >
+        <div css={itemCSS}>
             <div
                 css={{
                     position: 'relative'
@@ -120,6 +114,17 @@ List.Item = ({ product: { id, data } }) => {
         </div>
     );
 };
+
+const itemCSS = css`
+    flex: 0 0 calc(33% - 1rem);
+    margin-left: 0.5rem;
+    margin-bottom: 2rem;
+    margin-right: 0.5rem;
+
+    ${mobileDevice(css`
+        flex: 0 0 calc(50% - 1rem);
+    `)}
+`;
 
 const imageContainerCSS = css`
     display: block;

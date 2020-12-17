@@ -5,6 +5,7 @@ import Image from 'next/image';
 import FavoriteButton from 'components/FavoriteButton';
 import ActionButton from 'components/ActionButton';
 import Cart from 'features/cart/Cart';
+import { mobileDevice } from 'styles/utils';
 
 function List({ products }) {
     if (!Array.isArray(products) || !products.length) return null;
@@ -103,22 +104,8 @@ List.Item = ({ product: { id, data, __total, __size }, onDelete, onAdd }) => {
     const image = images[1] ? images[1] : images[0];
 
     return (
-        <div
-            css={css`
-                width: 100%;
-                display: flex;
-                align-items: stretch;
-                justify-content: flex-start;
-                margin: 1rem 0;
-            `}
-        >
-            <div
-                css={{
-                    width: '170px',
-                    position: 'relative',
-                    marginRight: '1rem'
-                }}
-            >
+        <div css={productCSS}>
+            <div css={productImageWrapperCSS}>
                 <Link href={`/products/${id}`}>
                     <a css={imageContainerCSS}>
                         <Image
@@ -129,25 +116,9 @@ List.Item = ({ product: { id, data, __total, __size }, onDelete, onAdd }) => {
                     </a>
                 </Link>
             </div>
-            <div
-                css={{
-                    flex: '1 0 auto',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
-                    position: 'relative'
-                }}
-            >
+            <div css={productDetailsCSS}>
                 <Link href={`/products/${id}`}>
-                    <a
-                        css={{
-                            display: 'inline-block',
-                            fontSize: '1.4rem',
-                            cursor: 'pointer'
-                        }}
-                    >
-                        {name}
-                    </a>
+                    <a css={productNameCSS}>{name}</a>
                 </Link>
                 <span
                     css={{
@@ -202,11 +173,7 @@ List.Item = ({ product: { id, data, __total, __size }, onDelete, onAdd }) => {
                 <ActionButton
                     icon={{
                         name: 'cross',
-                        css: css`
-                            position: absolute;
-                            top: 1rem;
-                            right: 1rem;
-                        `
+                        css: closeBtnCSS
                     }}
                     onClick={() => onDelete(true)}
                 />
@@ -214,6 +181,57 @@ List.Item = ({ product: { id, data, __total, __size }, onDelete, onAdd }) => {
         </div>
     );
 };
+
+const productCSS = css`
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    margin: 1rem 0;
+`;
+
+const productNameCSS = css`
+    display: inline-block;
+    font-size: 1.4rem;
+    cursor: pointer;
+
+    ${mobileDevice(css`
+        font-size: 1rem;
+    `)}
+`;
+
+const productDetailsCSS = css`
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+
+    ${mobileDevice(css`
+        padding-right: 28px;
+    `)}
+`;
+
+const closeBtnCSS = css`
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+
+    ${mobileDevice(css`
+        top: 0;
+        right: 0;
+    `)}
+`;
+
+const productImageWrapperCSS = css`
+    width: 170px;
+    position: relative;
+    margin-right: 1rem;
+
+    ${mobileDevice(css`
+        width: 40%;
+    `)}
+`;
 
 const imageContainerCSS = css`
     display: block;

@@ -8,7 +8,14 @@ function Home() {
                 <title>Returns And Refund policy</title>
             </Head>
 
-            <h1>Returns And Refund policy</h1>
+            <h1
+                css={{
+                    margin: '2rem 0 ',
+                    textAlign: 'center'
+                }}
+            >
+                Returns And Refund policy
+            </h1>
             <div>
                 <h2>Return with USPS</h2>
                 <p>

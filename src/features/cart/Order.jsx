@@ -1,8 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import { css } from '@emotion/core';
-import Button from 'components/Button';
 import { useRouter } from 'next/router';
+import { css } from '@emotion/core';
+import { mobileDevice } from 'styles/utils';
+import { Button } from 'components';
 
 const SHIPPING_PRICE = 3.99;
 
@@ -28,12 +29,7 @@ function Order({ products }) {
     };
 
     return (
-        <section
-            css={{
-                flex: '0 0 auto',
-                maxWidth: '360px'
-            }}
-        >
+        <section css={sectionCSS}>
             <div
                 css={{
                     backgroundColor: '#fff',
@@ -141,6 +137,15 @@ function Order({ products }) {
     );
 }
 
+const sectionCSS = css`
+    flex: 0 0 auto;
+    max-width: 360px;
+
+    ${mobileDevice(css`
+        max-width: none;
+    `)}
+`;
+
 const titleCSS = css`
     text-transform: uppercase;
 `;
@@ -194,6 +199,10 @@ const shippingDescriptionCSS = css`
     background-color: #fff;
     padding: 1rem;
     margin-top: 2rem;
+
+    h3 {
+        margin: 1rem 0;
+    }
 `;
 
 export default Order;

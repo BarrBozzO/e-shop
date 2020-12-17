@@ -7,7 +7,14 @@ function Home() {
             <Head>
                 <title>TERMS & CONDITIONS</title>
             </Head>
-            <h1>TERMS & CONDITIONS</h1>
+            <h1
+                css={{
+                    margin: '2rem 0 ',
+                    textAlign: 'center'
+                }}
+            >
+                TERMS & CONDITIONS
+            </h1>
             Welcome to the loyalty program of H&M Hennes & Mauritz GBC AB, with
             number of registration 556070-1715 and registered seat at Mäster
             Samuelsgatan 46 A, 111 57 Stockholm Sweden ("Loyalty Program"). By

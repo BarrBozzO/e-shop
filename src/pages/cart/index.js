@@ -3,9 +3,9 @@ import Head from 'next/head';
 import useSWR from 'swr';
 import { stringify } from 'qs';
 import { observer } from 'mobx-react';
-import Layout from 'components/Layout';
-import Breadcrumbs from 'components/Breadcrumbs';
-import Preloader from 'components/Preloader';
+import { css } from '@emotion/core';
+import { mobileDevice } from 'styles/utils';
+import { Layout, Breadcrumbs, Preloader } from 'components';
 import Order from 'features/cart/Order';
 import List from 'features/cart/List';
 import Cart from 'features/cart/Cart';
@@ -78,26 +78,9 @@ const CartPage = observer(() => {
                     }
                 ]}
             />
-            <h1
-                css={{
-                    textAlign: 'center',
-                    margin: '2rem',
-                    fontSize: '3rem'
-                }}
-            >
-                Shopping Cart
-            </h1>
-            <div
-                css={{
-                    display: 'flex',
-                    justifyContent: 'flex-start',
-                    alignItems: 'flex-start',
-                    maxWidth: '1180px',
-                    margin: '0 auto',
-                    padding: '0 2rem'
-                }}
-            >
-                <section css={{ flex: '1 0 auto', paddingRight: '1rem' }}>
+            <h1 css={titleCSS}>Shopping Cart</h1>
+            <div css={containerCSS}>
+                <section css={productsListCSS}>
                     {isLoading ? <Preloader /> : renderProducts()}
                 </section>
                 <Order products={products} />
@@ -105,5 +88,34 @@ const CartPage = observer(() => {
         </Layout>
     );
 });
+
+const titleCSS = css`
+    text-align: center;
+    margin: 2rem auto;
+`;
+
+const productsListCSS = css`
+    flex: 1 0 auto;
+    padding-right: 1rem;
+
+    ${mobileDevice(css`
+        padding: 0;
+    `)}
+`;
+
+const containerCSS = css`
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    max-width: 1180px;
+    margin: 0 auto 2rem;
+    padding: 0 2rem;
+
+    ${mobileDevice(css`
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0;
+    `)}
+`;
 
 export default CartPage;

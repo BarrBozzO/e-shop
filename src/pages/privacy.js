@@ -9,7 +9,14 @@ function Home() {
                 <title>PRIVACY POLICY H&M MEMBERSHIP</title>
             </Head>
 
-            <h1>PRIVACY POLICY H&M MEMBERSHIP</h1>
+            <h1
+                css={{
+                    margin: '2rem 0 ',
+                    textAlign: 'center'
+                }}
+            >
+                PRIVACY POLICY H&M MEMBERSHIP
+            </h1>
             <div>
                 <h2>Why do we use your personal data?</h2>
 
