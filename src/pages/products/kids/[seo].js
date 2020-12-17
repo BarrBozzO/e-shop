@@ -13,7 +13,7 @@ import {
 import { useUser } from 'features/user';
 
 function Seo({ initialProducts, seoData }) {
-    const [filters, setFilters] = useState({});
+    const [filters, setFilters] = useState(seoData.filters);
     const { user } = useUser();
     const { data, error, size, setSize, revalidate } = useFetchProducts({
         initialData: [
@@ -29,6 +29,10 @@ function Seo({ initialProducts, seoData }) {
     useEffect(() => {
         revalidate();
     }, [filters]);
+
+    useEffect(() => {
+        setFilters(seoData.filters);
+    }, [seoData]);
 
     const handleLoadMore = useCallback(() => setSize(size + 1), [
         size,

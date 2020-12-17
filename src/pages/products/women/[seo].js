@@ -12,8 +12,8 @@ import {
 } from 'features/products';
 import { useUser } from 'features/user';
 
-function ViewAll({ initialProducts, seoData }) {
-    const [filters, setFilters] = useState({});
+function SeoPage({ initialProducts, seoData }) {
+    const [filters, setFilters] = useState(seoData.filters);
     const { user } = useUser();
     const { data, error, size, setSize, revalidate } = useFetchProducts({
         initialData: [
@@ -29,6 +29,10 @@ function ViewAll({ initialProducts, seoData }) {
     useEffect(() => {
         revalidate();
     }, [filters]);
+
+    useEffect(() => {
+        setFilters(seoData.filters);
+    }, [seoData]);
 
     const handleLoadMore = useCallback(() => setSize(size + 1), [
         size,
@@ -99,7 +103,7 @@ function ViewAll({ initialProducts, seoData }) {
 export const getStaticProps = async ({ params }) => {
     const seoData = seoPages[params.seo];
     const products = await fetchProducts(seoData.staticFilters);
-
+    console.log(seoData);
     return {
         props: {
             initialProducts: products,
@@ -217,7 +221,7 @@ const seoPages = {
             age: 'adult',
             type: 'clothes'
         },
-        fitlers: {
+        filters: {
             type: 'clothes'
         }
     },
@@ -229,7 +233,7 @@ const seoPages = {
             age: 'adult',
             type: 'underwear'
         },
-        fitlers: {
+        filters: {
             type: 'underwear'
         }
     },
@@ -261,4 +265,4 @@ const seoPages = {
     }
 };
 
-export default ViewAll;
+export default SeoPage;
