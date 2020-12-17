@@ -26,7 +26,7 @@ function Actions({ minimal, handleDisplayAuth }) {
     };
 
     return (
-        <div>
+        <div css={actionsContainerCSS}>
             <ActionButton
                 key="profile"
                 css={btnCSS}
@@ -78,6 +78,12 @@ function Actions({ minimal, handleDisplayAuth }) {
         </div>
     );
 }
+
+const actionsContainerCSS = css`
+    ${mobileDevice(css`
+        margin-top: 10px;
+    `)}
+`;
 
 const btnCSS = css`
     display: inline-flex;

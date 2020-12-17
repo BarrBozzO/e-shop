@@ -350,11 +350,11 @@ const productPriceCSS = css`
 `;
 
 const productSizeCSS = css`
-    display: inline-block;
-    width: 70%;
     margin-bottom: 2rem;
 
     ${mobileDevice(css`
+        display: inline-block;
+        width: 70%;
         margin-bottom: 1rem;
     `)}
 `;

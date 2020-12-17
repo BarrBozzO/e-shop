@@ -107,7 +107,7 @@ const navCSS = css`
 
     ${mobileDevice(
         css`
-            width: 80%;
+            width: 100%;
             margin: 2rem auto 0;
         `
     )}

@@ -6,6 +6,7 @@ import { useOrders } from 'features/orders';
 import { useUser } from 'features/user';
 import { css } from '@emotion/core';
 import { format } from 'date-fns';
+import { mobileDevice } from 'styles/utils';
 
 const Purchases = () => {
     const { user, initializing: userInitializing } = useUser();

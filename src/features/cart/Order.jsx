@@ -29,12 +29,7 @@ function Order({ products }) {
     };
 
     return (
-        <section
-            css={{
-                flex: '0 0 auto',
-                maxWidth: '360px'
-            }}
-        >
+        <section css={sectionCSS}>
             <div
                 css={{
                     backgroundColor: '#fff',
@@ -141,6 +136,15 @@ function Order({ products }) {
         </section>
     );
 }
+
+const sectionCSS = css`
+    flex: 0 0 auto;
+    max-width: 360px;
+
+    ${mobileDevice(css`
+        max-width: none;
+    `)}
+`;
 
 const titleCSS = css`
     text-transform: uppercase;

@@ -30,13 +30,7 @@ const Account = observer(() => {
                 <title>My Account</title>
             </Head>
             <div css={containerCSS}>
-                <section
-                    css={{
-                        flex: '0 0 314px',
-                        padding: '0 14px 0 0',
-                        textAlign: 'left'
-                    }}
-                >
+                <section css={sectionCSS}>
                     <div css={profileCSS}>
                         {userInitializing ? (
                             <Preloader cssParams={profileLoadingCSS} />
@@ -77,16 +71,12 @@ const Account = observer(() => {
                         </li>
                     </ul>
                 </section>
-                <section
-                    css={{
-                        flex: '1 0 auto'
-                    }}
-                >
+                <section css={sectionCSS}>
                     <div css={insightsItemCSS}>
                         <h3>Purchases</h3>
                         <div>
                             {isLoadingStats ? (
-                                <Preloader />
+                                <Preloader cssParams={preloaderCSS} />
                             ) : (
                                 <div>
                                     <div css={purchaseStatItemCSS}>
@@ -121,6 +111,22 @@ const Account = observer(() => {
         </Layout>
     );
 });
+
+const sectionCSS = css`
+    &:first-child {
+        flex: 0 0 314px;
+        padding: 0 14px 0 0;
+        text-align: left;
+    }
+
+    &:last-child {
+        flex: 1 0 auto;
+
+        ${mobileDevice(css`
+            width: 100%;
+        `)}
+    }
+`;
 
 const containerCSS = css`
     display: flex;
@@ -229,6 +235,10 @@ const insightsItemCSS = css`
         margin-top: 0;
         margin-bottom: 1rem;
     }
+
+    ${mobileDevice(css`
+        width: 100%;
+    `)}
 `;
 
 const purchaseStatItemCSS = css`
@@ -249,6 +259,11 @@ const purchaseStatItemCSS = css`
         color: #666;
         font-size: 1.2rem;
     }
+`;
+
+const preloaderCSS = css`
+    fill: #222;
+    margin: 0 auto;
 `;
 
 export default Account;
