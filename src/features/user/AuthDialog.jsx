@@ -86,7 +86,7 @@ function AuthDialog({ onClose, ...otherProps }) {
                     formik.handleSubmit();
                 }}
             >
-                <div css={{ textAlign: 'center', marginBottom: '1rem' }}>
+                <div css={{ textAlign: 'center' }}>
                     <span css={titleCSS}>Sign in</span>
                     <p css={memberDescCSS}>
                         Become a Member — you'll enjoy exclusive deals, offers,
@@ -236,6 +236,11 @@ function AuthDialog({ onClose, ...otherProps }) {
                     )}
                 </div>
             </form>
+            <div css={credsCSS}>
+                <p>Demo credentials</p>
+                <code>demo.account@mail.com</code>
+                <code>demo-password</code>
+            </div>
         </Modal>
     );
 }
@@ -247,6 +252,7 @@ const modalCSS = css`
     right: auto;
     bottom: auto;
     transform: translate(-50%, -50%);
+    position: fixed;
     padding: 44px 24px 32px;
     background-color: #faf9f8;
     border: none;
@@ -270,12 +276,32 @@ const closeCSS = css`
     top: 20px;
 `;
 
+const credsCSS = css`
+    background-color: #f7e6c0;
+    margin-top: 1rem;
+    padding: 0.6rem 1rem;
+
+    p {
+        text-align: center;
+        text-transform: uppercase;
+        margin: 0 0 0.4rem;
+        font-size: 0.9rem;
+    }
+
+    code {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        user-select: all;
+        color: #bd8504;
+    }
+`;
+
 const titleCSS = css`
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: 700;
 
     ${mobileDevice(css`
-        font-size: 1.4rem;
         text-transform: uppercase;
     `)}
 `;
