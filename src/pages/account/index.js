@@ -94,7 +94,7 @@ const Account = observer(() => {
                                                 new Date(
                                                     orderStats.data.latest
                                                 ),
-                                                'mm/dd/yyyy'
+                                                'MM/dd/yyyy'
                                             )}
                                         </span>
                                     </div>
