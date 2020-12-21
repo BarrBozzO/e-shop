@@ -1,10 +1,10 @@
-import React, { useRef, useLayoutEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import Icon from 'components/Icon';
 
 function Preloader({ cssParams, size = 16 }) {
     const iconRef = useRef(null);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (!iconRef.current) return;
 
         iconRef.current.animate(

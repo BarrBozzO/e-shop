@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
+import { css } from '@emotion/core';
+import { mobileDevice } from 'styles/utils';
 import { Layout, Breadcrumbs, AdBanner } from 'components';
 import {
     List,
@@ -11,9 +13,16 @@ import {
 import { useUser } from 'features/user';
 
 function Seo({ initialProducts, seoData }) {
-    const [filters, setFilters] = useState({});
+    const [filters, setFilters] = useState(seoData.filters);
     const { user } = useUser();
-    const { data, error, size, setSize, revalidate } = useFetchProducts({
+    const {
+        data,
+        error,
+        loading,
+        size,
+        setSize,
+        revalidate
+    } = useFetchProducts({
         initialData: [
             {
                 data: initialProducts,
@@ -28,12 +37,14 @@ function Seo({ initialProducts, seoData }) {
         revalidate();
     }, [filters]);
 
+    useEffect(() => {
+        setFilters(seoData.filters);
+    }, [seoData]);
+
     const handleLoadMore = useCallback(() => setSize(size + 1), [
         size,
         setSize
     ]);
-
-    const isLoading = !data && !error;
 
     if (error) {
         console.error(error);
@@ -72,24 +83,10 @@ function Seo({ initialProducts, seoData }) {
                 ]}
             />
             {!user && <AdBanner />}
-            <div
-                css={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'flex-start',
-                    width: '100%'
-                }}
-            >
+            <div css={containerCSS}>
                 <Nav links={seoLinks} />
                 <div css={{ flex: '1 0 0' }}>
-                    <h1
-                        css={{
-                            fontSize: '3rem',
-                            textTransform: 'uppercase'
-                        }}
-                    >
-                        {seoData.h1}
-                    </h1>
+                    <h1 css={titleCSS}>{seoData.h1}</h1>
                     {seoData.description && <p>{seoData.description}</p>}
                     <Filter
                         filters={filters}
@@ -98,8 +95,8 @@ function Seo({ initialProducts, seoData }) {
                     />
                     <List
                         products={products}
-                        isLastPage={products.length >= totalProductsCount}
-                        loading={isLoading}
+                        total={totalProductsCount}
+                        loading={loading}
                         handleLoadMore={handleLoadMore}
                     />
                 </div>
@@ -130,6 +127,28 @@ export const getStaticPaths = async () => {
         fallback: false
     };
 };
+
+const titleCSS = css`
+    font-size: 3rem;
+    text-transform: uppercase;
+    line-height: 1;
+
+    ${mobileDevice(css`
+        margin: 2rem 0;
+    `)}
+`;
+
+const containerCSS = css`
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 2rem;
+
+    ${mobileDevice(css`
+        flex-direction: column-reverse;
+    `)}
+`;
 
 const seoLinks = [
     {
@@ -188,7 +207,7 @@ const seoPages = {
             age: 'kid',
             seo: 'baby-boys-4m-4y'
         },
-        fitlers: {
+        filters: {
             age: 'kid',
             seo: 'baby-boys-4m-4y'
         }
@@ -200,7 +219,7 @@ const seoPages = {
             age: 'kid',
             seo: 'baby-girls-4m-4y'
         },
-        fitlers: {
+        filters: {
             age: 'kid',
             seo: 'baby-girls-4m-4y'
         }

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { css } from '@emotion/core';
+import { mobileDevice } from 'styles/utils';
 import Link from 'next/link';
 import Image from 'next/image';
-import Button from 'components/Button';
 
 function List({ products: initProducts }) {
     const [products, setProducts] = useState(initProducts);
@@ -32,17 +32,7 @@ function List({ products: initProducts }) {
 
 List.Item = ({ product: { id, data } }) => {
     return (
-        <div
-            css={css`
-                flex: 0 0 calc(33% - 1%);
-                margin-bottom: 2rem;
-
-                &:nth-child(3n + 2) {
-                    margin-left: 2%;
-                    margin-right: 2%;
-                }
-            `}
-        >
+        <div css={itemCSS}>
             <div
                 css={{
                     position: 'relative'
@@ -86,6 +76,29 @@ List.Item = ({ product: { id, data } }) => {
         </div>
     );
 };
+
+const itemCSS = css`
+    flex: 0 0 calc(33% - 1%);
+    margin-bottom: 2rem;
+
+    &:nth-child(3n + 2) {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+
+    ${mobileDevice(css`
+        flex: 0 0 calc(50% - 1%);
+
+        &:nth-child(3n + 2) {
+            margin-right: 0;
+            margin-left: 0;
+        }
+
+        &:nth-child(2n) {
+            margin-left: 2%;
+        }
+    `)}
+`;
 
 const imageContainerCSS = css`
     display: block;

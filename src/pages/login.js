@@ -46,7 +46,8 @@ function Login() {
             <h1
                 css={{
                     width: '100%',
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    margin: '2rem 0'
                 }}
             >
                 Sign In
@@ -54,7 +55,7 @@ function Login() {
             <div
                 css={{
                     maxWidth: '750px',
-                    margin: '0 auto'
+                    margin: '2rem auto'
                 }}
             >
                 <form

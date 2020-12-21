@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { css } from '@emotion/core';
+import { mobileDevice } from 'styles/utils';
 import Head from 'next/head';
 import { Layout, Breadcrumbs, AdBanner } from 'components';
 import {
@@ -10,8 +12,8 @@ import {
 } from 'features/products';
 import { useUser } from 'features/user';
 
-function ViewAll({ initialProducts, seoData }) {
-    const [filters, setFilters] = useState({});
+function SeoPage({ initialProducts, seoData }) {
+    const [filters, setFilters] = useState(seoData.filters);
     const { user } = useUser();
     const { data, error, size, setSize, revalidate } = useFetchProducts({
         initialData: [
@@ -27,6 +29,10 @@ function ViewAll({ initialProducts, seoData }) {
     useEffect(() => {
         revalidate();
     }, [filters]);
+
+    useEffect(() => {
+        setFilters(seoData.filters);
+    }, [seoData]);
 
     const handleLoadMore = useCallback(() => setSize(size + 1), [
         size,
@@ -72,24 +78,10 @@ function ViewAll({ initialProducts, seoData }) {
                 ]}
             />
             {!user && <AdBanner />}
-            <div
-                css={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'flex-start',
-                    width: '100%'
-                }}
-            >
+            <div css={containerCSS}>
                 <Nav links={seoLinks} />
                 <div css={{ flex: '1 0 0' }}>
-                    <h1
-                        css={{
-                            fontSize: '3rem',
-                            textTransform: 'uppercase'
-                        }}
-                    >
-                        {seoData.h1}
-                    </h1>
+                    <h1 css={titleCSS}>{seoData.h1}</h1>
                     {seoData.description && <p>{seoData.description}</p>}
                     <Filter
                         filters={filters}
@@ -98,7 +90,7 @@ function ViewAll({ initialProducts, seoData }) {
                     />
                     <List
                         products={products}
-                        isLastPage={products.length >= totalProductsCount}
+                        total={totalProductsCount}
                         loading={isLoading}
                         handleLoadMore={handleLoadMore}
                     />
@@ -130,6 +122,28 @@ export const getStaticPaths = async () => {
         fallback: false
     };
 };
+
+const titleCSS = css`
+    font-size: 3rem;
+    text-transform: uppercase;
+    line-height: 1;
+
+    ${mobileDevice(css`
+        margin: 2rem 0;
+    `)}
+`;
+
+const containerCSS = css`
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 2rem;
+
+    ${mobileDevice(css`
+        flex-direction: column-reverse;
+    `)}
+`;
 
 const seoLinks = [
     {
@@ -207,7 +221,7 @@ const seoPages = {
             age: 'adult',
             type: 'clothes'
         },
-        fitlers: {
+        filters: {
             type: 'clothes'
         }
     },
@@ -219,7 +233,7 @@ const seoPages = {
             age: 'adult',
             type: 'underwear'
         },
-        fitlers: {
+        filters: {
             type: 'underwear'
         }
     },
@@ -251,4 +265,4 @@ const seoPages = {
     }
 };
 
-export default ViewAll;
+export default SeoPage;

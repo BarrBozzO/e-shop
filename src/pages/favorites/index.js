@@ -1,6 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import { css } from '@emotion/core';
+import { mobileDevice } from 'styles/utils';
 import { observer } from 'mobx-react';
 import useSWR from 'swr';
 import { stringify } from 'qs';
@@ -60,6 +61,10 @@ const titleCSS = css`
     font-weight: 700;
     text-align: center;
     margin-bottom: 3rem;
+
+    ${mobileDevice(css`
+        margin: 2rem 0;
+    `)}
 `;
 
 const totalCSS = css`

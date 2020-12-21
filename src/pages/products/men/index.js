@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { css } from '@emotion/core';
 import { Layout, Breadcrumbs } from 'components';
 import { Nav } from 'features/products';
+import { mobileDevice } from 'styles/utils';
 
 function MenHome() {
     return (
@@ -27,14 +28,7 @@ function MenHome() {
                     }
                 ]}
             />
-            <div
-                css={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'flex-start',
-                    width: '100%'
-                }}
-            >
+            <div css={containerCSS}>
                 <Nav links={seoLinks} />
                 <div css={{ flex: '1 0 0' }}>
                     <section
@@ -43,16 +37,7 @@ function MenHome() {
                             margin: '2rem auto'
                         }}
                     >
-                        <div
-                            css={{
-                                position: 'relative',
-                                display: 'flex',
-                                width: '100%',
-                                paddingBottom: '66%',
-                                flexDirection: 'column',
-                                alignItems: 'stretch'
-                            }}
-                        >
+                        <div css={seoBlockCSS}>
                             <Image
                                 css={{
                                     zIndex: '1'
@@ -70,23 +55,10 @@ function MenHome() {
                                     textAlign: 'center'
                                 }}
                             >
-                                <h3
-                                    css={{
-                                        fontSize: '3rem',
-                                        color: '#fff',
-                                        marginBottom: '1rem'
-                                    }}
-                                >
+                                <h3>
                                     The Holiday Shop
+                                    <span>Gift for him</span>
                                 </h3>
-                                <p
-                                    css={{
-                                        color: '#fff',
-                                        textAlign: 'center'
-                                    }}
-                                >
-                                    Gift for him
-                                </p>
                                 <Link href="/products/men/holiday">
                                     <a
                                         css={{
@@ -237,6 +209,47 @@ function MenHome() {
         </Layout>
     );
 }
+
+const containerCSS = css`
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 2rem;
+
+    ${mobileDevice(css`
+        flex-direction: column;
+    `)}
+`;
+
+const seoBlockCSS = css`
+    position: relative;
+    display: flex;
+    width: 100%;
+    padding-bottom: 66%;
+    flex-direction: column;
+    align-items: stretch;
+
+    h3 {
+        font-size: 3rem;
+        color: #fff;
+        margin-bottom: 1rem;
+        text-shadow: 0px 0px 20px rgba(0, 9, 84, 0.2);
+
+        ${mobileDevice(css`
+            font-size: 2rem;
+        `)}
+
+        span {
+            display: inline-block;
+            width: 100%;
+            font-weight: 400;
+            font-size: 1rem;
+            color: #fff;
+            text-align: center;
+        }
+    }
+`;
 
 const insightsCSS = css`
     text-align: center;

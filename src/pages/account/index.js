@@ -8,6 +8,7 @@ import { css } from '@emotion/core';
 import { Layout, ActionButton, Preloader, Button } from 'components';
 import { useUser } from 'features/user';
 import { useOrderStats } from 'features/orders';
+import { mobileDevice } from 'styles/utils';
 
 const Account = observer(() => {
     const router = useRouter();
@@ -28,19 +29,8 @@ const Account = observer(() => {
             <Head>
                 <title>My Account</title>
             </Head>
-            <div
-                css={{
-                    display: 'flex',
-                    alignItems: 'flex-start'
-                }}
-            >
-                <section
-                    css={{
-                        flex: '0 0 314px',
-                        padding: '0 14px 0 0',
-                        textAlign: 'left'
-                    }}
-                >
+            <div css={containerCSS}>
+                <section css={sectionCSS}>
                     <div css={profileCSS}>
                         {userInitializing ? (
                             <Preloader cssParams={profileLoadingCSS} />
@@ -73,20 +63,20 @@ const Account = observer(() => {
                             </Link>
                         </li>
                         <li>
-                            <ActionButton label={'Sign Out'} onClick={logout} />
+                            <ActionButton
+                                css={linkCSS}
+                                label={'Sign Out'}
+                                onClick={logout}
+                            />
                         </li>
                     </ul>
                 </section>
-                <section
-                    css={{
-                        flex: '1 0 auto'
-                    }}
-                >
+                <section css={sectionCSS}>
                     <div css={insightsItemCSS}>
                         <h3>Purchases</h3>
                         <div>
                             {isLoadingStats ? (
-                                <Preloader />
+                                <Preloader cssParams={preloaderCSS} />
                             ) : (
                                 <div>
                                     <div css={purchaseStatItemCSS}>
@@ -104,7 +94,7 @@ const Account = observer(() => {
                                                 new Date(
                                                     orderStats.data.latest
                                                 ),
-                                                'mm/dd/yyyy'
+                                                'MM/dd/yyyy'
                                             )}
                                         </span>
                                     </div>
@@ -121,6 +111,32 @@ const Account = observer(() => {
         </Layout>
     );
 });
+
+const sectionCSS = css`
+    &:first-child {
+        flex: 0 0 314px;
+        padding: 0 14px 0 0;
+        text-align: left;
+    }
+
+    &:last-child {
+        flex: 1 0 auto;
+
+        ${mobileDevice(css`
+            width: 100%;
+        `)}
+    }
+`;
+
+const containerCSS = css`
+    display: flex;
+    align-items: flex-start;
+    margin: 2rem auto;
+
+    ${mobileDevice(css`
+        flex-direction: column;
+    `)}
+`;
 
 const viewIdCSS = css`
     display: block;
@@ -166,6 +182,15 @@ const linksListCSS = css`
         padding: 0.4rem 0;
         text-transform: uppercase;
     }
+
+    ${mobileDevice(css`
+        display: flex;
+
+        li {
+            flex: 1 0 auto;
+            padding: 0;
+        }
+    `)}
 `;
 
 const linkCSS = css`
@@ -183,6 +208,18 @@ const linkCSS = css`
         right: 0;
         content: '⟶';
     }
+
+    ${mobileDevice(css`
+        text-decoration: underline;
+
+        span {
+            text-decoration: underline;
+        }
+
+        &::after {
+            content: '';
+        }
+    `)}
 `;
 
 const insightsItemCSS = css`
@@ -198,6 +235,10 @@ const insightsItemCSS = css`
         margin-top: 0;
         margin-bottom: 1rem;
     }
+
+    ${mobileDevice(css`
+        width: 100%;
+    `)}
 `;
 
 const purchaseStatItemCSS = css`
@@ -218,6 +259,11 @@ const purchaseStatItemCSS = css`
         color: #666;
         font-size: 1.2rem;
     }
+`;
+
+const preloaderCSS = css`
+    fill: #222;
+    margin: 0 auto;
 `;
 
 export default Account;

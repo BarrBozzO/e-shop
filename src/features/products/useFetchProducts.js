@@ -24,10 +24,14 @@ const getKey = (category, filters) => (pageIndex, previousPageData) => {
 };
 
 const useFetchProduct = ({ initialData, category, filters }) => {
-    return useSWRInfinite(getKey(category, filters), fetcher, {
+    const returnVals = useSWRInfinite(getKey(category, filters), fetcher, {
         initialData,
         revalidateOnFocus: false
     });
+    return {
+        ...returnVals,
+        loading: returnVals.isValidating
+    };
 };
 
 export default useFetchProduct;

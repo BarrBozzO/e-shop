@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
-import Layout from 'components/Layout';
-import Button from 'components/Button';
+import { css } from '@emotion/core';
+import { Layout, Button } from 'components';
 import { useUser, AuthDialog } from 'features/user';
+import { mobileDevice } from 'styles/utils';
 
 function Member() {
     const [displayAuth, setDisplayAuth] = useState(false);
@@ -21,23 +22,15 @@ function Member() {
 
             <h1
                 css={{
-                    textAlign: 'center',
-                    margin: '2rem 0'
+                    margin: '2rem 0 ',
+                    textAlign: 'center'
                 }}
             >
                 H&M MEMBERSHIP
             </h1>
 
-            <section>
-                <article
-                    css={{
-                        height: '569px',
-                        backgroundImage: 'url(/imgs/hello-member.jpeg)',
-                        backgroundSize: 'cover',
-                        textAlign: 'center',
-                        position: 'relative'
-                    }}
-                >
+            <section css={sectionCSS}>
+                <article css={seoBlockCSS}>
                     <div
                         css={{
                             position: 'absolute',
@@ -46,11 +39,7 @@ function Member() {
                             transform: 'translateY(-50%)'
                         }}
                     >
-                        <h3
-                            css={{
-                                fontSize: '2.4rem'
-                            }}
-                        >
+                        <h3>
                             Shop now. Pay later.
                             <br />
                             Exclusively for Members
@@ -93,17 +82,8 @@ function Member() {
                     >
                         EXCLUSIVE FOR MEMBERS
                     </h2>
-                    <div
-                        css={{
-                            display: 'flex'
-                        }}
-                    >
-                        <div
-                            css={{
-                                flex: '1 0 calc(33% - 1rem)',
-                                margin: '0 0.5rem'
-                            }}
-                        >
+                    <div css={featuresCSS}>
+                        <div css={featureCSS}>
                             <div
                                 css={{
                                     position: 'relative',
@@ -123,12 +103,7 @@ function Member() {
                                 in-store.
                             </p>
                         </div>
-                        <div
-                            css={{
-                                flex: '1 0 calc(33% - 1rem)',
-                                margin: '0 0.5rem'
-                            }}
-                        >
+                        <div css={featureCSS}>
                             <div
                                 css={{
                                     position: 'relative',
@@ -145,12 +120,7 @@ function Member() {
                                 benefits!
                             </p>
                         </div>
-                        <div
-                            css={{
-                                flex: '1 0 calc(33% - 1rem)',
-                                margin: '0 0.5rem'
-                            }}
-                        >
+                        <div css={featureCSS}>
                             <div
                                 css={{
                                     position: 'relative',
@@ -173,12 +143,14 @@ function Member() {
                 </div>
             </section>
             <section
-                css={{
-                    margin: '2rem 0',
-                    padding: '80px 34px',
-                    backgroundColor: '#f5e6e0',
-                    textAlign: 'center'
-                }}
+                css={[
+                    sectionCSS,
+                    {
+                        padding: '80px 34px',
+                        backgroundColor: '#f5e6e0',
+                        textAlign: 'center'
+                    }
+                ]}
             >
                 <div
                     css={{
@@ -199,5 +171,50 @@ function Member() {
         </Layout>
     );
 }
+
+const seoBlockCSS = css`
+    height: 569px;
+    background-image: url(/imgs/hello-member.jpeg);
+    background-size: cover;
+    text-align: center;
+    position: relative;
+
+    h3 {
+        font-size: 2.4rem;
+    }
+
+    ${mobileDevice(css`
+        background-position: 58% 100%;
+    `)}
+`;
+
+const sectionCSS = css`
+    max-width: 960px;
+    margin: 2rem auto;
+`;
+
+const featuresCSS = css`
+    display: flex;
+    align-items: center;
+
+    ${mobileDevice(css`
+        flex-direction: column;
+    `)}
+`;
+
+const featureCSS = css`
+    flex: 1 0 calc(33% - 1rem);
+    margin: 0 0.5rem;
+
+    h3 {
+        margin-top: 2rem;
+    }
+
+    ${mobileDevice(css`
+        & + & {
+            margin-top: 1rem;
+        }
+    `)}
+`;
 
 export default Member;

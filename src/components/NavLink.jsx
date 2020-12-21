@@ -6,7 +6,7 @@ const NavLink = ({ href, linkCSS, activeCSS, children }) => {
     const router = useRouter();
     let css = Array.isArray(linkCSS) ? linkCSS : [linkCSS];
 
-    if (router.pathname === href) {
+    if (router.asPath === href) {
         css.push(activeCSS);
     }
 
