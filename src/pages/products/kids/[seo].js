@@ -15,7 +15,14 @@ import { useUser } from 'features/user';
 function Seo({ initialProducts, seoData }) {
     const [filters, setFilters] = useState(seoData.filters);
     const { user } = useUser();
-    const { data, error, size, setSize, revalidate } = useFetchProducts({
+    const {
+        data,
+        error,
+        loading,
+        size,
+        setSize,
+        revalidate
+    } = useFetchProducts({
         initialData: [
             {
                 data: initialProducts,
@@ -38,8 +45,6 @@ function Seo({ initialProducts, seoData }) {
         size,
         setSize
     ]);
-
-    const isLoading = !data && !error;
 
     if (error) {
         console.error(error);
@@ -90,8 +95,8 @@ function Seo({ initialProducts, seoData }) {
                     />
                     <List
                         products={products}
-                        isLastPage={products.length >= totalProductsCount}
-                        loading={isLoading}
+                        total={totalProductsCount}
+                        loading={loading}
                         handleLoadMore={handleLoadMore}
                     />
                 </div>

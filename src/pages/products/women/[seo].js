@@ -90,7 +90,7 @@ function SeoPage({ initialProducts, seoData }) {
                     />
                     <List
                         products={products}
-                        isLastPage={products.length >= totalProductsCount}
+                        total={totalProductsCount}
                         loading={isLoading}
                         handleLoadMore={handleLoadMore}
                     />

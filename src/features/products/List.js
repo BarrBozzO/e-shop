@@ -5,8 +5,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Preloader, FavoriteButton, Button } from 'components';
 
-function List({ products, isLastPage, handleLoadMore, loading }) {
+function List({ products, total, handleLoadMore, loading }) {
     if (!Array.isArray(products) || !products.length) return null;
+
+    const isLastPage = products.length >= total;
 
     return (
         <>
@@ -26,21 +28,39 @@ function List({ products, isLastPage, handleLoadMore, loading }) {
                         <List.Item key={product.id} product={product} />
                     ))}
             </div>
-            {loading && <Preloader />}
-            {!isLastPage && (
-                <Button
+
+            <div
+                css={{
+                    textAlign: 'center'
+                }}
+            >
+                <div
                     css={{
-                        display: 'block',
-                        width: '300px',
-                        height: '47px',
-                        margin: '0 auto'
+                        margin: '1rem 0',
+                        fontWeight: 700,
+                        textTransform: 'uppercase'
                     }}
-                    disabled={loading}
-                    onClick={handleLoadMore}
                 >
-                    Load More Products
-                </Button>
-            )}
+                    Showing {products.length} of {total} Items
+                </div>
+                {!isLastPage && (
+                    <Button
+                        css={{
+                            display: 'block',
+                            width: '300px',
+                            height: '47px',
+                            margin: '0 auto'
+                        }}
+                        disabled={loading}
+                        onClick={handleLoadMore}
+                    >
+                        {loading && (
+                            <Preloader cssParams={{ marginRight: '10px' }} />
+                        )}
+                        Load More Products
+                    </Button>
+                )}
+            </div>
         </>
     );
 }
