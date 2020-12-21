@@ -103,7 +103,7 @@ function SeoPage({ initialProducts, seoData }) {
 export const getStaticProps = async ({ params }) => {
     const seoData = seoPages[params.seo];
     const products = await fetchProducts(seoData.staticFilters);
-    console.log(seoData);
+
     return {
         props: {
             initialProducts: products,
