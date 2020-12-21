@@ -202,7 +202,7 @@ const seoPages = {
             age: 'kid',
             seo: 'baby-boys-4m-4y'
         },
-        fitlers: {
+        filters: {
             age: 'kid',
             seo: 'baby-boys-4m-4y'
         }
@@ -214,7 +214,7 @@ const seoPages = {
             age: 'kid',
             seo: 'baby-girls-4m-4y'
         },
-        fitlers: {
+        filters: {
             age: 'kid',
             seo: 'baby-girls-4m-4y'
         }

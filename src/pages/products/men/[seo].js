@@ -220,7 +220,7 @@ const seoPages = {
             age: 'adult',
             type: 'clothes'
         },
-        fitlers: {
+        filters: {
             type: 'clothes'
         }
     },

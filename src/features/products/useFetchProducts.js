@@ -9,6 +9,7 @@ const getKey = (category, filters) => (pageIndex, previousPageData) => {
     const qParams = {};
 
     if (filters) {
+        console.log(filters);
         qParams.filters = JSON.stringify(filters);
     }
 
