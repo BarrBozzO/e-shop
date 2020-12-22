@@ -109,7 +109,7 @@ function validateDetails(details) {
     if (validator.isEmpty(result.address)) throw new Error('Address required!');
     else if (!validator.isLength(result.address, { min: 3, max: 100 }))
         throw new Error('Address should be between 3 and 100 characters');
-    else if (!validator.matches(result.address, /^[a-zA-Z, -]+$/i))
+    else if (!validator.matches(result.address, /^[0-9a-zA-Z, -]+$/i))
         throw new Error('Address is wrong!');
 
     return result;
