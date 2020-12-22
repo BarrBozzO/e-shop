@@ -77,14 +77,14 @@ function validateDetails(details) {
 
     if (validator.isEmpty(result.first))
         throw new Error('First Name required!');
-    else if (!validator.isAlpha(result.first, 'en-US'))
-        throw new Error('First Name only letters allowed!');
+    else if (!validator.matches(result.first, /^[a-zA-Z -]+$/i))
+        throw new Error('First Name only "a-z","-"," " allowed!');
     else if (!validator.isLength(result.first, { min: 3, max: 50 }))
         throw new Error('First Name should be between 3 and 50 characters');
 
     if (validator.isEmpty(result.last)) throw new Error('Last Name required!');
-    else if (!validator.isAlpha(result.last, 'en-US'))
-        throw new Error('Last Name only letters allowed!');
+    else if (!validator.matches(result.last, /^[a-zA-Z -]+$/i))
+        throw new Error('Last Name only "a-z","-"," " allowed!');
     else if (!validator.isLength(result.last, { min: 3, max: 50 }))
         throw new Error('Last Name should be between 3 and 50 characters');
 
@@ -109,7 +109,7 @@ function validateDetails(details) {
     if (validator.isEmpty(result.address)) throw new Error('Address required!');
     else if (!validator.isLength(result.address, { min: 3, max: 100 }))
         throw new Error('Address should be between 3 and 100 characters');
-    else if (!validator.matches(result.address, /^[a-zA-Z,]+$/i))
+    else if (!validator.matches(result.address, /^[a-zA-Z, -]+$/i))
         throw new Error('Address is wrong!');
 
     return result;
