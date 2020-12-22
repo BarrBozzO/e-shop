@@ -89,7 +89,7 @@ function validateDetails(details) {
         throw new Error('Last Name should be between 3 and 50 characters');
 
     if (validator.isEmpty(result.zip)) throw new Error('Zip required!');
-    else if (!validator.isPostalCode(result.zip, 'US'))
+    else if (!validator.isPostalCode(result.zip, 'any'))
         throw new Error('Invalid postal code');
 
     if (validator.isEmpty(result.state)) throw new Error('State required!');
