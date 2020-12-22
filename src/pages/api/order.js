@@ -36,27 +36,29 @@ function validateProducts(products) {
     }
 
     products.forEach((p, index) => {
-        const result = Object.keys(p).reduce((xssFreeProduct, key) => {
+        const productData = Object.keys(p).reduce((xssFreeProduct, key) => {
             xssFreeProduct[key] = filterXSS(p[key]);
             return xssFreeProduct;
         }, {});
 
-        if (!result.id) {
+        if (!productData.id) {
             // TODO validate firebase id
             throw new Error(`products[${index}] - Product id required!`);
         }
 
-        if (!result.count) {
+        if (!productData.count) {
             throw new Error(`products[${index}] - Product count required!`);
-        } else if (!validator.isNumeric(result.count)) {
+        } else if (!validator.isNumeric(productData.count)) {
             throw new Error(`products[${index}] - Product count is invalid!`);
         }
 
-        if (!result.size) {
+        if (!productData.size) {
             throw new Error(`products[${index}] - Product size required!`);
-        } else if (!validator.isAlpha(result.size)) {
+        } else if (!validator.isAlpha(productData.size)) {
             throw new Error(`products[${index}] - Product size is invalid!`);
         }
+
+        result.push(productData);
     });
 
     return result;
