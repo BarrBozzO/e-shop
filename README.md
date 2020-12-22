@@ -9,6 +9,13 @@ This project is for demonstration purposes ONLY.
 
 Hosted with vercel
 
+<p align="center">
+  <a href="https://e-shop-two.vercel.app/">
+    <img src="https://i.postimg.cc/656XBR8f/e-shop-two-vercel-app-products-kids-holiday.png" alt="e-shop-two-vercel-app-products-kids-holiday" width="100%" border="0">
+  </a>
+</p>
+
+
 ## Getting Started
 
 First, clone repository:
