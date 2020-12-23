@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect, useRef } from 'react';
 import Modal from 'react-modal';
 import { useFormik } from 'formik';
 import { css } from '@emotion/core';
@@ -13,9 +13,16 @@ import * as Yup from 'yup';
 const SIGN_IN = 'signin';
 const SIGN_UP = 'signup';
 
-function AuthDialog({ onClose, ...otherProps }) {
+function AuthDialog({ onClose, isOpen, ...otherProps }) {
+    const scrollPos = useRef(null);
     const [mode, setMode] = useState(SIGN_IN);
     const { signInWithCreds, signUp } = useUser();
+
+    useLayoutEffect(() => {
+        if (isOpen) scrollPos.current = window.scrollY;
+        document.body.style.overflowY = isOpen ? 'hidden' : 'auto';
+        if (!isOpen) window.scroll(0, scrollPos.current || 0);
+    }, [isOpen]);
 
     const isSignIn = mode === SIGN_IN;
 
@@ -71,6 +78,7 @@ function AuthDialog({ onClose, ...otherProps }) {
                 }
             }}
             css={modalCSS}
+            isOpen={isOpen}
             {...otherProps}
         >
             <div css={closeCSS}>
