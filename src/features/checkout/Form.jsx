@@ -6,6 +6,7 @@ import { mobileDevice } from 'styles/utils';
 import { useUser } from 'features/user';
 import { Button, Preloader } from 'components';
 import { Cart } from 'features/cart';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 function Form({ products, loading, onComplete }) {
@@ -48,6 +49,7 @@ function Form({ products, loading, onComplete }) {
                 Cart.reset();
                 onComplete();
             } catch (error) {
+                toast.error(error.toString());
                 console.error(error);
             }
         },

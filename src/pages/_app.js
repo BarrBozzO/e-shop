@@ -1,5 +1,5 @@
 import NProgress from 'nprogress';
-// import 'nprogress/nprogress.css';
+import 'react-toastify/dist/ReactToastify.css';
 import Router from 'next/router';
 import { UserProvider } from 'features/user';
 import '../styles/globals.css';

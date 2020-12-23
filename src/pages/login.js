@@ -1,9 +1,9 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import Layout from 'components/Layout';
 import { useFormik } from 'formik';
 import { css } from '@emotion/core';
-import { Button, ActionButton, Preloader } from 'components';
+import { Button, Preloader } from 'components';
+import { toast } from 'react-toastify';
 import { useUser } from 'features/user';
 import * as Yup from 'yup';
 
@@ -21,7 +21,11 @@ function Login() {
                 await signInWithCreds(email, password);
                 onClose();
             } catch (error) {
-                alert(error);
+                toast.error('Erro: wrong email + password pair!');
+                actions.setErrors({
+                    email: true,
+                    password: true
+                });
                 console.error(error);
             }
             actions.setSubmitting(false);
