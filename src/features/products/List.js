@@ -107,7 +107,11 @@ List.Item = ({ product: { id, data } }) => {
                 </Link>
                 <FavoriteButton id={id} />
             </div>
-            <div>
+            <div
+                css={{
+                    position: 'relative'
+                }}
+            >
                 <Link href={`/products/${id}`}>
                     <a
                         css={{
@@ -130,6 +134,20 @@ List.Item = ({ product: { id, data } }) => {
                 >
                     $ {data.price.value}
                 </span>
+                {data.isNew && (
+                    <span
+                        css={{
+                            position: 'absolute',
+                            right: 0,
+                            color: '#e50010',
+                            textTransform: 'uppercase',
+                            fontSize: '0.8rem',
+                            bottom: '0'
+                        }}
+                    >
+                        New Arrival
+                    </span>
+                )}
             </div>
         </div>
     );
