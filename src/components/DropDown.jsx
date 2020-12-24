@@ -1,7 +1,7 @@
 import React, { useState, useLayoutEffect, useRef } from 'react';
 import Modal from 'react-modal';
 import { css } from '@emotion/core';
-import { ActionButton } from 'components';
+import { ActionButton, Icon } from 'components';
 import { mobileDevice } from 'styles/utils';
 
 const getElemPos = (element) => {
@@ -11,8 +11,15 @@ const getElemPos = (element) => {
     return result;
 };
 
-function DropDown({ options, label, onChange, defaultValue, cssParams = {} }) {
-    const [value, setValue] = useState(defaultValue);
+function DropDown({
+    options,
+    label,
+    onChange,
+    defaultValue,
+    cssParams = {},
+    hasArrow = true
+}) {
+    const [value, setValue] = useState(defaultValue || options[0]);
     const [isOpen, setIsOpen] = useState(false);
     const [coords, setCoords] = useState({});
     const scrollPos = useRef(null);
@@ -50,8 +57,20 @@ function DropDown({ options, label, onChange, defaultValue, cssParams = {} }) {
         <div>
             <ActionButton
                 ref={target}
-                css={[buttonCSS, cssParams.button]}
-                label={value ? value.label : label}
+                css={[buttonCSS(hasArrow), cssParams.button]}
+                label={
+                    <>
+                        {value ? value.label : label}
+                        {hasArrow && (
+                            <span css={arrowCSS}>
+                                <Icon
+                                    size={16}
+                                    name={`${isOpen ? 'up' : 'down'}-arrow`}
+                                />
+                            </span>
+                        )}
+                    </>
+                }
                 onClick={handleOpen}
             />
             <Modal
@@ -76,7 +95,8 @@ function DropDown({ options, label, onChange, defaultValue, cssParams = {} }) {
                                     onClick={() => handleChange(o)}
                                     css={[
                                         optionCSS(isActive),
-                                        cssParams.option(isActive)
+                                        cssParams.option &&
+                                            cssParams.option(isActive)
                                     ]}
                                 >
                                     <span>{o.label}</span>
@@ -90,8 +110,16 @@ function DropDown({ options, label, onChange, defaultValue, cssParams = {} }) {
     );
 }
 
-const buttonCSS = css`
+const arrowCSS = css`
+    position: absolute;
+    top: 50%;
+    right: 0.4rem;
+    transform: translateY(-50%);
+`;
+
+const buttonCSS = (hasArrow) => css`
     display: block;
+    position: relative;
     height: 40px;
     background-color: #ffffff;
     border: 1px solid #222;
@@ -101,10 +129,10 @@ const buttonCSS = css`
         white-space: nowrap;
         font-size: 1rem;
         line-height: 40px;
-        padding-left: 1rem;
+        padding: 0 ${hasArrow ? '2rem' : '1rem'} 0 1rem;
         text-transform: uppercase;
         text-overflow: ellipsis;
-        max-width: 100%;
+        width: 100%;
         overflow: hidden;
     }
 `;
@@ -154,7 +182,7 @@ const modalCSS = (coords) => css`
 `;
 
 const titleCSS = [
-    buttonCSS,
+    buttonCSS(),
     mobileDevice(css`
         display: none;
     `)

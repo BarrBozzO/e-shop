@@ -50,7 +50,7 @@ const Sort = ({ onChange }) => {
                 button: {
                     border: 'none',
                     backgroundColor: 'transparent',
-                    width: '240px',
+                    width: '180px',
                     '& > span': {
                         paddingLeft: 0
                     }

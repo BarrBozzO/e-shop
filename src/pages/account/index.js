@@ -64,7 +64,7 @@ const Account = observer(() => {
                         </li>
                         <li>
                             <ActionButton
-                                css={linkCSS}
+                                css={[linkCSS, signOutCSS]}
                                 label={'Sign Out'}
                                 onClick={logout}
                             />
@@ -220,6 +220,12 @@ const linkCSS = css`
             content: '';
         }
     `)}
+`;
+
+const signOutCSS = css`
+    &::after {
+        content: '';
+    }
 `;
 
 const insightsItemCSS = css`

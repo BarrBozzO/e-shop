@@ -1,15 +1,17 @@
 import React from 'react';
+import Link from 'next/link';
 
 function AdBanner() {
     return (
         <article
             css={{
-                backgroundColor: '#ff2f00',
-                padding: '0 15px 24px',
+                backgroundColor: '#C9002E',
+                padding: '2rem',
                 fontSize: '2rem',
                 textAlign: 'center',
                 display: 'flow-root',
-                margin: '1rem 0'
+                margin: '1rem 0',
+                color: '#fff'
             }}
         >
             <h3>
@@ -20,12 +22,22 @@ function AdBanner() {
 
             <p
                 css={{
+                    margin: '1rem 0',
                     fontSize: '0.8rem',
                     fontWeight: '700'
                 }}
             >
                 Discount automatically applies when you’re signed in. Not a
-                member? Join now!
+                member?{' '}
+                <Link href={'/register'}>
+                    <a
+                        css={{
+                            textDecoration: 'underline'
+                        }}
+                    >
+                        Join now!
+                    </a>
+                </Link>
             </p>
         </article>
     );

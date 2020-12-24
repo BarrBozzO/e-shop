@@ -100,7 +100,7 @@ List.CountControl = ({ count, onAdd, onDelete }) => {
 };
 
 List.Item = ({ product: { id, data, __total, __size }, onDelete, onAdd }) => {
-    const { images, price, name } = data;
+    const { images, price, name, isSale, salePercent } = data;
     const image = images[1] ? images[1] : images[0];
 
     return (
@@ -120,28 +120,47 @@ List.Item = ({ product: { id, data, __total, __size }, onDelete, onAdd }) => {
                 <Link href={`/products/${id}`}>
                     <a css={productNameCSS}>{name}</a>
                 </Link>
-                <span
+                <div
                     css={{
-                        display: 'inline-block',
-                        width: '100%',
-                        marginTop: '0.4rem',
-                        fontSize: '1.2rem'
+                        marginTop: '0.4rem'
                     }}
                 >
-                    $ {price.value}
-                </span>
-                <span
-                    css={{
-                        display: 'inline-block',
-                        width: '100%',
-                        marginTop: '0.4rem',
-                        fontSize: '1.2rem'
-                    }}
-                >
-                    size:{' '}
+                    {isSale && (
+                        <span
+                            css={{
+                                display: 'inline-block',
+                                fontSize: '1.2rem',
+                                color: '#e50010',
+                                marginRight: '0.5rem'
+                            }}
+                        >
+                            ${price.value}
+                        </span>
+                    )}
                     <span
                         css={{
-                            textTransform: 'uppercase'
+                            display: 'inline-block',
+                            fontSize: isSale ? '1rem' : '1.2rem',
+                            textDecoration: isSale ? 'line-through' : '',
+                            color: isSale ? '#666' : '#222'
+                        }}
+                    >
+                        ${price.value}
+                    </span>
+                </div>
+                <span
+                    css={{
+                        display: 'inline-block',
+                        width: '100%',
+                        marginTop: '0.4rem',
+                        fontSize: '1rem'
+                    }}
+                >
+                    Size:{' '}
+                    <span
+                        css={{
+                            textTransform: 'uppercase',
+                            fontWeight: 700
                         }}
                     >
                         {__size}
@@ -187,16 +206,21 @@ const productCSS = css`
     display: flex;
     align-items: stretch;
     justify-content: flex-start;
-    margin: 1rem 0;
+    background-color: #fff;
+
+    & + & {
+        margin: 1rem 0;
+    }
 `;
 
 const productNameCSS = css`
     display: inline-block;
     font-size: 1.4rem;
+    margin: 1rem 0;
     cursor: pointer;
 
     ${mobileDevice(css`
-        font-size: 1rem;
+        font-size: 1.2rem;
     `)}
 `;
 
@@ -216,10 +240,10 @@ const closeBtnCSS = css`
     position: absolute;
     top: 1rem;
     right: 1rem;
+    fill: #999;
 
     ${mobileDevice(css`
-        top: 0;
-        right: 0;
+        right: 0.2rem;
     `)}
 `;
 

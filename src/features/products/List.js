@@ -132,7 +132,8 @@ List.Item = ({ product: { id, data } }) => {
                                 marginTop: '0.4rem',
                                 fontSize: '1.1rem',
                                 color: '#e50010',
-                                marginRight: '0.4rem'
+                                marginRight: '0.4rem',
+                                verticalAlign: 'middle'
                             }}
                         >
                             ${data.price.value}
@@ -145,7 +146,8 @@ List.Item = ({ product: { id, data } }) => {
                             fontSize: data.isSale ? '0.9rem' : '1.1rem',
                             textDecoration: data.isSale
                                 ? 'line-through'
-                                : 'none'
+                                : 'none',
+                            verticalAlign: 'middle'
                         }}
                     >
                         $
@@ -156,20 +158,7 @@ List.Item = ({ product: { id, data } }) => {
                     </span>
                 </div>
 
-                {data.isNew && (
-                    <span
-                        css={{
-                            position: 'absolute',
-                            right: 0,
-                            color: '#e50010',
-                            textTransform: 'uppercase',
-                            fontSize: '0.8rem',
-                            bottom: '0'
-                        }}
-                    >
-                        New Arrival
-                    </span>
-                )}
+                {data.isNew && <span css={newCSS}>New Arrival</span>}
             </div>
         </div>
     );
@@ -183,6 +172,19 @@ const itemCSS = css`
 
     ${mobileDevice(css`
         flex: 0 0 calc(50% - 1rem);
+    `)}
+`;
+
+const newCSS = css`
+    position: absolute;
+    right: 0;
+    color: #e50010;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    bottom: 0;
+
+    ${mobileDevice(css`
+        position: relative;
     `)}
 `;
 

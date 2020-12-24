@@ -26,10 +26,7 @@ const containerCSS = css`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-
-    ${mobileDevice(css`
-        margin-top: 1rem;
-    `)}
+    margin: 1rem 0;
 `;
 
 const linkCSS = css`

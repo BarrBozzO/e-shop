@@ -33,9 +33,10 @@ function Preloader({ cssParams, size = 16 }) {
                 },
                 cssParams
             ]}
-            ref={iconRef}
         >
-            <Icon size={size} name="loading-circle" />
+            <div ref={iconRef}>
+                <Icon size={size} name="loading-circle" />
+            </div>
         </div>
     );
 }

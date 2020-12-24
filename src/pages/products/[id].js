@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { css } from '@emotion/core';
@@ -16,14 +16,8 @@ import { fetchProduct, fetchProducts } from 'features/products';
 import { Cart, AddProductPopup } from 'features/cart';
 
 function Product({ data }) {
-    const [size, setSize] = useState(); // set null while ssr
+    const [size, setSize] = useState();
     const [display, setDisplay] = useState(false);
-
-    useEffect(() => {
-        if (data) {
-            setSize(SIZE_OPTIONS[data.type][0]);
-        }
-    }, [data]);
 
     const ImagesContainer = useCallback(() => {
         if (!data) return null;
@@ -222,6 +216,7 @@ function Product({ data }) {
                             defaultValue={size}
                             options={SIZE_OPTIONS[data.type]}
                             onChange={setSize}
+                            hasArrow={false}
                         />
                     </div>
                     <div css={addContainerCSS}>

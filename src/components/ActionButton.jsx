@@ -36,6 +36,7 @@ function ActionButton(
 
 const labelCSS = css`
     display: inline-block;
+    position: relative;
 `;
 
 const disabledCSS = css`
