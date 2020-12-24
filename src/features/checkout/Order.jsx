@@ -97,10 +97,12 @@ const titleCSS = css`
 const sectionCSS = css`
     flex: 0 0 auto;
     min-width: 360px;
+    margin-left: 2rem;
 
     ${mobileDevice(css`
         flex: 1 0 100%;
         min-width: auto;
+        margin-left: 0;
     `)}
 `;
 

@@ -43,7 +43,7 @@ const Favorites = observer(() => {
                 <h1 css={titleCSS}>Favorites</h1>
                 <div>
                     {isLoading ? (
-                        <Preloader />
+                        <Preloader cssParams={preloaderCSS} size={40} />
                     ) : (
                         <div>
                             <div css={totalCSS}>{data.length} items</div>
@@ -72,6 +72,13 @@ const totalCSS = css`
     text-transform: uppercase;
     text-align: right;
     margin-bottom: 1rem;
+`;
+
+const preloaderCSS = css`
+    display: block;
+    width: 40px;
+    margin: 0 auto;
+    fill: #e50010;
 `;
 
 export default Favorites;

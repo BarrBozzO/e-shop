@@ -11,7 +11,7 @@ function Header({ minimal, back }) {
 
     return (
         <Fragment>
-            <header css={headerCSS}>
+            <header css={headerCSS(minimal)}>
                 <div
                     css={{
                         display: 'flex',
@@ -76,13 +76,14 @@ const backCSS = css`
     `)}
 `;
 
-const headerCSS = css`
+const headerCSS = (minimal = false) => css`
     width: 100%;
     z-index: 1000;
     padding: 16px;
 
     ${mobileDevice(css`
         padding: 8px;
+        ${minimal ? 'margin-bottom: 1rem;' : ''}
     `)}
 `;
 

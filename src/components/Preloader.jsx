@@ -26,8 +26,8 @@ function Preloader({ cssParams, size = 16 }) {
             css={[
                 {
                     display: 'inline-block',
-                    width: '16px',
-                    height: '16px',
+                    width: size + 'px',
+                    height: size + 'px',
                     fill: '#ffffff',
                     verticalAlign: 'top'
                 },

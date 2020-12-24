@@ -99,11 +99,10 @@ const Checkout = observer(() => {
 
 const containerCSS = css`
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: flex-start;
     max-width: 1180px;
     margin: 0 auto;
-    padding: 0 2rem;
 
     ${mobileDevice(css`
         flex-direction: column-reverse;
