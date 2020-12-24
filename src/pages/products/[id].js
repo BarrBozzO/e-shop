@@ -121,7 +121,7 @@ function Product({ data }) {
         return null;
     }
 
-    const { name, age, sex, id } = data;
+    const { name, age, sex, id, isSale, isNew, salePercent, price } = data;
 
     const isKid = age === 'kid';
     const isMale = sex === 'male';
@@ -175,7 +175,47 @@ function Product({ data }) {
                         <h1 css={titleCSS}>{data.name}</h1>
                         <FavoriteButton id={id} styles={favCSS} />
                     </div>
-                    <div css={productPriceCSS}>$ {data.price.value}</div>
+                    {isNew && <div css={newCSS}>new arrival</div>}
+                    <div css={productPriceCSS}>
+                        {isSale && (
+                            <>
+                                <span
+                                    css={{
+                                        color: '#e50010',
+                                        marginRight: '0.4rem',
+                                        fontSize: '1.4rem'
+                                    }}
+                                >
+                                    ${data.price.value}
+                                </span>
+                                <span
+                                    css={{
+                                        position: 'absolute',
+                                        right: 0,
+                                        backgroundColor: '#f0ddd7',
+                                        color: '#c9002e',
+                                        padding: '0.4rem 1rem',
+                                        fontSize: '0.9rem',
+                                        lineHeight: '1',
+                                        fontWeight: 700
+                                    }}
+                                >
+                                    -{salePercent}%
+                                </span>
+                            </>
+                        )}
+                        <span
+                            css={{
+                                textDecoration: isSale ? 'line-through' : '',
+                                fontSize: isSale ? '1rem' : ''
+                            }}
+                        >
+                            $
+                            {Number.parseFloat(
+                                price.value * (isSale ? salePercent : 1)
+                            ).toFixed(2)}
+                        </span>
+                    </div>
                     <div css={productSizeCSS}>
                         <DropDown
                             styles={{
@@ -338,7 +378,15 @@ const sidebarCSS = css`
     `)}
 `;
 
+const newCSS = css`
+    color: #e50010;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+`;
+
 const productPriceCSS = css`
+    position: relative;
     font-weight: 500;
     font-size: 1.2rem;
     margin-bottom: 1rem;

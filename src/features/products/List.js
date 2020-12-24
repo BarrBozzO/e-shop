@@ -124,16 +124,38 @@ List.Item = ({ product: { id, data } }) => {
                         {data.name}
                     </a>
                 </Link>
-                <span
-                    css={{
-                        display: 'inline-block',
-                        width: '100%',
-                        marginTop: '0.4rem',
-                        fontSize: '1rem'
-                    }}
-                >
-                    $ {data.price.value}
-                </span>
+                <div>
+                    {data.isSale && (
+                        <span
+                            css={{
+                                display: 'inline-block',
+                                marginTop: '0.4rem',
+                                fontSize: '1.1rem',
+                                color: '#e50010',
+                                marginRight: '0.4rem'
+                            }}
+                        >
+                            ${data.price.value}
+                        </span>
+                    )}
+                    <span
+                        css={{
+                            display: 'inline-block',
+                            marginTop: '0.4rem',
+                            fontSize: data.isSale ? '0.9rem' : '1.1rem',
+                            textDecoration: data.isSale
+                                ? 'line-through'
+                                : 'none'
+                        }}
+                    >
+                        $
+                        {parseFloat(
+                            data.price.value *
+                                (data.isSale ? data.salePercent : 1)
+                        ).toFixed(2)}
+                    </span>
+                </div>
+
                 {data.isNew && (
                     <span
                         css={{
