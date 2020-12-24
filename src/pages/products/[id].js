@@ -218,22 +218,14 @@ function Product({ data }) {
                     </div>
                     <div css={productSizeCSS}>
                         <DropDown
-                            styles={{
-                                option: (provided, state) => ({
-                                    ...provided,
-                                    backgroundColor: state.isSelected
-                                        ? '#222'
-                                        : '#fff',
-                                    color: state.isSelected ? '#fff' : '#222'
-                                })
-                            }}
-                            value={size}
+                            label="select size"
+                            defaultValue={size}
                             options={SIZE_OPTIONS[data.type]}
                             onChange={setSize}
                         />
                     </div>
-                    <div>
-                        <Button onClick={handleAddToCart}>
+                    <div css={addContainerCSS}>
+                        <Button css={addCSS} onClick={handleAddToCart}>
                             <Icon
                                 name="cart"
                                 size={14}
@@ -383,6 +375,10 @@ const newCSS = css`
     text-transform: uppercase;
     font-size: 0.9rem;
     margin-bottom: 1rem;
+
+    ${mobileDevice(css`
+        display: none;
+    `)}
 `;
 
 const productPriceCSS = css`
@@ -392,8 +388,7 @@ const productPriceCSS = css`
     margin-bottom: 1rem;
 
     ${mobileDevice(css`
-        display: inline-block;
-        width: 30%;
+        vertical-alig: middle;
     `)}
 `;
 
@@ -402,9 +397,24 @@ const productSizeCSS = css`
 
     ${mobileDevice(css`
         display: inline-block;
-        width: 70%;
+        vertical-align: top;
+        width: 48%;
         margin-bottom: 1rem;
+        margin-right: 2%;
     `)}
+`;
+
+const addContainerCSS = css`
+    ${mobileDevice(css`
+        display: inline-block;
+        width: 48%;
+        margin-left: 2%;
+        vertical-align: top;
+    `)}
+`;
+
+const addCSS = css`
+    height: 40px;
 `;
 
 const titleCSS = css`
