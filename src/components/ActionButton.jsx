@@ -1,16 +1,12 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { css } from '@emotion/core';
 import PropTypes from 'prop-types';
 import Icon from 'components/Icon';
 
-function ActionButton({
-    icon,
-    label,
-    onClick,
-    css,
-    disabled,
-    ...remainingProps
-}) {
+function ActionButton(
+    { icon, label, onClick, css, disabled, ...remainingProps },
+    ref
+) {
     const handleClick = (e) => {
         if (disabled) {
             return;
@@ -21,6 +17,7 @@ function ActionButton({
 
     return (
         <div
+            ref={ref}
             onClick={handleClick}
             css={[btnCSS, disabled ? disabledCSS : null, css]}
             {...remainingProps}
@@ -39,6 +36,7 @@ function ActionButton({
 
 const labelCSS = css`
     display: inline-block;
+    position: relative;
 `;
 
 const disabledCSS = css`
@@ -64,4 +62,4 @@ ActionButton.propTypes = {
     onClick: PropTypes.func.isRequired
 };
 
-export default ActionButton;
+export default forwardRef(ActionButton);

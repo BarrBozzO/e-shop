@@ -11,7 +11,7 @@ function Header({ minimal, back }) {
 
     return (
         <Fragment>
-            <header css={headerCSS}>
+            <header css={headerCSS(minimal)}>
                 <div
                     css={{
                         display: 'flex',
@@ -40,13 +40,19 @@ function Header({ minimal, back }) {
                 {!minimal && (
                     <nav css={navCSS}>
                         <Link href="/products/women">
-                            <a css={navLinkCSS}>Women</a>
+                            <a css={navLinkCSS}>
+                                <span>Ladies</span>
+                            </a>
                         </Link>
                         <Link href="/products/men">
-                            <a css={navLinkCSS}>Men</a>
+                            <a css={navLinkCSS}>
+                                <span>Men</span>
+                            </a>
                         </Link>
                         <Link href="/products/kids">
-                            <a css={navLinkCSS}>Kids</a>
+                            <a css={navLinkCSS}>
+                                <span>Kids</span>
+                            </a>
                         </Link>
                         <span css={[navLinkCSS, disabledLinkCSS]}>
                             H&M Home
@@ -76,13 +82,14 @@ const backCSS = css`
     `)}
 `;
 
-const headerCSS = css`
+const headerCSS = (minimal = false) => css`
     width: 100%;
     z-index: 1000;
     padding: 16px;
 
     ${mobileDevice(css`
         padding: 8px;
+        ${minimal ? 'margin-bottom: 1rem;' : ''}
     `)}
 `;
 
@@ -123,9 +130,11 @@ const navLinkCSS = css`
     user-select: none;
 
     &:hover {
-        cursor: pointer;
-        border-bottom: 2px solid rgb(34, 34, 34);
-        padding-bottom: 0;
+        span {
+            cursor: pointer;
+            padding-bottom: 0;
+            border-bottom: 2px solid rgb(34, 34, 34);
+        }
     }
 
     ${mobileDevice(css`

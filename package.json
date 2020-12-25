@@ -24,7 +24,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-modal": "^3.11.2",
-    "react-select": "^3.1.0",
+    "react-toastify": "^6.2.0",
     "swr": "^0.3.9",
     "validator": "^13.5.2",
     "xss": "^1.0.8",

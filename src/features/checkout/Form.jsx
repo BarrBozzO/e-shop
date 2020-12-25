@@ -6,6 +6,7 @@ import { mobileDevice } from 'styles/utils';
 import { useUser } from 'features/user';
 import { Button, Preloader } from 'components';
 import { Cart } from 'features/cart';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 function Form({ products, loading, onComplete }) {
@@ -48,6 +49,7 @@ function Form({ products, loading, onComplete }) {
                 Cart.reset();
                 onComplete();
             } catch (error) {
+                toast.error(error.toString());
                 console.error(error);
             }
         },
@@ -67,7 +69,7 @@ function Form({ products, loading, onComplete }) {
     });
 
     return (
-        <div>
+        <div css={containerCSS}>
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
@@ -296,12 +298,17 @@ const emailCSS = css`
     margin-bottom: 1rem;
 `;
 
+const containerCSS = css`
+    flex: 1 0 auto;
+`;
+
 const fieldsetCSS = css`
     display: flex;
     flex-direction: flex-start;
     align-items: center;
     border: 0;
-    margin-bottom: 1rem;
+    margin: 1rem 0;
+    padding: 0;
 
     ${mobileDevice(css`
         flex-wrap: wrap;
@@ -334,7 +341,7 @@ const fieldCSS = css`
     }
 
     ${mobileDevice(css`
-        flex: 1 0 auto;
+        flex: 1 0 100%;
         margin-top: 1rem;
 
         &:first-child {

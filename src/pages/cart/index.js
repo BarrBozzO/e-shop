@@ -81,13 +81,24 @@ const CartPage = observer(() => {
             <h1 css={titleCSS}>Shopping Cart</h1>
             <div css={containerCSS}>
                 <section css={productsListCSS}>
-                    {isLoading ? <Preloader /> : renderProducts()}
+                    {isLoading ? (
+                        <Preloader cssParams={preloaderCSS} size={40} />
+                    ) : (
+                        renderProducts()
+                    )}
                 </section>
                 <Order products={products} />
             </div>
         </Layout>
     );
 });
+
+const preloaderCSS = css`
+    display: block;
+    width: 40px;
+    margin: 1rem auto;
+    fill: #e50010;
+`;
 
 const titleCSS = css`
     text-align: center;

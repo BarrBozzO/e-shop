@@ -107,7 +107,11 @@ List.Item = ({ product: { id, data } }) => {
                 </Link>
                 <FavoriteButton id={id} />
             </div>
-            <div>
+            <div
+                css={{
+                    position: 'relative'
+                }}
+            >
                 <Link href={`/products/${id}`}>
                     <a
                         css={{
@@ -120,16 +124,41 @@ List.Item = ({ product: { id, data } }) => {
                         {data.name}
                     </a>
                 </Link>
-                <span
-                    css={{
-                        display: 'inline-block',
-                        width: '100%',
-                        marginTop: '0.4rem',
-                        fontSize: '1rem'
-                    }}
-                >
-                    $ {data.price.value}
-                </span>
+                <div>
+                    {data.isSale && (
+                        <span
+                            css={{
+                                display: 'inline-block',
+                                marginTop: '0.4rem',
+                                fontSize: '1.1rem',
+                                color: '#e50010',
+                                marginRight: '0.4rem',
+                                verticalAlign: 'middle'
+                            }}
+                        >
+                            ${data.price.value}
+                        </span>
+                    )}
+                    <span
+                        css={{
+                            display: 'inline-block',
+                            marginTop: '0.4rem',
+                            fontSize: data.isSale ? '0.9rem' : '1.1rem',
+                            textDecoration: data.isSale
+                                ? 'line-through'
+                                : 'none',
+                            verticalAlign: 'middle'
+                        }}
+                    >
+                        $
+                        {parseFloat(
+                            data.price.value *
+                                (data.isSale ? data.salePercent : 1)
+                        ).toFixed(2)}
+                    </span>
+                </div>
+
+                {data.isNew && <span css={newCSS}>New Arrival</span>}
             </div>
         </div>
     );
@@ -143,6 +172,19 @@ const itemCSS = css`
 
     ${mobileDevice(css`
         flex: 0 0 calc(50% - 1rem);
+    `)}
+`;
+
+const newCSS = css`
+    position: absolute;
+    right: 0;
+    color: #e50010;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    bottom: 0;
+
+    ${mobileDevice(css`
+        position: relative;
     `)}
 `;
 

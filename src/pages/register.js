@@ -3,8 +3,9 @@ import Link from 'next/link';
 import Layout from 'components/Layout';
 import { useFormik } from 'formik';
 import { css } from '@emotion/core';
-import { Button, ActionButton, Preloader } from 'components';
+import { Button, Preloader } from 'components';
 import { useUser } from 'features/user';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 function Register() {
@@ -22,7 +23,12 @@ function Register() {
                 await signUp(email, password);
                 onClose();
             } catch (error) {
-                alert(error);
+                toast.error(error.toString());
+                actions.setErrors({
+                    email: true,
+                    password: true,
+                    passwordconfirm: true
+                });
                 console.error(error);
             }
             actions.setSubmitting(false);

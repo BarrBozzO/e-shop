@@ -1,21 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect, useRef } from 'react';
+import * as Yup from 'yup';
 import Modal from 'react-modal';
+import Link from 'next/link';
 import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
 import { css } from '@emotion/core';
 import { mobileDevice } from 'styles/utils';
-import Button from 'components/Button';
-import ActionButton from 'components/ActionButton';
-import Preloader from 'components/Preloader';
+import { Button, ActionButton, Preloader } from 'components';
 import { useUser } from './index.js';
-import Link from 'next/link';
-import * as Yup from 'yup';
 
 const SIGN_IN = 'signin';
 const SIGN_UP = 'signup';
 
-function AuthDialog({ onClose, ...otherProps }) {
+function AuthDialog({ onClose, isOpen, ...otherProps }) {
+    const scrollPos = useRef(null);
     const [mode, setMode] = useState(SIGN_IN);
     const { signInWithCreds, signUp } = useUser();
+
+    useLayoutEffect(() => {
+        if (isOpen) scrollPos.current = window.scrollY;
+        document.body.style.overflowY = isOpen ? 'hidden' : 'auto';
+        if (!isOpen) window.scroll(0, scrollPos.current || 0);
+    }, [isOpen]);
 
     const isSignIn = mode === SIGN_IN;
 
@@ -33,7 +39,16 @@ function AuthDialog({ onClose, ...otherProps }) {
                 await action(email, password);
                 onClose();
             } catch (error) {
-                alert(error);
+                toast.error(
+                    isSignIn
+                        ? 'Erro: wrong email + password pair!'
+                        : error.toString()
+                );
+                actions.setErrors({
+                    email: true,
+                    password: true,
+                    passwordconfirm: true
+                });
                 console.error(error);
             }
             actions.setSubmitting(false);
@@ -71,6 +86,7 @@ function AuthDialog({ onClose, ...otherProps }) {
                 }
             }}
             css={modalCSS}
+            isOpen={isOpen}
             {...otherProps}
         >
             <div css={closeCSS}>

@@ -14,7 +14,7 @@ import { useUser } from 'features/user';
 
 function SeoPage({ initialProducts, seoData }) {
     const [filters, setFilters] = useState(seoData.filters);
-    const { user } = useUser();
+    const { user, initializing: userInit } = useUser();
     const { data, error, size, setSize, revalidate } = useFetchProducts({
         initialData: [
             {
@@ -77,7 +77,7 @@ function SeoPage({ initialProducts, seoData }) {
                     }
                 ]}
             />
-            {!user && <AdBanner />}
+            {!user && !userInit && <AdBanner />}
             <div css={containerCSS}>
                 <Nav links={seoLinks} />
                 <div css={{ flex: '1 0 0' }}>

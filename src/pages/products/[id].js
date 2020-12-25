@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { css } from '@emotion/core';
@@ -16,14 +16,8 @@ import { fetchProduct, fetchProducts } from 'features/products';
 import { Cart, AddProductPopup } from 'features/cart';
 
 function Product({ data }) {
-    const [size, setSize] = useState(); // set null while ssr
+    const [size, setSize] = useState();
     const [display, setDisplay] = useState(false);
-
-    useEffect(() => {
-        if (data) {
-            setSize(SIZE_OPTIONS[data.type][0]);
-        }
-    }, [data]);
 
     const ImagesContainer = useCallback(() => {
         if (!data) return null;
@@ -121,7 +115,7 @@ function Product({ data }) {
         return null;
     }
 
-    const { name, age, sex, id } = data;
+    const { name, age, sex, id, isSale, isNew, salePercent, price } = data;
 
     const isKid = age === 'kid';
     const isMale = sex === 'male';
@@ -175,25 +169,58 @@ function Product({ data }) {
                         <h1 css={titleCSS}>{data.name}</h1>
                         <FavoriteButton id={id} styles={favCSS} />
                     </div>
-                    <div css={productPriceCSS}>$ {data.price.value}</div>
+                    {isNew && <div css={newCSS}>new arrival</div>}
+                    <div css={productPriceCSS}>
+                        {isSale && (
+                            <>
+                                <span
+                                    css={{
+                                        color: '#e50010',
+                                        marginRight: '0.4rem',
+                                        fontSize: '1.4rem'
+                                    }}
+                                >
+                                    ${data.price.value}
+                                </span>
+                                <span
+                                    css={{
+                                        position: 'absolute',
+                                        right: 0,
+                                        backgroundColor: '#f0ddd7',
+                                        color: '#c9002e',
+                                        padding: '0.4rem 1rem',
+                                        fontSize: '0.9rem',
+                                        lineHeight: '1',
+                                        fontWeight: 700
+                                    }}
+                                >
+                                    -{salePercent}%
+                                </span>
+                            </>
+                        )}
+                        <span
+                            css={{
+                                textDecoration: isSale ? 'line-through' : '',
+                                fontSize: isSale ? '1rem' : ''
+                            }}
+                        >
+                            $
+                            {Number.parseFloat(
+                                price.value * (isSale ? salePercent : 1)
+                            ).toFixed(2)}
+                        </span>
+                    </div>
                     <div css={productSizeCSS}>
                         <DropDown
-                            styles={{
-                                option: (provided, state) => ({
-                                    ...provided,
-                                    backgroundColor: state.isSelected
-                                        ? '#222'
-                                        : '#fff',
-                                    color: state.isSelected ? '#fff' : '#222'
-                                })
-                            }}
-                            value={size}
+                            label="select size"
+                            defaultValue={size}
                             options={SIZE_OPTIONS[data.type]}
                             onChange={setSize}
+                            hasArrow={false}
                         />
                     </div>
-                    <div>
-                        <Button onClick={handleAddToCart}>
+                    <div css={addContainerCSS}>
+                        <Button css={addCSS} onClick={handleAddToCart}>
                             <Icon
                                 name="cart"
                                 size={14}
@@ -338,14 +365,25 @@ const sidebarCSS = css`
     `)}
 `;
 
+const newCSS = css`
+    color: #e50010;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+
+    ${mobileDevice(css`
+        display: none;
+    `)}
+`;
+
 const productPriceCSS = css`
+    position: relative;
     font-weight: 500;
     font-size: 1.2rem;
     margin-bottom: 1rem;
 
     ${mobileDevice(css`
-        display: inline-block;
-        width: 30%;
+        vertical-alig: middle;
     `)}
 `;
 
@@ -354,9 +392,24 @@ const productSizeCSS = css`
 
     ${mobileDevice(css`
         display: inline-block;
-        width: 70%;
+        vertical-align: top;
+        width: 48%;
         margin-bottom: 1rem;
+        margin-right: 2%;
     `)}
+`;
+
+const addContainerCSS = css`
+    ${mobileDevice(css`
+        display: inline-block;
+        width: 48%;
+        margin-left: 2%;
+        vertical-align: top;
+    `)}
+`;
+
+const addCSS = css`
+    height: 40px;
 `;
 
 const titleCSS = css`
