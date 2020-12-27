@@ -338,6 +338,7 @@ const formCSS = css`
 
     ${mobileDevice(css`
         margin-top: 5vh;
+        height: auto;
     `)}
 `;
 
